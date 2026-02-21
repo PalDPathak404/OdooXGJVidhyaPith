@@ -88,7 +88,7 @@ const Register = () => {
     };
 
     const roleOptions = [
-        { value: 'Manager', label: 'Fleet Manager' },
+        { value: 'Fleet Manager', label: 'Fleet Manager' },
         { value: 'Dispatcher', label: 'Dispatcher' },
         { value: 'Safety Officer', label: 'Safety Officer' },
         { value: 'Financial Analyst', label: 'Financial Analyst' },
