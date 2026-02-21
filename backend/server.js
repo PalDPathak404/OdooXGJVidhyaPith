@@ -12,7 +12,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Auth
 app.use('/api/auth', require('./routes/auth'));
+
+// Core fleet routes (Manana)
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/vehicles', require('./routes/vehicles'));
 app.use('/api/trips', require('./routes/trips'));

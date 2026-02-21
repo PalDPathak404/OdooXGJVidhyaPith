@@ -149,6 +149,57 @@ const dispatchTripWithValidation = async ({ vehicleId, driverId, cargoWeight }) 
     return updatedVehicle;
 };
 
+/**
+ * Orchestrates trip completion with odometer validation and distance calculation.
+ * Validates both entities exist, enforces odometer integrity, computes distance,
+ * then delegates all state mutations to applyTripCompletionTransition.
+ * @param {Object} params
+ * @param {string} params.vehicleId      - MongoDB ObjectId of the vehicle.
+ * @param {string} params.driverId       - MongoDB ObjectId of the driver.
+ * @param {number} params.startOdometer  - Odometer reading at trip start.
+ * @param {number} params.endOdometer    - Odometer reading at trip end.
+ * @returns {Promise<Object>} Metrics summary: { distanceTravelled, vehicleId, driverId, endOdometer }
+ */
+const completeTripWithMetrics = async ({ vehicleId, driverId, startOdometer, endOdometer }) => {
+    // Step 1: Validate vehicle exists.
+    const vehicle = await Vehicle.findById(vehicleId);
+    if (!vehicle) {
+        throw new Error(`Vehicle not found: ${vehicleId}`);
+    }
+
+    // Lifecycle guard: vehicle must be actively on a trip to be completed.
+    if (vehicle.status !== "OnTrip") {
+        throw new Error("Trip cannot be completed because the vehicle is not currently on an active trip.");
+    }
+
+    // Step 2: Validate driver exists.
+    const driver = await Driver.findById(driverId);
+    if (!driver) {
+        throw new Error(`Driver not found: ${driverId}`);
+    }
+
+    // Step 3: Enforce odometer integrity.
+    if (endOdometer < startOdometer) {
+        throw new Error(
+            `Invalid odometer values: endOdometer (${endOdometer}) must be >= startOdometer (${startOdometer}).`
+        );
+    }
+
+    // Step 4: Derive distance.
+    const distanceTravelled = endOdometer - startOdometer;
+
+    // Step 5: Apply state transitions and update odometer.
+    await applyTripCompletionTransition(vehicleId, driverId, endOdometer);
+
+    // Step 6: Return metrics summary.
+    return {
+        distanceTravelled,
+        vehicleId,
+        driverId,
+        endOdometer,
+    };
+};
+
 module.exports = {
     validateVehicleAvailability,
     validateDriverAvailability,
@@ -157,4 +208,5 @@ module.exports = {
     applyDispatchStateTransition,
     applyTripCompletionTransition,
     dispatchTripWithValidation,
+    completeTripWithMetrics,
 };
