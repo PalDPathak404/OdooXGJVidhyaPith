@@ -14,9 +14,9 @@ const generateToken = (id) => {
 // @route   POST /api/auth/register
 // @access  Public
 router.post('/register', async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !role) {
         return res.status(400).json({ message: 'Please add all fields' });
     }
 
@@ -32,6 +32,7 @@ router.post('/register', async (req, res) => {
         name,
         email,
         password,
+        role,
     });
 
     if (user) {
@@ -39,6 +40,7 @@ router.post('/register', async (req, res) => {
             _id: user.id,
             name: user.name,
             email: user.email,
+            role: user.role,
             message: 'User registered successfully',
         });
     } else {
@@ -60,6 +62,7 @@ router.post('/login', async (req, res) => {
             _id: user.id,
             name: user.name,
             email: user.email,
+            role: user.role,
             token: generateToken(user._id),
         });
     } else {

@@ -16,7 +16,7 @@ const DataTable = ({ columns, data, renderRow }) => {
                 <tbody>
                     {data && data.length > 0 ? (
                         data.map((item, index) => (
-                            <tr key={index} className="border-b border-border/10 hover:bg-background/50 transition-colors">
+                            <tr key={index} className="group border-b border-border/10 hover:bg-background/50 transition-colors">
                                 {renderRow(item)}
                             </tr>
                         ))

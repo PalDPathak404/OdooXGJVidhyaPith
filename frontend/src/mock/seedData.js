@@ -1,8 +1,8 @@
 export const mockVehicles = [
-  { id: 'v1', name: 'Toyota Hilux', plate: 'KAA 123A', type: 'Pickup', status: 'On Trip', driver: 'Alice Johnson', fuelLevel: '75%', lastService: '2024-01-15' },
-  { id: 'v2', name: 'Mercedes Actros', plate: 'KBB 456B', type: 'Truck', status: 'In Shop', driver: 'Bob Smith', fuelLevel: '40%', lastService: '2024-02-10' },
-  { id: 'v3', name: 'Ford Transit', plate: 'KCC 789C', type: 'Van', status: 'On Trip', driver: 'Charlie Brown', fuelLevel: '90%', lastService: '2024-01-20' },
-  { id: 'v4', name: 'Volvo FH16', plate: 'KDD 012D', type: 'Truck', status: 'On Trip', driver: 'David Wilson', fuelLevel: '65%', lastService: '2024-02-05' },
+  { id: 'v1', name: 'Toyota Hilux', plate: 'MH 01 AB 1234', type: 'Pickup', model: '2023 Edition', capacity: '1.5 Tons', odometer: '12000', status: 'Available', driver: 'Alice Johnson', fuelLevel: '75%', lastService: '2024-01-15' },
+  { id: 'v2', name: 'Mercedes Actros', plate: 'MH 12 CD 5678', type: 'Truck', model: 'Heavy Duty 2024', capacity: '25 Tons', odometer: '45000', status: 'Available', driver: 'Bob Smith', fuelLevel: '40%', lastService: '2024-02-10' },
+  { id: 'v3', name: 'Ford Transit', plate: 'MH 04 EF 9012', type: 'Van', model: 'V363', capacity: '3.5 Tons', odometer: '28000', status: 'On Trip', driver: 'Charlie Brown', fuelLevel: '90%', lastService: '2024-01-20' },
+  { id: 'v4', name: 'Volvo FH16', plate: 'MH 14 GH 3456', type: 'Truck', model: 'Globetrotter', capacity: '30 Tons', odometer: '62000', status: 'In Shop', driver: 'David Wilson', fuelLevel: '65%', lastService: '2024-02-05' },
 ];
 
 export const mockTrips = [
@@ -23,6 +23,6 @@ export const mockExpenses = [
 
 export const mockDrivers = [
   { id: 'd1', name: 'Alice Johnson', license: 'ABC-123', phone: '0711222333', rating: 4.8, status: 'On Trip' },
-  { id: 'd2', name: 'Bob Smith', license: 'XYZ-456', phone: '0722333444', rating: 4.5, status: 'Break' },
-  { id: 'd3', name: 'Charlie Brown', license: 'DEF-789', phone: '0733444555', rating: 4.9, status: 'Available' },
+  { id: 'd2', name: 'Bob Smith', license: 'XYZ-456', phone: '0722333444', rating: 4.5, status: 'On Duty' },
+  { id: 'd3', name: 'Charlie Brown', license: 'DEF-789', phone: '0733444555', rating: 4.9, status: 'On Duty' },
 ];

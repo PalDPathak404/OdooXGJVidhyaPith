@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { User, Lock, UserCircle, ArrowRight } from 'lucide-react';
+import { User, Lock, UserCircle, ArrowRight, ChevronDown } from 'lucide-react';
 import useFleetStore from '../store/fleetStore';
 import { motion } from 'framer-motion';
 
@@ -24,11 +24,22 @@ const Login = () => {
     const navigate = useNavigate();
     const setAuth = useFleetStore((state) => state.setAuth);
 
-    const [loginData, setLoginData] = useState({ username: '', password: '' });
+    const [loginData, setLoginData] = useState({ username: '', password: '', role: 'Administrator' });
+
+    const roles = [
+        'Administrator',
+        'Fleet Manager',
+        'Dispatcher',
+        'Safety Officer',
+        'Financial Analyst'
+    ];
 
     const handleLogin = (e) => {
         e.preventDefault();
-        setAuth({ name: loginData.username || 'John Doe', role: 'Admin' });
+        setAuth({
+            name: loginData.username || 'Commander',
+            role: loginData.role
+        });
         navigate('/');
     };
 
@@ -41,7 +52,7 @@ const Login = () => {
             >
                 <div className="mb-10 text-center">
                     <h1 className="text-4xl font-black text-softblack tracking-tighter mb-2">FleetFlow</h1>
-                    <p className="text-gray-400 font-medium tracking-wide">Welcome back, Commander</p>
+                    <p className="text-gray-400 font-medium tracking-wide">Assign your post to continue</p>
                 </div>
 
                 <div className="w-24 h-24 bg-background rounded-4xl flex items-center justify-center mb-10 border border-border/50 shadow-soft">
@@ -49,6 +60,22 @@ const Login = () => {
                 </div>
 
                 <form onSubmit={handleLogin} className="w-full">
+                    <div className="relative mb-6 group">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-olive transition-colors z-10">
+                            <UserCircle size={20} />
+                        </div>
+                        <select
+                            value={loginData.role}
+                            onChange={(e) => setLoginData({ ...loginData, role: e.target.value })}
+                            className="w-full pl-12 pr-10 py-4 bg-background border border-border/40 rounded-2xl focus:outline-none focus:ring-2 focus:ring-olive/10 focus:bg-white transition-all text-softblack font-bold appearance-none cursor-pointer"
+                        >
+                            {roles.map(role => (
+                                <option key={role} value={role}>{role}</option>
+                            ))}
+                        </select>
+                        <ChevronDown size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                    </div>
+
                     <InputField
                         icon={User}
                         placeholder="Username"

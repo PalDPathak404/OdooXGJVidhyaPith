@@ -20,12 +20,24 @@ router.get('/', protect, async (req, res) => {
 // @desc    Create a vehicle
 // @access  Private
 router.post('/', protect, async (req, res) => {
+    const { model, licensePlate, maxCapacity, odometer, status } = req.body;
+
+    if (!model || !licensePlate || !maxCapacity) {
+        return res.status(400).json({ message: 'Please provide model, license plate and max capacity' });
+    }
+
     try {
-        const vehicle = await Vehicle.create(req.body);
+        const vehicle = await Vehicle.create({
+            model,
+            licensePlate,
+            maxCapacity,
+            odometer: odometer || 0,
+            status: status || 'Available'
+        });
         res.status(201).json(vehicle);
     } catch (error) {
         console.error('Error creating vehicle:', error);
-        res.status(500).json({ message: 'Server error creating vehicle' });
+        res.status(400).json({ message: error.message });
     }
 });
 
@@ -44,7 +56,7 @@ router.put('/:id', protect, async (req, res) => {
         res.status(200).json(vehicle);
     } catch (error) {
         console.error('Error updating vehicle:', error);
-        res.status(500).json({ message: 'Server error updating vehicle' });
+        res.status(400).json({ message: error.message });
     }
 });
 
@@ -60,7 +72,7 @@ router.delete('/:id', protect, async (req, res) => {
         res.status(200).json({ message: 'Vehicle deleted successfully' });
     } catch (error) {
         console.error('Error deleting vehicle:', error);
-        res.status(500).json({ message: 'Server error deleting vehicle' });
+        res.status(500).json({ message: error.message });
     }
 });
 

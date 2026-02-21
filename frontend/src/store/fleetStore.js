@@ -25,7 +25,11 @@ const useFleetStore = create((set) => ({
     }
   })(),
   setAuth: (user) => {
-    localStorage.setItem('fleet_user', JSON.stringify(user));
+    if (user) {
+      localStorage.setItem('fleet_user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('fleet_user');
+    }
     set({ currentUser: user });
   },
   logout: () => {
@@ -50,6 +54,31 @@ const useFleetStore = create((set) => ({
   removeVehicle: (id) => set((state) => ({
     vehicles: state.vehicles.filter((v) => v.id !== id)
   })),
+
+  addTrip: (trip) => set((state) => {
+    // Determine vehicle and driver IDs from the trip object
+    // Assuming trip has vehiclePlate or vehicleId and driverName or driverId
+    const updatedVehicles = state.vehicles.map(v => 
+      v.plate === trip.vehiclePlate ? { ...v, status: 'On Trip' } : v
+    );
+    const updatedDrivers = state.drivers.map(d => 
+      d.name === trip.driverName ? { ...d, status: 'On Trip' } : d
+    );
+
+    return {
+      trips: [
+        { 
+          id: `t${state.trips.length + 1}`, 
+          ...trip, 
+          status: 'On Trip',
+          startTime: new Date().toLocaleString() 
+        }, 
+        ...state.trips
+      ],
+      vehicles: updatedVehicles,
+      drivers: updatedDrivers
+    };
+  }),
   
   // Generic filters can be added here
   activePage: 'Dashboard',

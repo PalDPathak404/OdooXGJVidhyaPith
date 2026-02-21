@@ -1,8 +1,8 @@
 import React from 'react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-
 const StatusBadge = ({ status, className }) => {
+    if (!status) return null;
     const getStatusStyles = (status) => {
         switch (status?.toLowerCase()) {
             case 'active':

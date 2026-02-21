@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { protect } = require('../middleware/auth');
 const Trip = require('../models/Trip');
+const { dispatchTripWithValidation } = require('../services/tripRules.service');
 
 // @route   GET /api/trips
 // @desc    Get all trips
@@ -29,6 +30,43 @@ router.post('/', protect, async (req, res) => {
     } catch (error) {
         console.error('Error creating trip:', error);
         res.status(500).json({ message: 'Server error creating trip' });
+    }
+});
+
+// @desc    Dispatch a trip (Uses upstreams validation service constraints)
+// @route   POST /api/trips/dispatch
+// @access  Private
+router.post('/dispatch', protect, async (req, res) => {
+    const { vehicleId, driverId, cargoWeight, startOdometer } = req.body;
+
+    if (!vehicleId || !driverId || !cargoWeight) {
+        return res.status(400).json({ message: 'Please provide vehicleId, driverId and cargoWeight' });
+    }
+
+    try {
+        // Use the validation service to handle rules and state transitions
+        const updatedVehicle = await dispatchTripWithValidation({
+            vehicleId,
+            driverId,
+            cargoWeight
+        });
+
+        // Create the trip record
+        const trip = await Trip.create({
+            vehicleId,
+            driverId,
+            cargoWeight,
+            startOdometer: startOdometer || updatedVehicle.odometer,
+            status: 'Dispatched'
+        });
+
+        res.status(201).json({
+            message: 'Trip dispatched successfully',
+            trip,
+            vehicle: updatedVehicle
+        });
+    } catch (err) {
+        res.status(400).json({ message: err.message });
     }
 });
 
