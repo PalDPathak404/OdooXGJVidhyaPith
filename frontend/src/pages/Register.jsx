@@ -66,6 +66,7 @@ const Register = () => {
                     name: registerData.fullName,
                     email: registerData.email,
                     password: registerData.password,
+                    role: registerData.role,
                 }),
             });
 
