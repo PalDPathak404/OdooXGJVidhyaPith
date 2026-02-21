@@ -204,24 +204,14 @@ const Expenses = () => {
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-<<<<<<< HEAD
-                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Fuel Price (₹/L)</label>
-=======
-                                    <label className="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Fuel Cost (₹)</label>
->>>>>>> 1cb6b6d5272449e73e609b4e0299896ee08e8c28
+                                    <label className="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Fuel Price (₹/L)</label>
                                     <input
                                         type="number"
                                         required
                                         placeholder="0"
-<<<<<<< HEAD
-                                        className="w-full bg-background/50 border border-border/10 px-4 py-4 rounded-xl font-bold text-softblack focus:outline-none"
+                                        className="w-full bg-surface-elevated border border-border/40 px-4 py-4 rounded-xl font-bold text-text-primary focus:outline-none focus:border-primary"
                                         value={formData.fuelPricePerLiter}
                                         onChange={(e) => setFormData({ ...formData, fuelPricePerLiter: e.target.value })}
-=======
-                                        className="w-full bg-surface-elevated border border-border/40 px-4 py-4 rounded-xl font-bold text-text-primary focus:outline-none focus:border-primary"
-                                        value={formData.fuelCost}
-                                        onChange={(e) => setFormData({ ...formData, fuelCost: e.target.value })}
->>>>>>> 1cb6b6d5272449e73e609b4e0299896ee08e8c28
                                     />
                                 </div>
                             </div>
@@ -234,7 +224,7 @@ const Expenses = () => {
                                         type="number"
                                         required
                                         placeholder="0"
-                                            className="w-full bg-surface-elevated border border-border/40 pl-11 pr-4 py-4 rounded-xl font-bold text-text-primary focus:outline-none focus:border-primary"
+                                        className="w-full bg-surface-elevated border border-border/40 pl-11 pr-4 py-4 rounded-xl font-bold text-text-primary focus:outline-none focus:border-primary"
                                         value={formData.maintenanceCost}
                                         onChange={(e) => setFormData({ ...formData, maintenanceCost: e.target.value })}
                                     />

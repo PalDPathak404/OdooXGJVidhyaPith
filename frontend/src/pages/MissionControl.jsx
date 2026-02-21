@@ -15,7 +15,8 @@ import {
     Pause,
     Square,
     CheckCircle,
-    XCircle
+    XCircle,
+    Search
 } from 'lucide-react';
 import useFleetStore from '../store/fleetStore';
 import DataTable from '../components/DataTable';
@@ -99,19 +100,18 @@ const MissionControl = () => {
 
     const MissionCard = ({ mission }) => (
         <div className="card-elevated p-6 hover:shadow-xl transition-all duration-300 border-l-4 border-l-transparent hover:border-primary group cursor-pointer"
-             onClick={() => setSelectedMission(mission)}>
+            onClick={() => setSelectedMission(mission)}>
             <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                        mission.status === 'Completed' ? 'bg-success/20 text-success' :
-                        mission.status === 'In Progress' ? 'bg-primary/20 text-primary' :
-                        mission.status === 'Pending' ? 'bg-warning/20 text-warning' :
-                        'bg-text-muted/20 text-text-muted'
-                    }`}>
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${mission.status === 'Completed' ? 'bg-success/20 text-success' :
+                            mission.status === 'In Progress' ? 'bg-primary/20 text-primary' :
+                                mission.status === 'Pending' ? 'bg-warning/20 text-warning' :
+                                    'bg-text-muted/20 text-text-muted'
+                        }`}>
                         {mission.status === 'Completed' ? <CheckCircle size={20} /> :
-                         mission.status === 'In Progress' ? <Play size={20} /> :
-                         mission.status === 'Pending' ? <Clock size={20} /> :
-                         <Square size={20} />}
+                            mission.status === 'In Progress' ? <Play size={20} /> :
+                                mission.status === 'Pending' ? <Clock size={20} /> :
+                                    <Square size={20} />}
                     </div>
                     <div>
                         <h3 className="font-bold text-text-primary text-lg">Mission #{mission.id}</h3>
@@ -164,18 +164,6 @@ const MissionControl = () => {
         </div>
     );
 
-    if (!hasAccess) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                    <ShieldAlert size={48} className="text-danger mx-auto mb-4" />
-                    <h2 className="text-2xl font-bold text-text-primary mb-2">Access Restricted</h2>
-                    <p className="text-text-muted">You don't have permission to access Mission Control.</p>
-                    <p className="text-sm text-text-secondary">Required roles: Administrator, Fleet Manager, or Dispatcher</p>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-6 duration-700 p-6">
@@ -188,7 +176,7 @@ const MissionControl = () => {
                     </h1>
                     <p className="text-text-muted mt-2">Real-time fleet operations and mission management</p>
                 </div>
-                
+
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2 px-4 py-2 bg-surface-elevated rounded-lg border border-border">
                         <Activity size={16} className="text-primary" />
@@ -317,14 +305,14 @@ const MissionControl = () => {
                                     <Target size={20} className="text-primary" />
                                     Mission #{selectedMission.id} Details
                                 </h3>
-                                <button 
+                                <button
                                     onClick={() => setSelectedMission(null)}
                                     className="text-text-muted hover:text-text-primary transition-colors"
                                 >
                                     <XCircle size={24} />
                                 </button>
                             </div>
-                            
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <h4 className="font-semibold text-text-primary mb-2">Mission Information</h4>
@@ -365,7 +353,7 @@ const MissionControl = () => {
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div className="flex gap-3 mt-6">
                                 <button className="btn-primary py-3 px-6 flex items-center gap-2">
                                     <Play size={18} />
@@ -374,7 +362,7 @@ const MissionControl = () => {
                                 <button className="btn-secondary py-3 px-6">
                                     Edit Details
                                 </button>
-                                <button 
+                                <button
                                     onClick={() => setSelectedMission(null)}
                                     className="btn-secondary py-3 px-6"
                                 >

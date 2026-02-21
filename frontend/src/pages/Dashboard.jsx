@@ -70,15 +70,11 @@ const Dashboard = () => {
         return result;
     }, [trips, searchTerm, statusFilter, sortBy]);
 
-<<<<<<< HEAD
     // RBAC check MUST be after all hooks
     const hasAccess = ['Administrator', 'Fleet Manager', 'Dispatcher', 'Safety Officer', 'Financial Analyst'].includes(currentUser?.role);
     if (!hasAccess) return <AccessRestricted />;
 
-    const columns = ['Trip ID', 'Vehicle', 'Driver', 'Status'];
-=======
     const columns = ['Mission ID', 'Asset', 'Operator', 'Status'];
->>>>>>> 1cb6b6d5272449e73e609b4e0299896ee08e8c28
 
     return (
         <div className="space-y-8">
@@ -86,11 +82,10 @@ const Dashboard = () => {
             <div className="flex items-center gap-6 border-b border-border">
                 <button
                     onClick={() => setActiveTab('overview')}
-                    className={`pb-4 px-2 font-medium transition-all border-b-2 ${
-                        activeTab === 'overview'
+                    className={`pb-4 px-2 font-medium transition-all border-b-2 ${activeTab === 'overview'
                             ? 'text-primary border-primary'
                             : 'text-text-muted border-transparent hover:text-text-secondary'
-                    }`}
+                        }`}
                 >
                     <div className="flex items-center gap-2">
                         <Radar size={18} />
@@ -99,11 +94,10 @@ const Dashboard = () => {
                 </button>
                 <button
                     onClick={() => setActiveTab('analytics')}
-                    className={`pb-4 px-2 font-medium transition-all border-b-2 ${
-                        activeTab === 'analytics'
+                    className={`pb-4 px-2 font-medium transition-all border-b-2 ${activeTab === 'analytics'
                             ? 'text-primary border-primary'
                             : 'text-text-muted border-transparent hover:text-text-secondary'
-                    }`}
+                        }`}
                 >
                     <div className="flex items-center gap-2">
                         <BarChart3 size={18} />
@@ -112,11 +106,10 @@ const Dashboard = () => {
                 </button>
                 <button
                     onClick={() => setActiveTab('map')}
-                    className={`pb-4 px-2 font-medium transition-all border-b-2 ${
-                        activeTab === 'map'
+                    className={`pb-4 px-2 font-medium transition-all border-b-2 ${activeTab === 'map'
                             ? 'text-primary border-primary'
                             : 'text-text-muted border-transparent hover:text-text-secondary'
-                    }`}
+                        }`}
                 >
                     <div className="flex items-center gap-2">
                         <Map size={18} />
