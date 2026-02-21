@@ -13,8 +13,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/auth', require('./routes/auth'));
-
-// Serve static files from the 'public' folder
-app.use(express.static('public'));
+app.use('/api/vehicles', require('./routes/vehicles'));
+app.use('/api/trips', require('./routes/trips'));
+app.use('/api/maintenance', require('./routes/maintenance'));
+app.use('/api/expenses', require('./routes/expenses'));
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
