@@ -9,7 +9,8 @@ import {
     Wrench,
     Calculator,
     ChevronRight,
-    ArrowUpRight
+    ArrowUpRight,
+    Activity
 } from 'lucide-react';
 import useFleetStore from '../store/fleetStore';
 import DataTable from '../components/DataTable';
@@ -36,7 +37,7 @@ const Expenses = () => {
 
     const filteredExpenses = useMemo(() => {
         return expenses.filter(e =>
-            e.tripId.toLowerCase().includes(searchTerm.toLowerCase())
+            (e.tripId || '').toLowerCase().includes(searchTerm.toLowerCase())
         );
     }, [expenses, searchTerm]);
 
@@ -123,7 +124,7 @@ const Expenses = () => {
 
                         return (
                             <tr key={expense.id} className={`${isHighCost ? 'bg-rust/5' : ''} group transition-colors`}>
-                                <td className="px-8 py-6 text-sm font-black text-softblack">#{expense.tripId.toUpperCase()}</td>
+                                <td className="px-8 py-6 text-sm font-black text-softblack">#{expense.tripId?.toUpperCase() || 'N/A'}</td>
                                 <td className="px-8 py-6">
                                     <div className="flex items-center gap-3">
                                         <div className="w-8 h-8 rounded-full bg-background flex items-center justify-center text-gray-400 font-bold text-[10px]">
@@ -172,7 +173,7 @@ const Expenses = () => {
                                 >
                                     <option value="">Select Trip ID</option>
                                     {trips.map(trip => (
-                                        <option key={trip.id} value={trip.id}>#{trip.id.toUpperCase()} - {trip.driver}</option>
+                                        <option key={trip.id} value={trip.id}>#{trip.id?.toUpperCase() || 'N/A'} - {trip.driver}</option>
                                     ))}
                                 </select>
                             </div>

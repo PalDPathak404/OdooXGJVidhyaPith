@@ -17,8 +17,8 @@ export const mockMaintenance = [
 ];
 
 export const mockExpenses = [
-  { id: 'e1', category: 'Fuel', amount: '$450', date: '2024-02-19', vehicle: 'Toyota Hilux', description: 'Petrol station X' },
-  { id: 'e2', category: 'Repair', amount: '$1200', date: '2024-02-15', vehicle: 'Mercedes Actros', description: 'Gearbox fix' },
+  { id: 'e1', tripId: 't1', fuelLiters: 45, fuelCost: 5400, maintenanceCost: 0, totalCost: 5400, date: '2024-02-19' },
+  { id: 'e2', tripId: 't2', fuelLiters: 20, fuelCost: 2400, maintenanceCost: 1500, totalCost: 3900, date: '2024-02-15' },
 ];
 
 export const mockDrivers = [
