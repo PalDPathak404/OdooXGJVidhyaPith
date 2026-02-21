@@ -97,10 +97,33 @@ const useFleetStore = create((set) => ({
       vehicles: updatedVehicles
     };
   }),
+
+  addExpense: (expense) => set((state) => {
+    const totalCost = Number(expense.fuelCost || 0) + Number(expense.maintenanceCost || 0);
+    const newExpense = {
+      id: `e${state.expenses.length + 1}`,
+      ...expense,
+      totalCost,
+      date: new Date().toISOString().split('T')[0]
+    };
+
+    return {
+      expenses: [newExpense, ...state.expenses]
+    };
+  }),
   
   // Generic filters can be added here
   activePage: 'Dashboard',
   setActivePage: (page) => set({ activePage: page }),
+
+  settings: {
+    notifications: true,
+    theme: 'dark',
+    unitSystem: 'metric'
+  },
+  updateSettings: (newSettings) => set((state) => ({
+    settings: { ...state.settings, ...newSettings }
+  })),
 
   // API Sync Placeholders
   syncData: async () => {

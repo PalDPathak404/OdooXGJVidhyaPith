@@ -51,7 +51,7 @@ const Login = () => {
                 className="w-full max-w-md bg-white rounded-4xl shadow-thick p-10 flex flex-col items-center border border-border/50"
             >
                 <div className="mb-10 text-center">
-                    <h1 className="text-4xl font-black text-softblack tracking-tighter mb-2">FleetFlow</h1>
+                    <h1 className="text-4xl font-black text-softblack tracking-tighter mb-2">FleetEdge</h1>
                     <p className="text-gray-400 font-medium tracking-wide">Assign your post to continue</p>
                 </div>
 
