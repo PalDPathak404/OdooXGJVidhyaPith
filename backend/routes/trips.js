@@ -21,15 +21,28 @@ router.get('/', protect, async (req, res) => {
 });
 
 // @route   POST /api/trips
-// @desc    Create a trip
+// @desc    Create a trip (draft)
 // @access  Private
 router.post('/', protect, async (req, res) => {
+    const { vehicleId, driverId, cargoWeight, status, startOdometer, endOdometer } = req.body;
+
+    if (!vehicleId || !driverId || cargoWeight === undefined) {
+        return res.status(400).json({ message: 'Please provide vehicleId, driverId, and cargoWeight' });
+    }
+
     try {
-        const trip = await Trip.create(req.body);
+        const trip = await Trip.create({
+            vehicleId,
+            driverId,
+            cargoWeight,
+            status: status || 'Draft',
+            ...(startOdometer !== undefined && { startOdometer }),
+            ...(endOdometer !== undefined && { endOdometer }),
+        });
         res.status(201).json(trip);
     } catch (error) {
         console.error('Error creating trip:', error);
-        res.status(500).json({ message: 'Server error creating trip' });
+        res.status(400).json({ message: error.message });
     }
 });
 
