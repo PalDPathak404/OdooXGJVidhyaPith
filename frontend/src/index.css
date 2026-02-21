@@ -207,3 +207,81 @@ body {
     @apply bg-text-muted/20 text-text-muted border border-text-muted/30;
   }
 }
+
+/* ─── Global Form Element Overrides ────────────────────────────────── */
+
+/* Force all selects and inputs to use dark theme - overrides browser defaults */
+input,
+textarea {
+  background-color: var(--color-surface-elevated) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-muted) !important;
+}
+
+/* Native select - always dark styled */
+select {
+  background-color: var(--color-surface-elevated) !important;
+  color: var(--color-text-primary) !important;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  width: 100%;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.15);
+}
+
+select:hover {
+  border-color: var(--color-text-muted);
+}
+
+/* Option items in the dropdown popup */
+select option {
+  background-color: var(--color-surface-elevated) !important;
+  color: var(--color-text-primary) !important;
+  padding: 0.5rem 1rem;
+}
+
+select option:hover,
+select option:checked,
+select option:focus {
+  background-color: var(--color-primary) !important;
+  color: var(--color-background) !important;
+}
+
+/* Firefox-specific option styling */
+@-moz-document url-prefix() {
+  select option {
+    background-color: #1E2433 !important;
+    color: #FFFFFF !important;
+  }
+}
+
+/* Chromium accent color for option highlight */
+select {
+  accent-color: var(--color-primary);
+}
+
+/* Override any inline white backgrounds on inputs/selects in legacy JSX */
+.bg-white {
+  background-color: var(--color-surface-elevated) !important;
+}

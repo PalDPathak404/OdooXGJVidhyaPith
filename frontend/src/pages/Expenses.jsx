@@ -82,15 +82,35 @@ const Expenses = () => {
                     </div>
                 </div>
 
-                <div className="w-full md:w-72 card-elevated rounded-[2.5rem] shadow-lg text-text-primary flex flex-col justify-between">
-                    <p className="text-[10px] font-black text-text-muted uppercase tracking-widest">Active Budgets</p>
-                    <div className="mt-4 space-y-2">
-                        <div className="flex justify-between text-xs font-bold">
-                            <span className="text-text-secondary">Fuel Capacity</span>
-                            <span className="text-primary">82%</span>
+                <div className="w-full md:w-80 card-elevated rounded-[2.5rem] shadow-lg text-text-primary flex flex-col justify-between p-8">
+                    <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-5">Active Budgets</p>
+                    <div className="space-y-4">
+                        <div>
+                            <div className="flex justify-between text-xs font-bold mb-2">
+                                <span className="text-text-secondary flex items-center gap-1.5"><Fuel size={12} className="text-primary" />Fuel Capacity</span>
+                                <span className="text-primary">82%</span>
+                            </div>
+                            <div className="h-1.5 w-full bg-border rounded-full overflow-hidden">
+                                <div className="h-full bg-primary w-[82%] rounded-full" />
+                            </div>
                         </div>
-                        <div className="h-1.5 w-full bg-border-subtle rounded-full overflow-hidden">
-                            <div className="h-full bg-primary w-[82%]" />
+                        <div>
+                            <div className="flex justify-between text-xs font-bold mb-2">
+                                <span className="text-text-secondary flex items-center gap-1.5"><Wrench size={12} className="text-warning" />Maintenance</span>
+                                <span className="text-warning">61%</span>
+                            </div>
+                            <div className="h-1.5 w-full bg-border rounded-full overflow-hidden">
+                                <div className="h-full bg-warning w-[61%] rounded-full" />
+                            </div>
+                        </div>
+                        <div>
+                            <div className="flex justify-between text-xs font-bold mb-2">
+                                <span className="text-text-secondary flex items-center gap-1.5"><Calculator size={12} className="text-accent" />Operations</span>
+                                <span className="text-accent">45%</span>
+                            </div>
+                            <div className="h-1.5 w-full bg-border rounded-full overflow-hidden">
+                                <div className="h-full bg-accent w-[45%] rounded-full" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -105,7 +125,7 @@ const Expenses = () => {
                         placeholder="Filter by Trip ID..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-12 pr-6 py-4 bg-white border border-border/30 rounded-2xl shadow-soft focus:outline-none focus:ring-2 focus:ring-olive/10 font-bold placeholder:text-gray-300"
+                        className="w-full pl-12 pr-6 py-4 input-field font-bold rounded-2xl"
                     />
                 </div>
                 <button
@@ -171,7 +191,7 @@ const Expenses = () => {
                                 <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Trip Reference</label>
                                 <select
                                     required
-                                    className="w-full bg-white border border-border/30 px-6 py-4 rounded-2xl font-bold text-softblack focus:outline-none focus:ring-2 focus:ring-olive/10"
+                                    className="input-field px-6 py-4 rounded-2xl font-bold"
                                     value={formData.tripId}
                                     onChange={(e) => setFormData({ ...formData, tripId: e.target.value })}
                                 >

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth, useUser, AuthenticateWithRedirectCallback } from '@clerk/clerk-react';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -8,6 +8,7 @@ import {
 } from './pages/Placeholders';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import RoleSelect from './pages/RoleSelect';
 import Dashboard from './pages/Dashboard';
 import Vehicles from './pages/Vehicles';
 import Trips from './pages/Trips';
@@ -22,23 +23,9 @@ import Profile from './pages/Profile';
 
 function App() {
   const { isLoaded, isSignedIn } = useAuth();
-  const { user: clerkUser } = useUser();
   const currentUser = useFleetStore((state) => state.currentUser);
-  const setAuth = useFleetStore((state) => state.setAuth);
 
-  // Sync Clerk session to local state if missing
-  useEffect(() => {
-    if (isLoaded && isSignedIn && clerkUser && !currentUser) {
-      setAuth({
-        name: clerkUser.fullName || "Operator",
-        email: clerkUser.primaryEmailAddress?.emailAddress || "",
-        role: "Administrator", // fallback default
-        token: "clerk_session",
-      });
-    }
-  }, [isLoaded, isSignedIn, clerkUser, currentUser, setAuth]);
-
-  // Consider authenticated if Clerk says so
+  // Consider authenticated if Clerk says so OR local state exists
   const isAuthenticated = isSignedIn || !!currentUser;
 
   if (!isLoaded) {
@@ -50,7 +37,8 @@ function App() {
       <Router>
         <Routes>
           {/* Public Routes */}
-          <Route path="/sso-callback" element={<AuthenticateWithRedirectCallback signInForceRedirectUrl="/" />} />
+          <Route path="/sso-callback" element={<AuthenticateWithRedirectCallback signInForceRedirectUrl="/select-role" />} />
+          <Route path="/select-role" element={<RoleSelect />} />
           <Route path="/login" element={isAuthenticated ? <Navigate to="/" replace /> : <Login />} />
           <Route path="/register" element={isAuthenticated ? <Navigate to="/" replace /> : <Register />} />
 

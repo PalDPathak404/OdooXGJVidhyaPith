@@ -83,8 +83,8 @@ const Dashboard = () => {
                 <button
                     onClick={() => setActiveTab('overview')}
                     className={`pb-4 px-2 font-medium transition-all border-b-2 ${activeTab === 'overview'
-                            ? 'text-primary border-primary'
-                            : 'text-text-muted border-transparent hover:text-text-secondary'
+                        ? 'text-primary border-primary'
+                        : 'text-text-muted border-transparent hover:text-text-secondary'
                         }`}
                 >
                     <div className="flex items-center gap-2">
@@ -95,8 +95,8 @@ const Dashboard = () => {
                 <button
                     onClick={() => setActiveTab('analytics')}
                     className={`pb-4 px-2 font-medium transition-all border-b-2 ${activeTab === 'analytics'
-                            ? 'text-primary border-primary'
-                            : 'text-text-muted border-transparent hover:text-text-secondary'
+                        ? 'text-primary border-primary'
+                        : 'text-text-muted border-transparent hover:text-text-secondary'
                         }`}
                 >
                     <div className="flex items-center gap-2">
@@ -107,8 +107,8 @@ const Dashboard = () => {
                 <button
                     onClick={() => setActiveTab('map')}
                     className={`pb-4 px-2 font-medium transition-all border-b-2 ${activeTab === 'map'
-                            ? 'text-primary border-primary'
-                            : 'text-text-muted border-transparent hover:text-text-secondary'
+                        ? 'text-primary border-primary'
+                        : 'text-text-muted border-transparent hover:text-text-secondary'
                         }`}
                 >
                     <div className="flex items-center gap-2">
@@ -253,7 +253,11 @@ const Dashboard = () => {
             )}
 
             {activeTab === 'analytics' && <AdvancedAnalytics key={theme} />}
-            {activeTab === 'map' && <FleetMap />}
+            {activeTab === 'map' && (
+                <div className="-mx-8 -mb-6">
+                    <FleetMap fullScreen={true} />
+                </div>
+            )}
 
             <SideDrawer isOpen={isTripDrawerOpen} onClose={() => setIsTripDrawerOpen(false)} title="Dispatch New Mission">
                 <div className="space-y-6 text-center py-10">
