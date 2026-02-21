@@ -3,8 +3,11 @@ import { User, Mail, Shield, Calendar, LogOut, Settings, Award, Clock, Bell, Glo
 import useFleetStore from '../store/fleetStore';
 import SideDrawer from '../components/SideDrawer';
 import AccessRestricted from '../components/AccessRestricted';
+import { useAuth } from '@clerk/clerk-react';
+import CustomSelect from '../components/CustomSelect';
 
 const Profile = () => {
+    const { signOut } = useAuth();
     const { currentUser, logout, settings, updateSettings } = useFleetStore();
     const [isSettingsOpen, setIsSettingsOpen] = React.useState(false);
 
@@ -14,9 +17,9 @@ const Profile = () => {
     const hasFullAccess = ['Administrator', 'Fleet Manager'].includes(currentUser.role);
 
     const stats = [
-        { label: 'System Access', value: hasFullAccess ? 'Level 5 (Admin)' : 'Level 2 (User)', icon: Shield, color: 'text-olive' },
-        { label: 'Membership', value: 'Fleet Partner', icon: Award, color: 'text-amber-500' },
-        { label: 'Uptime Status', value: '100% Operational', icon: Clock, color: 'text-green-500' },
+        { label: 'System Access', value: hasFullAccess ? 'Level 5 (Admin)' : 'Level 2 (User)', icon: Shield, color: 'text-primary' },
+        { label: 'Membership', value: 'Fleet Partner', icon: Award, color: 'text-accent' },
+        { label: 'Uptime Status', value: '100% Operational', icon: Clock, color: 'text-success' },
     ];
 
     const activities = [
@@ -28,19 +31,14 @@ const Profile = () => {
     return (
         <div className="max-w-5xl mx-auto py-10 px-4 space-y-10 animate-in fade-in slide-in-from-bottom-8 duration-1000">
             {/* Premium Profile Header */}
-            <div className="bg-white rounded-[3rem] shadow-thick border border-border/30 overflow-hidden group">
-                <div className="h-48 bg-softblack relative overflow-hidden">
-                    {/* Animated industrial background */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-charcoal via-softblack to-olive/20 animate-pulse duration-[10s]" />
-                    <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
-                    <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_50%_120%,rgba(163,158,137,0.5),transparent)]" />
-
+            <div className="card-elevated overflow-hidden group">
+                <div className="h-48 bg-surface-elevated relative overflow-hidden">
                     <div className="absolute top-6 right-8 flex gap-3">
-                        <span className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-black text-white uppercase tracking-[0.3em] border border-white/20">
+                        <span className="px-4 py-2 bg-surface border border-border rounded-full text-[10px] font-black text-text-primary uppercase tracking-[0.3em]">
                             Industrial Profile
                         </span>
-                        <div className="w-8 h-8 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center">
-                            <div className="w-2 h-2 rounded-full bg-green-500 animate-ping" />
+                        <div className="w-8 h-8 rounded-full bg-success/20 border border-success/30 flex items-center justify-center">
+                            <div className="w-2 h-2 rounded-full bg-success animate-ping" />
                         </div>
                     </div>
                 </div>
@@ -48,23 +46,23 @@ const Profile = () => {
                 <div className="px-12 pb-12">
                     <div className="relative -mt-24 flex flex-col md:flex-row items-center md:items-end gap-8 mb-12 text-center md:text-left">
                         <div className="relative group/avatar">
-                            <div className="w-48 h-48 bg-background rounded-[2.5rem] border-8 border-white shadow-thick flex items-center justify-center text-gray-300 overflow-hidden transition-transform group-hover/avatar:scale-[1.02] duration-500">
-                                <div className="absolute inset-0 bg-olive/5 opacity-0 group-hover/avatar:opacity-100 transition-opacity" />
-                                <User size={96} strokeWidth={1} className="relative z-10 transition-colors group-hover/avatar:text-olive" />
+                            <div className="w-48 h-48 bg-surface border-8 border-surface-elevated rounded-[2.5rem] flex items-center justify-center text-text-muted overflow-hidden transition-transform group-hover/avatar:scale-[1.02] duration-500">
+                                <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover/avatar:opacity-100 transition-opacity" />
+                                <User size={96} strokeWidth={1} className="relative z-10 transition-colors group-hover/avatar:text-primary" />
                             </div>
-                            <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-olive rounded-2xl border-4 border-white flex items-center justify-center text-white shadow-soft">
+                            <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-primary rounded-2xl border-4 border-surface-elevated flex items-center justify-center text-text-primary">
                                 <Shield size={20} />
                             </div>
                         </div>
                         <div className="pb-4 flex-1">
-                            <h1 className="text-5xl font-black text-softblack tracking-tighter mb-2">{currentUser.name}</h1>
+                            <h1 className="text-5xl font-black text-text-primary tracking-tighter mb-2">{currentUser.name}</h1>
                             <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
-                                <span className="px-4 py-1.5 bg-olive/10 text-olive text-[11px] font-black uppercase tracking-widest rounded-lg border border-olive/20">
+                                <span className="px-4 py-1.5 bg-primary/10 text-primary text-[11px] font-black uppercase tracking-widest rounded-lg border border-primary/20">
                                     {currentUser.role}
                                 </span>
                                 <span className="w-1.5 h-1.5 rounded-full bg-border" />
-                                <span className="text-sm font-bold text-gray-400 capitalize flex items-center gap-2">
-                                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                                <span className="text-sm font-bold text-text-muted capitalize flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
                                     Active System Session
                                 </span>
                             </div>
@@ -73,48 +71,48 @@ const Profile = () => {
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div className="lg:col-span-2 space-y-8">
-                            <div className="p-8 bg-background/50 rounded-4xl border border-border/20">
-                                <h3 className="text-sm font-black text-softblack/40 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
-                                    <div className="w-5 h-[2px] bg-olive" />
+                            <div className="p-8 bg-surface rounded-4xl border border-border">
+                                <h3 className="text-sm font-black text-text-muted uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                                    <div className="w-5 h-[2px] bg-primary" />
                                     Account Core Information
                                 </h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    <div className="space-y-1 border-l-2 border-border/40 pl-4 hover:border-olive transition-colors group">
-                                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest group-hover:text-olive transition-colors">Email Address</p>
+                                    <div className="space-y-1 border-l-2 border-border pl-4 hover:border-primary transition-colors group">
+                                        <p className="text-[10px] font-black text-text-muted uppercase tracking-widest group-hover:text-primary transition-colors">Email Address</p>
                                         <div className="flex items-center gap-2">
-                                            <Mail size={16} className="text-gray-300" />
-                                            <p className="font-bold text-softblack text-lg">{currentUser.email || 'admin@fleetflow.io'}</p>
+                                            <Mail size={16} className="text-text-secondary" />
+                                            <p className="font-bold text-text-primary text-lg">{currentUser.email || 'admin@fleetflow.io'}</p>
                                         </div>
                                     </div>
-                                    <div className="space-y-1 border-l-2 border-border/40 pl-4 hover:border-olive transition-colors group">
-                                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest group-hover:text-olive transition-colors">Security Role</p>
+                                    <div className="space-y-1 border-l-2 border-border pl-4 hover:border-primary transition-colors group">
+                                        <p className="text-[10px] font-black text-text-muted uppercase tracking-widest group-hover:text-primary transition-colors">Security Role</p>
                                         <div className="flex items-center gap-2">
-                                            <Shield size={16} className="text-gray-300" />
-                                            <p className="font-bold text-softblack text-lg">{currentUser.role}</p>
+                                            <Shield size={16} className="text-text-secondary" />
+                                            <p className="font-bold text-text-primary text-lg">{currentUser.role}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            {/* [NEW] Recent Activity Unique Feature */}
-                            <div className="p-8 bg-background/30 rounded-4xl border border-border/10">
-                                <h3 className="text-sm font-black text-softblack/40 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
-                                    <div className="w-5 h-[2px] bg-charcoal" />
+                            {/* Recent Activity Section */}
+                            <div className="p-8 bg-surface rounded-4xl border border-border">
+                                <h3 className="text-sm font-black text-text-muted uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                                    <div className="w-5 h-[2px] bg-accent" />
                                     Security Activity Log
                                 </h3>
                                 <div className="space-y-4">
                                     {activities.map((act, id) => (
-                                        <div key={id} className="flex items-center justify-between p-4 bg-white/50 rounded-2xl border border-border/5 hover:bg-white transition-colors">
+                                        <div key={id} className="flex items-center justify-between p-4 bg-surface-elevated rounded-2xl border border-border hover:bg-surface transition-colors">
                                             <div className="flex items-center gap-4">
-                                                <div className="p-2 bg-white rounded-xl shadow-soft">
-                                                    <act.icon size={16} className="text-charcoal" />
+                                                <div className="p-2 bg-surface rounded-xl">
+                                                    <act.icon size={16} className="text-text-secondary" />
                                                 </div>
                                                 <div>
-                                                    <p className="text-xs font-black text-softblack uppercase tracking-wider">{act.type}</p>
-                                                    <p className="text-sm text-gray-500 font-medium">{act.desc}</p>
+                                                    <p className="text-xs font-black text-text-primary uppercase tracking-wider">{act.type}</p>
+                                                    <p className="text-sm text-text-secondary font-medium">{act.desc}</p>
                                                 </div>
                                             </div>
-                                            <span className="text-[10px] font-black text-gray-400 uppercase">{act.time}</span>
+                                            <span className="text-[10px] font-black text-text-muted uppercase">{act.time}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -122,17 +120,17 @@ const Profile = () => {
                         </div>
 
                         <div className="space-y-4">
-                            <h3 className="text-sm font-black text-softblack/40 uppercase tracking-[0.2em] px-2">Operational Integrity</h3>
+                            <h3 className="text-sm font-black text-text-muted uppercase tracking-[0.2em] px-2">Operational Integrity</h3>
                             <div className="space-y-3">
                                 {stats.map((stat, idx) => (
-                                    <div key={idx} className="flex items-center justify-between p-5 bg-white rounded-3xl border border-border/30 shadow-soft hover:shadow-thick hover:-translate-y-1 transition-all group">
+                                    <div key={idx} className="flex items-center justify-between p-5 bg-surface-elevated rounded-3xl border border-border shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all group">
                                         <div className="flex items-center gap-4">
-                                            <div className={`w-10 h-10 rounded-xl bg-background flex items-center justify-center ${stat.color} group-hover:bg-softblack group-hover:text-white transition-colors`}>
+                                            <div className={`w-10 h-10 rounded-xl bg-surface flex items-center justify-center ${stat.color} group-hover:bg-surface group-hover:text-text-primary transition-colors`}>
                                                 <stat.icon size={18} />
                                             </div>
-                                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">{stat.label}</span>
+                                            <span className="text-xs font-bold text-text-muted uppercase tracking-wider">{stat.label}</span>
                                         </div>
-                                        <span className="text-sm font-black text-softblack">{stat.value}</span>
+                                        <span className="text-sm font-black text-text-primary">{stat.value}</span>
                                     </div>
                                 ))}
                             </div>
@@ -144,40 +142,44 @@ const Profile = () => {
             {/* Premium Action Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <button
-                    className="group relative h-24 bg-softblack hover:bg-black rounded-4xl p-1 transition-all duration-500 shadow-thick overflow-hidden"
+                    className="group relative h-24 bg-surface-elevated hover:bg-surface rounded-4xl p-1 transition-all duration-500 shadow-lg overflow-hidden border border-border"
                     onClick={() => setIsSettingsOpen(true)}
                 >
-                    <div className="absolute inset-0 bg-gradient-to-r from-olive/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <div className="relative h-full w-full flex items-center justify-between px-10 bg-softblack group-hover:bg-transparent transition-colors rounded-[2.2rem]">
+                    <div className="relative h-full w-full flex items-center justify-between px-10 bg-surface-elevated group-hover:bg-surface transition-colors rounded-[2.2rem]">
                         <div className="flex items-center gap-6">
-                            <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                                 <Settings size={28} />
                             </div>
                             <div className="text-left">
-                                <p className="text-lg font-black text-white leading-none">System Settings</p>
-                                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Configure your environment</p>
+                                <p className="text-lg font-black text-text-primary leading-none">System Settings</p>
+                                <p className="text-xs font-bold text-text-muted uppercase tracking-widest mt-1">Configure your environment</p>
                             </div>
                         </div>
-                        <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white group-hover:translate-x-2 transition-transform">
+                        <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-text-primary group-hover:translate-x-2 transition-transform">
                             →
                         </div>
                     </div>
                 </button>
 
                 <button
-                    className="group relative h-24 bg-white border border-rust/30 rounded-4xl p-1 transition-all duration-500 shadow-soft hover:shadow-thick overflow-hidden"
-                    onClick={logout}
+                    className="group relative h-24 bg-surface-elevated hover:bg-surface rounded-4xl p-1 transition-all duration-500 shadow-lg overflow-hidden border border-border"
+                    onClick={() => {
+                        logout();
+                        signOut();
+                    }}
                 >
-                    <div className="absolute inset-0 bg-rust/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <div className="relative h-full w-full flex items-center justify-between px-10 bg-white rounded-[2.2rem]">
+                    <div className="relative h-full w-full flex items-center justify-between px-10 bg-surface-elevated group-hover:bg-surface transition-colors rounded-[2.2rem]">
                         <div className="flex items-center gap-6">
-                            <div className="w-12 h-12 rounded-2xl bg-rust/10 flex items-center justify-center text-rust group-hover:scale-110 transition-transform">
+                            <div className="w-12 h-12 rounded-2xl bg-danger/10 flex items-center justify-center text-danger group-hover:scale-110 transition-transform">
                                 <LogOut size={28} />
                             </div>
                             <div className="text-left">
-                                <p className="text-lg font-black text-rust leading-none">Terminate Session</p>
-                                <p className="text-xs font-bold text-rust/40 uppercase tracking-widest mt-1">Secure logout from system</p>
+                                <p className="text-lg font-black text-text-primary leading-none">Secure Logout</p>
+                                <p className="text-xs font-bold text-text-muted uppercase tracking-widest mt-1">End your session</p>
                             </div>
+                        </div>
+                        <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-text-primary group-hover:translate-x-2 transition-transform">
+                            →
                         </div>
                     </div>
                 </button>
@@ -190,59 +192,61 @@ const Profile = () => {
                 title="Industrial System Preferences"
             >
                 <div className="space-y-10 py-4">
-                    <div className="p-8 bg-background/50 rounded-4xl border border-border/20">
-                        <h4 className="text-xs font-black text-softblack uppercase tracking-[0.2em] mb-8 flex items-center gap-3">
+                    <div className="p-8 bg-surface rounded-4xl border border-border">
+                        <h4 className="text-xs font-black text-text-muted uppercase tracking-[0.2em] mb-8 flex items-center gap-3">
                             <Settings size={14} /> Control Interfaces
                         </h4>
 
                         <div className="space-y-6">
-                            <div className="flex items-center justify-between p-4 bg-white rounded-2xl border border-border/30">
+                            <div className="flex items-center justify-between p-4 bg-surface-elevated rounded-2xl border border-border">
                                 <div className="flex items-center gap-4">
-                                    <Bell size={20} className="text-olive" />
+                                    <Bell size={20} className="text-primary" />
                                     <div>
-                                        <p className="text-sm font-black text-softblack uppercase tracking-tight">System Alerts</p>
-                                        <p className="text-xs text-gray-400 font-bold">Push notifications for dispatches</p>
+                                        <p className="text-sm font-black text-text-primary uppercase tracking-tight">System Alerts</p>
+                                        <p className="text-xs text-text-muted font-bold">Push notifications for dispatches</p>
                                     </div>
                                 </div>
                                 <div
-                                    className={`w-12 h-6 rounded-full transition-colors cursor-pointer relative ${settings.notifications ? 'bg-olive' : 'bg-gray-300'}`}
+                                    className={`w-12 h-6 rounded-full transition-colors cursor-pointer relative ${settings.notifications ? 'bg-primary' : 'bg-text-muted'}`}
                                     onClick={() => updateSettings({ notifications: !settings.notifications })}
                                 >
-                                    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${settings.notifications ? 'right-1' : 'left-1'}`} />
+                                    <div className={`absolute top-1 w-4 h-4 bg-text-primary rounded-full transition-transform ${settings.notifications ? 'right-1' : 'left-1'}`} />
                                 </div>
                             </div>
 
-                            <div className="flex items-center justify-between p-4 bg-white rounded-2xl border border-border/30">
+                            <div className="flex items-center justify-between p-4 bg-surface-elevated rounded-2xl border border-border">
                                 <div className="flex items-center gap-4">
-                                    <Globe size={20} className="text-olive" />
+                                    <Globe size={20} className="text-primary" />
                                     <div>
-                                        <p className="text-sm font-black text-softblack uppercase tracking-tight">Units of Measure</p>
-                                        <p className="text-xs text-gray-400 font-bold">Current: {settings.unitSystem === 'metric' ? 'Metric (km)' : 'Imperial (mi)'}</p>
+                                        <p className="text-sm font-black text-text-primary uppercase tracking-tight">Units of Measure</p>
+                                        <p className="text-xs text-text-muted font-bold">Configure system terminology</p>
                                     </div>
                                 </div>
-                                <select
-                                    className="bg-transparent text-sm font-black text-olive focus:outline-none cursor-pointer"
-                                    value={settings.unitSystem}
-                                    onChange={(e) => updateSettings({ unitSystem: e.target.value })}
-                                >
-                                    <option value="metric">Metric</option>
-                                    <option value="imperial">Imperial</option>
-                                </select>
+                                <div className="w-40">
+                                    <CustomSelect
+                                        options={[
+                                            { value: 'metric', label: 'Metric (km/L)' },
+                                            { value: 'imperial', label: 'Imperial (mpg)' }
+                                        ]}
+                                        value={settings.unitSystem}
+                                        onChange={(val) => updateSettings({ unitSystem: val })}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="p-10 bg-softblack rounded-4xl text-center space-y-4">
-                        <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto text-white">
+                    <div className="p-10 bg-surface-elevated rounded-4xl text-center space-y-4">
+                        <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto text-primary">
                             <Shield size={32} />
                         </div>
-                        <h5 className="text-white font-black uppercase tracking-widest">Protocol Active</h5>
-                        <p className="text-gray-500 text-xs font-medium">Your account is operating under {currentUser.role} directive. Security protocols are enforced by system kernel.</p>
+                        <h5 className="text-text-primary font-black uppercase tracking-widest">Protocol Active</h5>
+                        <p className="text-text-muted text-xs font-medium">Your account is operating under {currentUser.role} directive. Security protocols are enforced by system kernel.</p>
                     </div>
 
                     <button
                         onClick={() => setIsSettingsOpen(false)}
-                        className="btn-primary w-full py-5 shadow-thick"
+                        className="btn-primary w-full py-5 shadow-xl"
                     >
                         Save & Institutionalize
                     </button>

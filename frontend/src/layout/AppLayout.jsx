@@ -10,31 +10,33 @@ const AppLayout = ({ children }) => {
     // Map paths to titles
     const getTitle = (path) => {
         const titles = {
-            '/': 'Dashboard Overview',
-            '/vehicles': 'Vehicle Management',
-            '/trips': 'Trip Logs',
-            '/maintenance': 'Maintenance Schedules',
-            '/expenses': 'Expense Tracking',
-            '/drivers': 'Driver Profiles',
+            '/': 'Command Center',
+            '/profile': 'User Profile',
+            '/mission-control': 'Mission Control',
+            '/vehicles': 'Fleet Asset Management',
+            '/trips': 'Mission Control',
+            '/maintenance': 'Maintenance Bay',
+            '/expenses': 'Financial Hub',
+            '/drivers': 'Personnel Management',
             '/analytics': 'Fleet Analytics',
         };
-        return titles[path] || 'FleetX';
+        return titles[path] || 'FLEETEDGE';
     };
 
     return (
         <div className="flex min-h-screen bg-background font-sans">
             <Sidebar />
-            <main className="flex-1 ml-72 p-4 pb-12 overflow-x-hidden">
+            <main className="flex-1 ml-80 p-0 overflow-x-hidden">
                 <Topbar title={getTitle(location.pathname)} />
 
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={location.pathname}
-                        initial={{ opacity: 0, y: 10 }}
+                        initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.3, ease: 'easeOut' }}
-                        className="px-8"
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.4, ease: 'easeOut' }}
+                        className="px-8 py-6"
                     >
                         {children}
                     </motion.div>

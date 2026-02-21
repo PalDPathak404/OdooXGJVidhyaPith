@@ -13,7 +13,7 @@ const SideDrawer = ({ isOpen, onClose, title, children }) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="fixed inset-0 bg-softblack/20 backdrop-blur-md z-50 transition-all duration-500"
+                        className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 transition-all duration-300"
                     />
 
                     {/* Drawer Content */}
@@ -22,33 +22,33 @@ const SideDrawer = ({ isOpen, onClose, title, children }) => {
                         animate={{ x: 0 }}
                         exit={{ x: '100%' }}
                         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                        className="fixed right-0 top-0 h-full w-full max-w-xl bg-white z-[60] shadow-2xl border-l border-border/20 flex flex-col"
+                        className="fixed right-0 top-0 h-full w-full max-w-xl bg-surface z-[60] shadow-2xl border-l border-border flex flex-col"
                     >
                         {/* Header */}
-                        <div className="px-10 py-8 border-b border-border/10 flex items-center justify-between bg-white/80 backdrop-blur-sm sticky top-0 z-10">
+                        <div className="px-8 py-6 border-b border-border flex items-center justify-between bg-surface-elevated sticky top-0 z-10">
                             <div>
-                                <h2 className="text-2xl font-black text-softblack tracking-tight">{title}</h2>
-                                <div className="h-1 w-12 bg-olive rounded-full mt-2" />
+                                <h2 className="text-xl font-bold text-text-primary tracking-tight">{title}</h2>
+                                <div className="h-1 w-12 bg-gradient-to-r from-primary to-accent rounded-full mt-2" />
                             </div>
                             <button
                                 onClick={onClose}
-                                className="p-3 hover:bg-background rounded-2xl transition-all hover:rotate-90 text-gray-400 hover:text-softblack active:scale-95 border border-transparent hover:border-border/40"
+                                className="p-2 hover:bg-surface rounded-lg transition-all hover:rotate-90 text-text-muted hover:text-text-primary active:scale-95 border border-transparent hover:border-border"
                             >
-                                <X size={24} />
+                                <X size={20} />
                             </button>
                         </div>
 
                         {/* Body */}
-                        <div className="flex-1 overflow-y-auto px-10 py-8 custom-scrollbar">
+                        <div className="flex-1 overflow-y-auto px-8 py-6">
                             <div className="animate-in fade-in slide-in-from-right-4 duration-500 delay-150">
                                 {children}
                             </div>
                         </div>
 
                         {/* Footer decorative element */}
-                        <div className="p-8 border-t border-border/10">
-                            <p className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] text-center">
-                                Fleet Flow • Industrial Transit System
+                        <div className="p-6 border-t border-border bg-surface-elevated">
+                            <p className="text-xs text-text-muted font-mono uppercase tracking-widest text-center">
+                                FLEETEDGE • Enterprise Fleet v2.0
                             </p>
                         </div>
                     </motion.div>
