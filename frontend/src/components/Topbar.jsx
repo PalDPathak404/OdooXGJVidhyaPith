@@ -47,9 +47,14 @@ const Topbar = ({ title }) => {
                     <NotificationCenter />
                     
                     {/* Settings */}
-                    <button className="p-2 text-text-secondary hover:text-text-primary hover:bg-surface-elevated rounded-lg transition-all duration-200">
+                    <Link 
+                        to="/profile" 
+                        className="p-2 text-text-secondary hover:text-primary hover:bg-surface-elevated rounded-lg transition-all duration-200 flex items-center gap-2"
+                        title="System Settings"
+                    >
                         <Settings size={20} />
-                    </button>
+                        <span className="text-xs font-medium">Settings</span>
+                    </Link>
 
                     {/* User Profile */}
                     <Link 

@@ -11,6 +11,8 @@ const AppLayout = ({ children }) => {
     const getTitle = (path) => {
         const titles = {
             '/': 'Command Center',
+            '/profile': 'User Profile',
+            '/mission-control': 'Mission Control',
             '/vehicles': 'Fleet Asset Management',
             '/trips': 'Mission Control',
             '/maintenance': 'Maintenance Bay',

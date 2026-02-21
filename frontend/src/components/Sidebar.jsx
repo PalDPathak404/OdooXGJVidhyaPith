@@ -12,7 +12,8 @@ import {
     Truck,
     Activity,
     Shield,
-    Radar
+    Radar,
+    Target
 } from 'lucide-react';
 import useFleetStore from '../store/fleetStore';
 
@@ -23,7 +24,7 @@ const Sidebar = () => {
     const allNavItems = [
         { name: 'Command Center', icon: <LayoutDashboard size={18} />, path: '/', roles: ['Administrator', 'Fleet Manager', 'Dispatcher', 'Safety Officer', 'Financial Analyst'] },
         { name: 'Fleet Assets', icon: <Car size={18} />, path: '/vehicles', roles: ['Administrator', 'Fleet Manager', 'Dispatcher', 'Safety Officer'] },
-        { name: 'Mission Control', icon: <MapPin size={18} />, path: '/trips', roles: ['Administrator', 'Fleet Manager', 'Dispatcher'] },
+        { name: 'Mission Control', icon: <Target size={18} />, path: '/mission-control', roles: ['Administrator', 'Fleet Manager', 'Dispatcher'] },
         { name: 'Maintenance Bay', icon: <Wrench size={18} />, path: '/maintenance', roles: ['Administrator', 'Fleet Manager', 'Safety Officer'] },
         { name: 'Financial Hub', icon: <DollarSign size={18} />, path: '/expenses', roles: ['Administrator', 'Fleet Manager', 'Financial Analyst'] },
         { name: 'Personnel', icon: <Users size={18} />, path: '/drivers', roles: ['Administrator', 'Safety Officer'] },

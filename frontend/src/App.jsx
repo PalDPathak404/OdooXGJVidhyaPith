@@ -10,6 +10,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Vehicles from './pages/Vehicles';
 import Trips from './pages/Trips';
+import MissionControl from './pages/MissionControl';
 import Maintenance from './pages/Maintenance';
 import Expenses from './pages/Expenses';
 import Drivers from './pages/Drivers';
@@ -39,6 +40,7 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/mission-control" element={<MissionControl />} />
                     <Route
                       path="/vehicles"
                       element={['Administrator', 'Fleet Manager', 'Dispatcher', 'Safety Officer'].includes(currentUser?.role) ? <Vehicles /> : <AccessRestricted />}
