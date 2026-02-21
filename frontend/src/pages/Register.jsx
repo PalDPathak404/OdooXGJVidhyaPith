@@ -95,6 +95,13 @@ const Register = () => {
         }
     };
 
+    const roleOptions = [
+        { value: 'Fleet Manager', label: 'Fleet Manager' },
+        { value: 'Dispatcher', label: 'Dispatcher' },
+        { value: 'Safety Officer', label: 'Safety Officer' },
+        { value: 'Financial Analyst', label: 'Financial Analyst' },
+    ];
+
     const handleGoogleAuth = async () => {
         try {
             if (!isLoaded) return;
@@ -108,6 +115,7 @@ const Register = () => {
             console.error(err);
         }
     };
+
 
     return (
         <div className="min-h-screen bg-[#0f111a] flex flex-col items-center justify-center p-6 relative overflow-hidden">

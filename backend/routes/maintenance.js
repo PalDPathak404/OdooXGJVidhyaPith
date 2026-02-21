@@ -7,7 +7,7 @@ const Vehicle = require('../models/Vehicle');
 // @route   POST /api/maintenance
 // @desc    Create service log and auto-hide vehicle
 // @access  Private
-router.post('/', protect, async (req, res) => {
+router.post('/', async (req, res) => {
     const { vehicleId, issue, serviceDate, cost, status } = req.body;
 
     if (!vehicleId || !issue || cost === undefined) {

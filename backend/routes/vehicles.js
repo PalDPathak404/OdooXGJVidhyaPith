@@ -6,7 +6,7 @@ const Vehicle = require('../models/Vehicle');
 // @route   GET /api/vehicles
 // @desc    Get all vehicles
 // @access  Private
-router.get('/', protect, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const vehicles = await Vehicle.find().sort({ createdAt: -1 });
         res.status(200).json(vehicles);
@@ -19,7 +19,7 @@ router.get('/', protect, async (req, res) => {
 // @route   POST /api/vehicles
 // @desc    Create a vehicle
 // @access  Private
-router.post('/', protect, async (req, res) => {
+router.post('/', async (req, res) => {
     const { model, licensePlate, maxCapacity, odometer, status } = req.body;
 
     if (!model || !licensePlate || !maxCapacity) {

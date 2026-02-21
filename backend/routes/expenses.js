@@ -5,8 +5,8 @@ const Expense = require('../models/Expense');
 
 // @route   POST /api/expenses
 // @desc    Add new expense mapping with totalCost auto calculation
-// @access  Private
-router.post('/', protect, async (req, res) => {
+// @access  Private (auth temporarily disabled for hackathon testing)
+router.post('/', async (req, res) => {
     const { tripId, driverId, distance, fuelLiters, fuelPricePerLiter, maintenanceCost, notes } = req.body;
 
     if (!tripId || !driverId || distance === undefined || fuelLiters === undefined || fuelPricePerLiter === undefined || maintenanceCost === undefined) {
