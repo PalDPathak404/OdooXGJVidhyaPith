@@ -12,8 +12,10 @@ import {
     Truck
 } from 'lucide-react';
 import useFleetStore from '../store/fleetStore';
+import { useAuth } from '@clerk/clerk-react';
 
 const Sidebar = () => {
+    const { signOut } = useAuth();
     const { currentUser, logout } = useFleetStore();
     const role = currentUser?.role || 'Financial Analyst';
 
@@ -59,7 +61,10 @@ const Sidebar = () => {
                     <span className="text-sm font-black text-olive">{role}</span>
                 </div>
                 <button
-                    onClick={() => logout()}
+                    onClick={() => {
+                        logout();
+                        signOut();
+                    }}
                     className="sidebar-link w-full text-red-400 hover:text-red-300 transition-colors"
                 >
                     <LogOut size={20} />

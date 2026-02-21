@@ -3,8 +3,10 @@ import { User, Mail, Shield, Calendar, LogOut, Settings, Award, Clock, Bell, Glo
 import useFleetStore from '../store/fleetStore';
 import SideDrawer from '../components/SideDrawer';
 import AccessRestricted from '../components/AccessRestricted';
+import { useAuth } from '@clerk/clerk-react';
 
 const Profile = () => {
+    const { signOut } = useAuth();
     const { currentUser, logout, settings, updateSettings } = useFleetStore();
     const [isSettingsOpen, setIsSettingsOpen] = React.useState(false);
 
@@ -166,7 +168,10 @@ const Profile = () => {
 
                 <button
                     className="group relative h-24 bg-white border border-rust/30 rounded-4xl p-1 transition-all duration-500 shadow-soft hover:shadow-thick overflow-hidden"
-                    onClick={logout}
+                    onClick={() => {
+                        logout();
+                        signOut();
+                    }}
                 >
                     <div className="absolute inset-0 bg-rust/5 opacity-0 group-hover:opacity-100 transition-opacity" />
                     <div className="relative h-full w-full flex items-center justify-between px-10 bg-white rounded-[2.2rem]">

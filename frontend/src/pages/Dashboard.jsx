@@ -25,10 +25,6 @@ const Dashboard = () => {
     const [sortBy, setSortBy] = useState('newest');
     const [isTripDrawerOpen, setIsTripDrawerOpen] = useState(false);
 
-    // RBAC check
-    const hasAccess = ['Administrator', 'Fleet Manager', 'Dispatcher', 'Safety Officer', 'Financial Analyst'].includes(currentUser?.role);
-    if (!hasAccess) return <AccessRestricted />;
-
     // Calculated Stats
     const activeFleet = vehicles.filter(v => v.status === 'On Trip' || v.status === 'Available').length;
     const maintenanceAlerts = vehicles.filter(v => v.status === 'In Shop').length;
@@ -62,6 +58,10 @@ const Dashboard = () => {
 
         return result;
     }, [trips, searchTerm, statusFilter, sortBy]);
+
+    // RBAC check MUST be after all hooks
+    const hasAccess = ['Administrator', 'Fleet Manager', 'Dispatcher', 'Safety Officer', 'Financial Analyst'].includes(currentUser?.role);
+    if (!hasAccess) return <AccessRestricted />;
 
     const columns = ['Trip ID', 'Vehicle', 'Driver', 'Status'];
 
