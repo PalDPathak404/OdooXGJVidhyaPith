@@ -15,7 +15,7 @@ import {
 import useFleetStore from '../store/fleetStore';
 import DataTable from '../components/DataTable';
 import StatusBadge from '../components/StatusBadge';
-import Modal from '../components/Modal';
+import SideDrawer from '../components/SideDrawer';
 
 const InputField = ({ label, icon: Icon, value, onChange, placeholder, type = "text", error }) => (
     <div className="space-y-2">
@@ -63,7 +63,7 @@ const SelectField = ({ label, icon: Icon, value, onChange, options }) => (
 
 const Vehicles = () => {
     const { vehicles, addVehicle, removeVehicle, currentUser } = useFleetStore();
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [errors, setErrors] = useState({});
     const [newVehicle, setNewVehicle] = useState({
@@ -105,7 +105,7 @@ const Vehicles = () => {
             ...newVehicle,
             plate: newVehicle.plate.toUpperCase()
         });
-        setIsModalOpen(false);
+        setIsDrawerOpen(false);
         setNewVehicle({
             name: '',
             plate: '',
@@ -228,7 +228,7 @@ const Vehicles = () => {
                     </div>
                     {['Administrator', 'Fleet Manager', 'Dispatcher', 'Safety Officer'].includes(currentUser?.role) && (
                         <button
-                            onClick={() => setIsModalOpen(true)}
+                            onClick={() => setIsDrawerOpen(true)}
                             className="btn-primary py-4 px-8 flex items-center gap-2 text-lg shadow-thick"
                         >
                             <Plus size={22} strokeWidth={3} />
@@ -247,14 +247,13 @@ const Vehicles = () => {
                 />
             </div>
 
-            {/* Add Vehicle Modal */}
-            <Modal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+            <SideDrawer
+                isOpen={isDrawerOpen}
+                onClose={() => setIsDrawerOpen(false)}
                 title="New Vehicle Registration"
             >
                 <form onSubmit={handleAddVehicle} className="space-y-6">
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 gap-6">
                         <InputField
                             label="Vehicle Name"
                             icon={Truck}
@@ -273,7 +272,7 @@ const Vehicles = () => {
                         />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 gap-6">
                         <SelectField
                             label="Vehicle Type"
                             icon={Activity}
@@ -291,7 +290,7 @@ const Vehicles = () => {
                         />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 gap-6">
                         <InputField
                             label="Max Payload"
                             icon={Maximize2}
@@ -314,7 +313,7 @@ const Vehicles = () => {
                     <div className="pt-6 flex gap-4">
                         <button
                             type="button"
-                            onClick={() => setIsModalOpen(false)}
+                            onClick={() => setIsDrawerOpen(false)}
                             className="flex-1 py-4 bg-background border border-border/40 rounded-2xl font-bold text-gray-500 hover:bg-gray-100 transition-all active:scale-95"
                         >
                             Cancel
@@ -327,17 +326,17 @@ const Vehicles = () => {
                         </button>
                     </div>
                 </form>
-            </Modal>
+            </SideDrawer>
 
-            {/* Edit Vehicle Modal */}
-            <Modal
+            {/* Edit Vehicle Drawer */}
+            <SideDrawer
                 isOpen={!!editingVehicle}
                 onClose={() => setEditingVehicle(null)}
                 title="Edit Vehicle Details"
             >
                 {editingVehicle && (
                     <form onSubmit={handleEditVehicle} className="space-y-6">
-                        <div className="grid grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 gap-6">
                             <InputField
                                 label="Vehicle Name"
                                 icon={Truck}
@@ -356,7 +355,7 @@ const Vehicles = () => {
                             />
                         </div>
 
-                        <div className="grid grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 gap-6">
                             <SelectField
                                 label="Vehicle Type"
                                 icon={Activity}
@@ -374,7 +373,7 @@ const Vehicles = () => {
                             />
                         </div>
 
-                        <div className="grid grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 gap-6">
                             <InputField
                                 label="Max Payload"
                                 icon={Maximize2}
@@ -419,7 +418,7 @@ const Vehicles = () => {
                         </div>
                     </form>
                 )}
-            </Modal>
+            </SideDrawer>
         </div>
     );
 };

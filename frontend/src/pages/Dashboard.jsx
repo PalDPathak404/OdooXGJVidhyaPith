@@ -14,7 +14,7 @@ import useFleetStore from '../store/fleetStore';
 import KPIWidget from '../components/KPIWidget';
 import DataTable from '../components/DataTable';
 import StatusBadge from '../components/StatusBadge';
-import Modal from '../components/Modal';
+import SideDrawer from '../components/SideDrawer';
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -22,7 +22,7 @@ const Dashboard = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('All');
     const [sortBy, setSortBy] = useState('newest');
-    const [isTripModalOpen, setIsTripModalOpen] = useState(false);
+    const [isTripDrawerOpen, setIsTripDrawerOpen] = useState(false);
 
     // Calculated Stats
     const activeFleet = vehicles.filter(v => v.status === 'On Trip' || v.status === 'Available').length;
@@ -139,7 +139,7 @@ const Dashboard = () => {
                 <div className="flex gap-4">
                     {['Administrator', 'Fleet Manager', 'Dispatcher'].includes(currentUser?.role) && (
                         <button
-                            onClick={() => setIsTripModalOpen(true)}
+                            onClick={() => setIsTripDrawerOpen(true)}
                             className="flex items-center gap-2 px-6 py-4 bg-white text-softblack font-bold rounded-2xl border border-border/40 shadow-soft hover:shadow-thick transition-all active:scale-95"
                         >
                             <Plus size={20} className="text-olive" />
@@ -176,21 +176,25 @@ const Dashboard = () => {
                 />
             </div>
 
-            {/* New Trip Modal Placeholder */}
-            <Modal isOpen={isTripModalOpen} onClose={() => setIsTripModalOpen(false)} title="Dispatch New Trip">
-                <div className="space-y-6 text-center py-4">
-                    <div className="w-20 h-20 bg-olive/10 text-olive rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Truck size={40} />
+            <SideDrawer isOpen={isTripDrawerOpen} onClose={() => setIsTripDrawerOpen(false)} title="Dispatch New Trip">
+                <div className="space-y-6 text-center py-10">
+                    <div className="w-24 h-24 bg-olive/10 text-olive rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-olive/20">
+                        <Truck size={48} />
                     </div>
-                    <p className="text-gray-500 font-medium">Trip Dispatching module is currently in development. This will be connected to the Trips module in the next phase.</p>
-                    <button
-                        onClick={() => setIsTripModalOpen(false)}
-                        className="btn-primary w-full"
-                    >
-                        Understood
-                    </button>
+                    <div>
+                        <h4 className="text-xl font-black text-softblack mb-2">Platform Synchronization</h4>
+                        <p className="text-gray-400 font-medium px-4">The dedicated Trip Dispatching module is currently undergoing system calibration. Direct dispatches will be operational in the next launch phase.</p>
+                    </div>
+                    <div className="pt-6">
+                        <button
+                            onClick={() => setIsTripDrawerOpen(false)}
+                            className="btn-primary w-full py-4 shadow-thick"
+                        >
+                            Acknowledge System Status
+                        </button>
+                    </div>
                 </div>
-            </Modal>
+            </SideDrawer>
         </div>
     );
 };

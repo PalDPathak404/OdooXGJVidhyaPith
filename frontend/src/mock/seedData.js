@@ -12,8 +12,8 @@ export const mockTrips = [
 ];
 
 export const mockMaintenance = [
-  { id: 'm1', vehicle: 'Mercedes Actros', service: 'Engine Oil Change', date: '2024-02-25', priority: 'High', status: 'Pending' },
-  { id: 'm2', vehicle: 'Volvo FH16', service: 'Tire Rotation', date: '2024-03-01', priority: 'Medium', status: 'Scheduled' },
+  { id: '321', vehicle: 'TATA', service: 'Engine Issue', date: '2024-02-20', cost: '10000', status: 'Closed' },
+  { id: '322', vehicle: 'Volvo FH16', service: 'Tire Rotation', date: '2024-02-21', cost: '4500', status: 'Open' },
 ];
 
 export const mockExpenses = [

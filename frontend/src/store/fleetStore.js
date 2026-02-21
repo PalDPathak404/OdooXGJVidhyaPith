@@ -79,10 +79,34 @@ const useFleetStore = create((set) => ({
       drivers: updatedDrivers
     };
   }),
+
+  addMaintenance: (log) => set((state) => {
+    const updatedVehicles = state.vehicles.map(v => 
+      v.id === log.vehicleId ? { ...v, status: 'In Shop' } : v
+    );
+
+    return {
+      maintenance: [
+        {
+          id: `m${state.maintenance.length + 1}`,
+          ...log,
+          status: 'Open',
+        },
+        ...state.maintenance
+      ],
+      vehicles: updatedVehicles
+    };
+  }),
   
   // Generic filters can be added here
   activePage: 'Dashboard',
   setActivePage: (page) => set({ activePage: page }),
+
+  // API Sync Placeholders
+  syncData: async () => {
+    // This will be implemented with axios/fetch in the next phase
+    console.log("Syncing with backend...");
+  },
 }));
 
 export default useFleetStore;

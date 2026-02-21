@@ -16,6 +16,7 @@ import {
 import useFleetStore from '../store/fleetStore';
 import DataTable from '../components/DataTable';
 import StatusBadge from '../components/StatusBadge';
+import SideDrawer from '../components/SideDrawer';
 
 const FormInputField = ({ label, icon: Icon, value, onChange, placeholder, type = "text", error, warning }) => (
     <div className="space-y-2">
@@ -67,6 +68,7 @@ const FormSelectField = ({ label, icon: Icon, value, onChange, options, error })
 const Trips = () => {
     const { trips, vehicles, drivers, addTrip, currentUser } = useFleetStore();
     const [searchTerm, setSearchTerm] = useState('');
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     // Form State
     const [newTrip, setNewTrip] = useState({
@@ -164,18 +166,53 @@ const Trips = () => {
 
     return (
         <div className="space-y-10 animate-in fade-in slide-in-from-bottom-6 duration-700">
-            {/* Upper Section: Trip Table */}
+            {/* Map Section */}
+            <div className="bg-white rounded-4xl shadow-thick border border-border/30 overflow-hidden relative group">
+                <div className="absolute top-6 left-8 z-10 flex flex-col gap-2">
+                    <div className="px-4 py-2 bg-softblack/80 backdrop-blur-md rounded-2xl border border-white/10 flex items-center gap-3">
+                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                        <span className="text-[10px] font-black text-white uppercase tracking-[0.2em]">6 Active Dispatches</span>
+                    </div>
+                </div>
+
+                <div className="absolute top-6 right-8 z-10">
+                    <button
+                        onClick={() => setIsDrawerOpen(true)}
+                        className="btn-primary py-3 px-8 text-sm font-black shadow-thick flex items-center gap-2 group-hover:scale-105 transition-transform"
+                    >
+                        <Plus size={18} />
+                        New Dispatch
+                    </button>
+                </div>
+
+                {/* Styled Map Container */}
+                <div className="h-96 md:h-[500px] w-full bg-background relative overflow-hidden">
+                    {/* Placeholder for Google Maps View - Styled for Hackathon */}
+                    <iframe
+                        title="fleet-map"
+                        width="100%"
+                        height="100%"
+                        frameBorder="0"
+                        style={{ border: 0, filter: 'grayscale(1) invert(0.9) contrast(1.2)' }}
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15233.12563725586!2d72.8777!3d19.0760!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1708500000000!5m2!1sen!2sin"
+                        allowFullScreen
+                    />
+                    <div className="absolute inset-0 pointer-events-none border-[12px] border-white/5 shadow-[inset_0_0_100px_rgba(0,0,0,0.1)]" />
+                </div>
+            </div>
+
+            {/* Trip Table Section */}
             <div className="space-y-6">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between px-2">
                     <div>
-                        <h3 className="text-2xl font-black text-softblack tracking-tight">Active Dispatches</h3>
-                        <p className="text-gray-400 font-medium text-sm">Real-time tracking and trip history</p>
+                        <h3 className="text-2xl font-black text-softblack tracking-tight">Industrial Log</h3>
+                        <p className="text-gray-400 font-medium text-sm">Full transit history and audit data</p>
                     </div>
                     <div className="relative group w-80">
                         <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-olive transition-colors" size={18} />
                         <input
                             type="text"
-                            placeholder="Search trips..."
+                            placeholder="Find specific trip..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="w-full pl-12 pr-6 py-3 bg-white border border-border/40 rounded-2xl shadow-soft focus:outline-none focus:ring-2 focus:ring-olive/10 transition-all font-medium"
@@ -192,86 +229,105 @@ const Trips = () => {
                 </div>
             </div>
 
-            {/* Path: Lower Section: Create Trip Form */}
-            <div className="bg-white rounded-4xl shadow-thick border border-border/30 p-10 space-y-8">
-                <div>
-                    <h3 className="text-2xl font-black text-softblack tracking-tight">New Trip Dispatch</h3>
-                    <p className="text-gray-400 font-medium text-sm">Assign vehicle and driver for new shipment</p>
-                </div>
+            {/* SideDrawer for Dispatch Form */}
+            <SideDrawer
+                isOpen={isDrawerOpen}
+                onClose={() => setIsDrawerOpen(false)}
+                title="Industrial Trip Launcher"
+            >
+                <form onSubmit={handleDispatch} className="space-y-8 pb-10">
+                    <div className="space-y-6">
+                        <h4 className="text-xs font-black text-olive uppercase tracking-[0.3em] flex items-center gap-3">
+                            <div className="w-4 h-[2px] bg-olive" />
+                            Core Assignment
+                        </h4>
 
-                <form onSubmit={handleDispatch} className="space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <FormSelectField
-                            label="Select Vehicle"
-                            icon={Truck}
-                            value={newTrip.vehiclePlate}
-                            onChange={(e) => setNewTrip({ ...newTrip, vehiclePlate: e.target.value })}
-                            options={availableVehicles.map(v => ({ id: v.plate, value: v.plate, label: `${v.name} (${v.plate}) - Max ${v.capacity}` }))}
-                            error={errors.vehiclePlate}
-                        />
-                        <FormInputField
-                            label="Cargo Weight (Kg)"
-                            icon={Weight}
-                            type="number"
-                            placeholder="e.g. 1500"
-                            value={newTrip.cargoWeight}
-                            warning={weightWarning}
-                            error={errors.cargoWeight}
-                            onChange={(e) => setNewTrip({ ...newTrip, cargoWeight: e.target.value })}
-                        />
-                        <FormSelectField
-                            label="Assign Driver"
-                            icon={User}
-                            value={newTrip.driverName}
-                            onChange={(e) => setNewTrip({ ...newTrip, driverName: e.target.value })}
-                            options={availableDrivers.map(d => ({ id: d.name, value: d.name, label: d.name }))}
-                            error={errors.driverName}
-                        />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <FormInputField
-                            label="Origin Address"
-                            icon={MapPin}
-                            placeholder="Pickup location"
-                            value={newTrip.origin}
-                            error={errors.origin}
-                            onChange={(e) => setNewTrip({ ...newTrip, origin: e.target.value })}
-                        />
-                        <FormInputField
-                            label="Destination"
-                            icon={Navigation}
-                            placeholder="Delivery drop-off"
-                            value={newTrip.destination}
-                            error={errors.destination}
-                            onChange={(e) => setNewTrip({ ...newTrip, destination: e.target.value })}
-                        />
-                        <FormInputField
-                            label="Est. Fuel Cost"
-                            icon={Fuel}
-                            type="number"
-                            placeholder="Estimated expenditure"
-                            value={newTrip.fuelCost}
-                            onChange={(e) => setNewTrip({ ...newTrip, fuelCost: e.target.value })}
-                        />
-                    </div>
-
-                    <div className="flex items-center justify-between pt-4 border-t border-border/20">
-                        <div className="flex items-center gap-4 text-gray-400">
-                            <Clock size={20} />
-                            <span className="text-sm font-bold uppercase tracking-widest">Immediate Dispatch</span>
+                        <div className="grid grid-cols-1 gap-6">
+                            <FormSelectField
+                                label="Vehicle Platform"
+                                icon={Truck}
+                                value={newTrip.vehiclePlate}
+                                onChange={(e) => setNewTrip({ ...newTrip, vehiclePlate: e.target.value })}
+                                options={availableVehicles.map(v => ({ id: v.plate, value: v.plate, label: `${v.name} (${v.plate}) - Max ${v.capacity}` }))}
+                                error={errors.vehiclePlate}
+                            />
+                            <FormInputField
+                                label="Logistics Operator (Driver)"
+                                icon={User}
+                                value={newTrip.driverName}
+                                onChange={(e) => setNewTrip({ ...newTrip, driverName: e.target.value })}
+                                options={availableDrivers.map(d => ({ id: d.name, value: d.name, label: d.name }))}
+                                error={errors.driverName}
+                            />
                         </div>
+                    </div>
+
+                    <div className="space-y-6 pt-4">
+                        <h4 className="text-xs font-black text-olive uppercase tracking-[0.3em] flex items-center gap-3">
+                            <div className="w-4 h-[2px] bg-olive" />
+                            Transit Parameters
+                        </h4>
+
+                        <div className="grid grid-cols-1 gap-6">
+                            <FormInputField
+                                label="Origin Hub"
+                                icon={MapPin}
+                                placeholder="Pickup location"
+                                value={newTrip.origin}
+                                error={errors.origin}
+                                onChange={(e) => setNewTrip({ ...newTrip, origin: e.target.value })}
+                            />
+                            <FormInputField
+                                label="Destination Hub"
+                                icon={Navigation}
+                                placeholder="Delivery drop-off"
+                                value={newTrip.destination}
+                                error={errors.destination}
+                                onChange={(e) => setNewTrip({ ...newTrip, destination: e.target.value })}
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <FormInputField
+                                label="Cargo Payload (Kg)"
+                                icon={Weight}
+                                type="number"
+                                placeholder="e.g. 1500"
+                                value={newTrip.cargoWeight}
+                                warning={weightWarning}
+                                error={errors.cargoWeight}
+                                onChange={(e) => setNewTrip({ ...newTrip, cargoWeight: e.target.value })}
+                            />
+                            <FormInputField
+                                label="Fuel Budget (₹)"
+                                icon={Fuel}
+                                type="number"
+                                placeholder="0.00"
+                                value={newTrip.fuelCost}
+                                onChange={(e) => setNewTrip({ ...newTrip, fuelCost: e.target.value })}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="pt-10 flex flex-col gap-4">
                         <button
                             type="submit"
                             disabled={!!weightWarning}
-                            className={`btn-primary py-5 px-12 text-xl font-black shadow-thick flex items-center gap-3 ${weightWarning ? 'opacity-50 cursor-not-allowed bg-gray-400 shadow-none' : ''}`}
+                            className={`btn-primary py-5 px-12 text-xl font-black shadow-thick flex items-center justify-center gap-3 ${weightWarning ? 'opacity-50 cursor-not-allowed bg-gray-400 shadow-none' : ''}`}
                         >
                             <Activity size={24} />
-                            Confirm & Dispatch Trip
+                            Launch Transit
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setIsDrawerOpen(false)}
+                            className="py-4 font-bold text-gray-400 hover:text-softblack transition-colors"
+                        >
+                            Cancel Mission
                         </button>
                     </div>
                 </form>
-            </div>
+            </SideDrawer>
         </div>
     );
 };
