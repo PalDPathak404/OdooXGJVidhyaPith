@@ -22,7 +22,7 @@ export const mockExpenses = [
 ];
 
 export const mockDrivers = [
-  { id: 'd1', name: 'Alice Johnson', license: 'ABC-123', phone: '0711222333', rating: 4.8, status: 'On Trip' },
-  { id: 'd2', name: 'Bob Smith', license: 'XYZ-456', phone: '0722333444', rating: 4.5, status: 'On Duty' },
-  { id: 'd3', name: 'Charlie Brown', license: 'DEF-789', phone: '0733444555', rating: 4.9, status: 'On Duty' },
+  { id: 'd1', name: 'Alice Johnson', license: 'ABC-123', licenseExpiry: '2024-05-15', phone: '0711222333', rating: 4.8, safetyScore: 92, status: 'On Duty' },
+  { id: 'd2', name: 'Bob Smith', license: 'XYZ-456', licenseExpiry: '2023-11-20', phone: '0722333444', rating: 4.5, safetyScore: 88, status: 'Taking a Break' },
+  { id: 'd3', name: 'Charlie Brown', license: 'DEF-789', licenseExpiry: '2025-08-30', phone: '0733444555', rating: 4.9, safetyScore: 96, status: 'On Duty' },
 ];

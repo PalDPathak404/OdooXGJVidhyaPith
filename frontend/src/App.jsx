@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AppLayout from './layout/AppLayout';
 import {
-  Drivers,
   Analytics,
 } from './pages/Placeholders';
 import Login from './pages/Login';
@@ -12,6 +11,7 @@ import Vehicles from './pages/Vehicles';
 import Trips from './pages/Trips';
 import Maintenance from './pages/Maintenance';
 import Expenses from './pages/Expenses';
+import Drivers from './pages/Drivers';
 import useFleetStore from './store/fleetStore';
 import AccessRestricted from './components/AccessRestricted';
 import Profile from './pages/Profile';

@@ -111,6 +111,10 @@ const useFleetStore = create((set) => ({
       expenses: [newExpense, ...state.expenses]
     };
   }),
+
+  updateDriverStatus: (id, status) => set((state) => ({
+    drivers: state.drivers.map((d) => (d.id === id ? { ...d, status } : d))
+  })),
   
   // Generic filters can be added here
   activePage: 'Dashboard',
