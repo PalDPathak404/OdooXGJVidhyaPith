@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middleware/auth');
 const Trip = require('../models/Trip');
 const Expense = require('../models/Expense');
 const Maintenance = require('../models/Maintenance');
@@ -15,7 +14,7 @@ const getMonthString = (monthNum) => {
 // @route   GET /api/analytics/fuel-trend
 // @desc    Get total fuel expenses grouped by month
 // @access  Private
-router.get('/fuel-trend', protect, async (req, res) => {
+router.get('/fuel-trend', async (req, res) => {
     try {
         const trend = await Expense.aggregate([
             {
@@ -44,7 +43,7 @@ router.get('/fuel-trend', protect, async (req, res) => {
 // @route   GET /api/analytics/maintenance-trend
 // @desc    Get total maintenance expenses grouped by month
 // @access  Private
-router.get('/maintenance-trend', protect, async (req, res) => {
+router.get('/maintenance-trend', async (req, res) => {
     try {
         const trend = await Maintenance.aggregate([
             {
@@ -73,7 +72,7 @@ router.get('/maintenance-trend', protect, async (req, res) => {
 // @route   GET /api/analytics/top-vehicles
 // @desc    Get Top 5 Vehicles by total Expense
 // @access  Private
-router.get('/top-vehicles', protect, async (req, res) => {
+router.get('/top-vehicles', async (req, res) => {
     try {
         // Group expenses by vehicleId and sum totalCost
         const topVehicles = await Expense.aggregate([
@@ -121,7 +120,7 @@ router.get('/top-vehicles', protect, async (req, res) => {
 // @route   GET /api/analytics/monthly-summary
 // @desc    Get combined monthly summary of trips, fuel, maintenance, and expenses
 // @access  Private
-router.get('/monthly-summary', protect, async (req, res) => {
+router.get('/monthly-summary', async (req, res) => {
     try {
         // We will process the aggregations concurrently
         const [tripsData, expensesData, maintenanceData] = await Promise.all([

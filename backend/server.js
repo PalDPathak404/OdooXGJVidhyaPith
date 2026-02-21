@@ -16,10 +16,11 @@ app.use(express.urlencoded({ extended: false }));
 // Auth
 app.use('/api/auth', require('./routes/auth'));
 
-// Core fleet routes (Manana)
+// Core fleet routes
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/vehicles', require('./routes/vehicles'));
-app.use('/api/trips', require('./routes/trips'));
+app.use('/api/trips', require('./routes/trips'));          // existing inline handlers
+app.use('/api/trips', require('./routes/trip.routes'));    // service-layer dispatch/complete
 app.use('/api/maintenance', require('./routes/maintenance'));
 app.use('/api/expenses', require('./routes/expenses'));
 app.use('/api/drivers', require('./routes/drivers'));
