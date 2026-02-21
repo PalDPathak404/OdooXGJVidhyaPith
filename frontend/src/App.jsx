@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AppLayout from './layout/AppLayout';
 import {
-  Analytics,
+  // Analytics,
 } from './pages/Placeholders';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -12,6 +12,7 @@ import Trips from './pages/Trips';
 import Maintenance from './pages/Maintenance';
 import Expenses from './pages/Expenses';
 import Drivers from './pages/Drivers';
+import Analytics from './pages/Analytics';
 import useFleetStore from './store/fleetStore';
 import AccessRestricted from './components/AccessRestricted';
 import Profile from './pages/Profile';

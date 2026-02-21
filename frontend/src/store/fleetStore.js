@@ -14,6 +14,15 @@ const useFleetStore = create((set) => ({
   expenses: mockExpenses,
   drivers: mockDrivers,
   
+  // Analytics Data (Mocked for trends)
+  monthlyData: [
+    { month: 'Oct', revenue: 1200000, fuel: 450000, maintenance: 150000, efficiency: 12.4 },
+    { month: 'Nov', revenue: 1400000, fuel: 520000, maintenance: 180000, efficiency: 11.8 },
+    { month: 'Dec', revenue: 1100000, fuel: 420000, maintenance: 220000, efficiency: 13.2 },
+    { month: 'Jan', revenue: 1600000, fuel: 580000, maintenance: 140000, efficiency: 12.9 },
+    { month: 'Feb', revenue: 1750000, fuel: 610000, maintenance: 190000, efficiency: 14.1 },
+  ],
+  
   // Auth
   currentUser: (() => {
     try {
@@ -128,6 +137,40 @@ const useFleetStore = create((set) => ({
   updateSettings: (newSettings) => set((state) => ({
     settings: { ...state.settings, ...newSettings }
   })),
+
+  // Analytics Selectors
+  getAnalytics: () => {
+    const state = useFleetStore.getState();
+    
+    const totalFuel = state.expenses.reduce((sum, e) => sum + Number(e.fuelCost || 0), 0);
+    const totalMaintenance = state.expenses.reduce((sum, e) => sum + Number(e.maintenanceCost || 0), 0);
+    const totalExpenses = totalFuel + totalMaintenance;
+
+    // Mock revenue calculation based on trips
+    const totalRevenue = state.trips.length * 50000; // Average 50k per trip
+    const roi = totalExpenses > 0 ? ((totalRevenue - totalExpenses) / totalExpenses * 100).toFixed(1) : 0;
+
+    const activeCount = state.vehicles.filter(v => v.status !== 'In Shop').length;
+    const utilization = ((activeCount / state.vehicles.length) * 100).toFixed(1);
+
+    const vehicleCosts = state.vehicles.map(v => {
+      const vExpenses = state.expenses.filter(e => {
+        const trip = state.trips.find(t => t.id === e.tripId);
+        return trip?.vehicle === v.name;
+      });
+      return {
+        name: v.name,
+        cost: vExpenses.reduce((sum, e) => sum + e.totalCost, 0)
+      };
+    }).sort((a, b) => b.cost - a.cost).slice(0, 5);
+
+    return {
+      totalFuel,
+      roi,
+      utilization,
+      vehicleCosts
+    };
+  },
 
   // API Sync Placeholders
   syncData: async () => {
