@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { User, Mail, Lock, UserCircle, Briefcase, ArrowRight, ChevronDown } from 'lucide-react';
-import useFleetStore from '../store/fleetStore';
+import { User, Mail, Lock, UserCircle, Briefcase, ArrowRight, ChevronDown, AlertCircle, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const InputField = ({ icon: Icon, placeholder, type = "text", value, onChange, ...props }) => (
@@ -42,7 +41,6 @@ const StyledSelect = ({ icon: Icon, value, onChange, options }) => (
 
 const Register = () => {
     const navigate = useNavigate();
-    const setAuth = useFleetStore((state) => state.setAuth);
 
     const [registerData, setRegisterData] = useState({
         fullName: '',
@@ -50,11 +48,42 @@ const Register = () => {
         role: 'Manager',
         password: ''
     });
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
-        setAuth({ name: registerData.fullName, role: registerData.role });
-        navigate('/');
+        setError('');
+        setSuccess('');
+        setLoading(true);
+
+        try {
+            const res = await fetch('http://localhost:5000/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: registerData.fullName,
+                    email: registerData.email,
+                    password: registerData.password,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                setError(data.message || 'Registration failed. Please try again.');
+                setLoading(false);
+                return;
+            }
+
+            setSuccess('Account created! Redirecting to sign in...');
+            setTimeout(() => navigate('/login'), 1500);
+        } catch (err) {
+            setError('Cannot reach the server. Make sure the backend is running on port 5000.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const roleOptions = [
@@ -81,6 +110,19 @@ const Register = () => {
                 </div>
 
                 <form onSubmit={handleRegister} className="w-full">
+                    {error && (
+                        <div className="flex items-center gap-2 text-red-500 bg-red-50 border border-red-200 rounded-2xl px-4 py-3 mb-4 text-sm font-medium">
+                            <AlertCircle size={16} />
+                            {error}
+                        </div>
+                    )}
+                    {success && (
+                        <div className="flex items-center gap-2 text-green-600 bg-green-50 border border-green-200 rounded-2xl px-4 py-3 mb-4 text-sm font-medium">
+                            <CheckCircle size={16} />
+                            {success}
+                        </div>
+                    )}
+
                     <InputField
                         icon={User}
                         placeholder="Full Name"
@@ -110,9 +152,13 @@ const Register = () => {
                         onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
                     />
 
-                    <button type="submit" className="w-full btn-primary py-4 text-lg mt-2 flex items-center justify-center gap-2 group">
-                        Create Account
-                        <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full btn-primary py-4 text-lg mt-2 flex items-center justify-center gap-2 group disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                        {loading ? 'Creating Account...' : 'Create Account'}
+                        {!loading && <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />}
                     </button>
 
                     <div className="text-center mt-8">
