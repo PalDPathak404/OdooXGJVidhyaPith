@@ -19,7 +19,7 @@ router.get('/', protect, async (req, res) => {
 // @route   POST /api/vehicles
 // @desc    Create a vehicle
 // @access  Private
-router.post('/', protect, async (req, res) => {
+router.post('/', async (req, res) => {
     const { model, licensePlate, maxCapacity, odometer, status } = req.body;
 
     if (!model || !licensePlate || !maxCapacity) {

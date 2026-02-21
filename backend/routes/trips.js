@@ -23,7 +23,7 @@ router.get('/', protect, async (req, res) => {
 // @route   POST /api/trips
 // @desc    Create a trip (draft)
 // @access  Private
-router.post('/', protect, async (req, res) => {
+router.post('/', async (req, res) => {
     const { vehicleId, driverId, cargoWeight, status, startOdometer, endOdometer } = req.body;
 
     if (!vehicleId || !driverId || cargoWeight === undefined) {
@@ -49,7 +49,7 @@ router.post('/', protect, async (req, res) => {
 // @desc    Dispatch a trip (Uses upstreams validation service constraints)
 // @route   POST /api/trips/dispatch
 // @access  Private
-router.post('/dispatch', protect, async (req, res) => {
+router.post('/dispatch', async (req, res) => {
     const { vehicleId, driverId, cargoWeight, startOdometer } = req.body;
 
     if (!vehicleId || !driverId || !cargoWeight) {
@@ -86,7 +86,7 @@ router.post('/dispatch', protect, async (req, res) => {
 // @route   POST /api/trips/complete
 // @desc    Complete a trip - enforces lifecycle guard, odometer validation, and state transition
 // @access  Private
-router.post('/complete', protect, async (req, res) => {
+router.post('/complete', async (req, res) => {
     const { tripId, vehicleId, driverId, startOdometer, endOdometer } = req.body;
 
     if (!tripId || !vehicleId || !driverId || endOdometer === undefined) {

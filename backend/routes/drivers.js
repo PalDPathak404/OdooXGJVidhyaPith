@@ -12,7 +12,7 @@ const getDriverStatus = (expiryDate, currentStatus) => {
 // @route   POST /api/drivers
 // @desc    Add new driver
 // @access  Private
-router.post('/', protect, async (req, res) => {
+router.post('/', async (req, res) => {
     const { name, licenseNumber, expiryDate, rating, safetyScore, status } = req.body;
 
     if (!name || !licenseNumber || !expiryDate) {
