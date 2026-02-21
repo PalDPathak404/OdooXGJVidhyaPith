@@ -11,17 +11,23 @@ import {
     LogOut,
     Truck
 } from 'lucide-react';
+import useFleetStore from '../store/fleetStore';
 
 const Sidebar = () => {
-    const navItems = [
-        { name: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/' },
-        { name: 'Vehicles', icon: <Car size={20} />, path: '/vehicles' },
-        { name: 'Trips', icon: <MapPin size={20} />, path: '/trips' },
-        { name: 'Maintenance', icon: <Wrench size={20} />, path: '/maintenance' },
-        { name: 'Expenses', icon: <DollarSign size={20} />, path: '/expenses' },
-        { name: 'Drivers', icon: <Users size={20} />, path: '/drivers' },
-        { name: 'Analytics', icon: <BarChart3 size={20} />, path: '/analytics' },
+    const { currentUser, logout } = useFleetStore();
+    const role = currentUser?.role || 'Financial Analyst';
+
+    const allNavItems = [
+        { name: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/', roles: ['Administrator', 'Fleet Manager', 'Dispatcher', 'Safety Officer', 'Financial Analyst'] },
+        { name: 'Vehicles', icon: <Car size={20} />, path: '/vehicles', roles: ['Administrator', 'Fleet Manager', 'Dispatcher', 'Safety Officer'] },
+        { name: 'Trips', icon: <MapPin size={20} />, path: '/trips', roles: ['Administrator', 'Fleet Manager', 'Dispatcher'] },
+        { name: 'Maintenance', icon: <Wrench size={20} />, path: '/maintenance', roles: ['Administrator', 'Fleet Manager', 'Safety Officer'] },
+        { name: 'Expenses', icon: <DollarSign size={20} />, path: '/expenses', roles: ['Administrator', 'Fleet Manager', 'Financial Analyst'] },
+        { name: 'Drivers', icon: <Users size={20} />, path: '/drivers', roles: ['Administrator', 'Safety Officer'] },
+        { name: 'Analytics', icon: <BarChart3 size={20} />, path: '/analytics', roles: ['Administrator', 'Financial Analyst'] },
     ];
+
+    const navItems = allNavItems.filter(item => item.roles.includes(role));
 
     return (
         <div className="w-72 h-screen bg-charcoal text-white flex flex-col p-6 fixed left-0 top-0">
@@ -48,7 +54,14 @@ const Sidebar = () => {
             </nav>
 
             <div className="mt-auto pt-6 border-t border-white/10">
-                <button className="sidebar-link w-full text-red-400 hover:text-red-300">
+                <div className="mb-4 px-3 flex flex-col">
+                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1 italic">Active Post</span>
+                    <span className="text-sm font-black text-olive">{role}</span>
+                </div>
+                <button
+                    onClick={() => logout()}
+                    className="sidebar-link w-full text-red-400 hover:text-red-300 transition-colors"
+                >
                     <LogOut size={20} />
                     <span className="font-medium">Logout</span>
                 </button>

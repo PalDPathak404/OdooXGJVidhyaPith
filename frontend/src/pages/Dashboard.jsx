@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import {
     Truck,
     AlertTriangle,
@@ -6,52 +6,113 @@ import {
     Plus,
     Filter,
     ArrowUpDown,
-    Search
+    Search,
+    ChevronDown
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import useFleetStore from '../store/fleetStore';
 import KPIWidget from '../components/KPIWidget';
 import DataTable from '../components/DataTable';
 import StatusBadge from '../components/StatusBadge';
+import Modal from '../components/Modal';
 
 const Dashboard = () => {
-    const { vehicles, trips } = useFleetStore();
+    const navigate = useNavigate();
+    const { vehicles, trips, currentUser } = useFleetStore();
+    const [searchTerm, setSearchTerm] = useState('');
+    const [statusFilter, setStatusFilter] = useState('All');
+    const [sortBy, setSortBy] = useState('newest');
+    const [isTripModalOpen, setIsTripModalOpen] = useState(false);
 
-    const activeFleet = vehicles.filter(v => v.status === 'On Trip').length;
+    // Calculated Stats
+    const activeFleet = vehicles.filter(v => v.status === 'On Trip' || v.status === 'Available').length;
     const maintenanceAlerts = vehicles.filter(v => v.status === 'In Shop').length;
-    const pendingCargo = trips.filter(t => t.status === 'Draft').length;
+    const pendingCargo = trips.filter(t => t.status === 'Draft' || t.status === 'Pending').length;
+
+    // Filtered & Sorted Trips
+    const filteredTrips = useMemo(() => {
+        let result = [...trips];
+
+        // Search
+        if (searchTerm) {
+            result = result.filter(t =>
+                (t.id?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                (t.vehicle?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                (t.driver?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+            );
+        }
+
+        // Status Filter
+        if (statusFilter !== 'All') {
+            result = result.filter(t => t.status.toLowerCase() === statusFilter.toLowerCase());
+        }
+
+        // Sorting
+        result.sort((a, b) => {
+            if (sortBy === 'newest') return b.id.localeCompare(a.id);
+            if (sortBy === 'oldest') return a.id.localeCompare(b.id);
+            if (sortBy === 'vehicle') return a.vehicle.localeCompare(b.vehicle);
+            return 0;
+        });
+
+        return result;
+    }, [trips, searchTerm, statusFilter, sortBy]);
 
     const columns = ['Trip ID', 'Vehicle', 'Driver', 'Status'];
 
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Search & Filters */}
-            <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-8">
-                <div className="relative group w-full md:w-96">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-olive transition-colors" size={20} />
+            <div className="flex flex-col xl:flex-row gap-4 items-center justify-between mb-8">
+                <div className="relative group w-full xl:w-1/3">
+                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-olive transition-colors" size={20} />
                     <input
                         type="text"
-                        placeholder="Search trips, vehicles..."
-                        className="w-full pl-12 pr-6 py-4 bg-white border border-gray-100 rounded-2xl shadow-soft focus:outline-none focus:ring-2 focus:ring-olive/20 transition-all font-medium"
+                        placeholder="Search trips, vehicles, or drivers..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full pl-14 pr-6 py-4 bg-white border border-border/40 rounded-3xl shadow-soft focus:outline-none focus:ring-2 focus:ring-olive/10 transition-all font-medium placeholder:text-gray-400"
                     />
                 </div>
 
-                <div className="flex items-center gap-3 w-full md:w-auto">
-                    <button className="flex items-center gap-2 px-5 py-4 bg-white border border-gray-100 rounded-2xl shadow-soft font-bold text-softblack hover:bg-gray-50 transition-all">
-                        <ArrowUpDown size={18} className="text-gray-400" />
-                        Group by
-                    </button>
-                    <button className="flex items-center gap-2 px-5 py-4 bg-white border border-gray-100 rounded-2xl shadow-soft font-bold text-softblack hover:bg-gray-50 transition-all">
-                        <Filter size={18} className="text-gray-400" />
-                        Filter
-                    </button>
-                    <button className="flex items-center gap-2 px-5 py-4 bg-white border border-gray-100 rounded-2xl shadow-soft font-bold text-softblack hover:bg-gray-50 transition-all">
-                        Sort by
+                <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto">
+                    <div className="relative flex-1 sm:flex-none">
+                        <select
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                            className="w-full sm:w-auto appearance-none pl-12 pr-10 py-4 bg-white border border-border/40 rounded-2xl shadow-soft font-bold text-softblack hover:bg-gray-50 transition-all focus:outline-none focus:ring-2 focus:ring-olive/10 cursor-pointer"
+                        >
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="vehicle">By Vehicle</option>
+                        </select>
+                        <ArrowUpDown size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                        <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                    </div>
+
+                    <div className="relative flex-1 sm:flex-none">
+                        <select
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                            className="w-full sm:w-auto appearance-none pl-12 pr-10 py-4 bg-white border border-border/40 rounded-2xl shadow-soft font-bold text-softblack hover:bg-gray-50 transition-all focus:outline-none focus:ring-2 focus:ring-olive/10 cursor-pointer"
+                        >
+                            <option value="All">All Statuses</option>
+                            <option value="On Trip">On Trip</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Draft">Draft</option>
+                        </select>
+                        <Filter size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                        <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                    </div>
+
+                    <button className="flex-1 sm:flex-none btn-primary py-4 px-8 shadow-thick">
+                        Refresh
                     </button>
                 </div>
             </div>
 
             {/* KPI Section */}
-            <div className="flex flex-wrap gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <KPIWidget
                     title="Active Fleet"
                     value={activeFleet}
@@ -73,27 +134,40 @@ const Dashboard = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end gap-4 mt-8">
-                <button className="flex items-center gap-2 px-6 py-4 bg-white text-softblack font-bold rounded-2xl border border-gray-100 shadow-soft hover:bg-gray-50 transition-all">
-                    <Plus size={20} className="text-olive" />
-                    New Trip
-                </button>
-                <button className="btn-primary flex items-center gap-2">
-                    <Plus size={20} />
-                    New Vehicle
-                </button>
+            <div className="flex items-center justify-between gap-4 mt-8">
+                <h3 className="text-xl font-black text-softblack">Recent Trip Logs</h3>
+                <div className="flex gap-4">
+                    {['Administrator', 'Fleet Manager', 'Dispatcher'].includes(currentUser?.role) && (
+                        <button
+                            onClick={() => setIsTripModalOpen(true)}
+                            className="flex items-center gap-2 px-6 py-4 bg-white text-softblack font-bold rounded-2xl border border-border/40 shadow-soft hover:shadow-thick transition-all active:scale-95"
+                        >
+                            <Plus size={20} className="text-olive" />
+                            Dispatch Trip
+                        </button>
+                    )}
+                    {['Administrator', 'Fleet Manager', 'Dispatcher', 'Safety Officer'].includes(currentUser?.role) && (
+                        <button
+                            onClick={() => navigate('/vehicles')}
+                            className="btn-primary flex items-center gap-2 shadow-thick"
+                        >
+                            <Plus size={20} />
+                            Register Vehicle
+                        </button>
+                    )}
+                </div>
             </div>
 
             {/* Main Table */}
-            <div className="mt-4">
+            <div className="bg-white rounded-4xl shadow-soft border border-border/30 overflow-hidden">
                 <DataTable
                     columns={columns}
-                    data={trips}
+                    data={filteredTrips}
                     renderRow={(trip) => (
                         <>
-                            <td className="px-8 py-5 text-sm font-bold text-softblack">#{trip.id.toUpperCase()}</td>
-                            <td className="px-8 py-5 text-sm font-medium text-gray-500">{trip.vehicle}</td>
-                            <td className="px-8 py-5 text-sm font-bold text-softblack">{trip.driver}</td>
+                            <td className="px-8 py-5 text-sm font-black text-softblack">#{trip.id.toUpperCase()}</td>
+                            <td className="px-8 py-5 text-sm font-bold text-gray-500">{trip.vehicle}</td>
+                            <td className="px-8 py-5 text-sm font-black text-softblack">{trip.driver}</td>
                             <td className="px-8 py-5 text-sm">
                                 <StatusBadge status={trip.status} />
                             </td>
@@ -101,6 +175,22 @@ const Dashboard = () => {
                     )}
                 />
             </div>
+
+            {/* New Trip Modal Placeholder */}
+            <Modal isOpen={isTripModalOpen} onClose={() => setIsTripModalOpen(false)} title="Dispatch New Trip">
+                <div className="space-y-6 text-center py-4">
+                    <div className="w-20 h-20 bg-olive/10 text-olive rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Truck size={40} />
+                    </div>
+                    <p className="text-gray-500 font-medium">Trip Dispatching module is currently in development. This will be connected to the Trips module in the next phase.</p>
+                    <button
+                        onClick={() => setIsTripModalOpen(false)}
+                        className="btn-primary w-full"
+                    >
+                        Understood
+                    </button>
+                </div>
+            </Modal>
         </div>
     );
 };
