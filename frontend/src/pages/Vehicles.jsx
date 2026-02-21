@@ -16,6 +16,7 @@ import useFleetStore from '../store/fleetStore';
 import DataTable from '../components/DataTable';
 import StatusBadge from '../components/StatusBadge';
 import SideDrawer from '../components/SideDrawer';
+import AccessRestricted from '../components/AccessRestricted';
 
 const InputField = ({ label, icon: Icon, value, onChange, placeholder, type = "text", error }) => (
     <div className="space-y-2">
@@ -77,6 +78,10 @@ const Vehicles = () => {
     });
 
     const [editingVehicle, setEditingVehicle] = useState(null);
+
+    // RBAC check
+    const hasAccess = ['Administrator', 'Fleet Manager', 'Dispatcher', 'Safety Officer'].includes(currentUser?.role);
+    if (!hasAccess) return <AccessRestricted />;
 
     const validate = (data) => {
         const newErrors = {};

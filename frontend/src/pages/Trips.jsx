@@ -17,6 +17,7 @@ import useFleetStore from '../store/fleetStore';
 import DataTable from '../components/DataTable';
 import StatusBadge from '../components/StatusBadge';
 import SideDrawer from '../components/SideDrawer';
+import AccessRestricted from '../components/AccessRestricted';
 
 const FormInputField = ({ label, icon: Icon, value, onChange, placeholder, type = "text", error, warning }) => (
     <div className="space-y-2">
@@ -81,6 +82,10 @@ const Trips = () => {
         type: 'Standard Delivery'
     });
     const [errors, setErrors] = useState({});
+
+    // RBAC check
+    const hasAccess = ['Administrator', 'Fleet Manager', 'Dispatcher'].includes(currentUser?.role);
+    if (!hasAccess) return <AccessRestricted />;
 
     // Available Resources
     const availableVehicles = useMemo(() => vehicles.filter(v => v.status === 'Available'), [vehicles]);

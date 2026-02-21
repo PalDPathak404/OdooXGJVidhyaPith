@@ -15,6 +15,7 @@ import KPIWidget from '../components/KPIWidget';
 import DataTable from '../components/DataTable';
 import StatusBadge from '../components/StatusBadge';
 import SideDrawer from '../components/SideDrawer';
+import AccessRestricted from '../components/AccessRestricted';
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -23,6 +24,10 @@ const Dashboard = () => {
     const [statusFilter, setStatusFilter] = useState('All');
     const [sortBy, setSortBy] = useState('newest');
     const [isTripDrawerOpen, setIsTripDrawerOpen] = useState(false);
+
+    // RBAC check
+    const hasAccess = ['Administrator', 'Fleet Manager', 'Dispatcher', 'Safety Officer', 'Financial Analyst'].includes(currentUser?.role);
+    if (!hasAccess) return <AccessRestricted />;
 
     // Calculated Stats
     const activeFleet = vehicles.filter(v => v.status === 'On Trip' || v.status === 'Available').length;

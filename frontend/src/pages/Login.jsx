@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { User, Lock, UserCircle, ArrowRight, ChevronDown } from 'lucide-react';
+import { Mail, Lock, UserCircle, ArrowRight, ChevronDown, AlertCircle } from 'lucide-react';
 import useFleetStore from '../store/fleetStore';
 import { motion } from 'framer-motion';
 
@@ -24,7 +24,9 @@ const Login = () => {
     const navigate = useNavigate();
     const setAuth = useFleetStore((state) => state.setAuth);
 
-    const [loginData, setLoginData] = useState({ username: '', password: '', role: 'Administrator' });
+    const [loginData, setLoginData] = useState({ email: '', password: '', role: 'Administrator' });
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const roles = [
         'Administrator',
@@ -34,14 +36,45 @@ const Login = () => {
         'Financial Analyst'
     ];
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        setAuth({
-            name: loginData.username || 'Commander',
-            role: loginData.role
-        });
-        navigate('/');
+        setError('');
+        setLoading(true);
+
+        try {
+            const res = await fetch('http://localhost:5000/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: loginData.email, password: loginData.password }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                setError(data.message || 'Login failed. Please check your credentials.');
+                setLoading(false);
+                return;
+            }
+
+            // Save JWT token to localStorage
+            localStorage.setItem('fleet_token', data.token);
+
+            // Set auth state with user info from DB
+            setAuth({
+                name: data.name,
+                email: data.email,
+                role: loginData.role,
+                token: data.token,
+            });
+
+            navigate('/');
+        } catch (err) {
+            setError('Cannot reach the server. Make sure the backend is running on port 5000.');
+        } finally {
+            setLoading(false);
+        }
     };
+
 
     return (
         <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:32px_32px]">
@@ -51,7 +84,7 @@ const Login = () => {
                 className="w-full max-w-md bg-white rounded-4xl shadow-thick p-10 flex flex-col items-center border border-border/50"
             >
                 <div className="mb-10 text-center">
-                    <h1 className="text-4xl font-black text-softblack tracking-tighter mb-2">FleetFlow</h1>
+                    <h1 className="text-4xl font-black text-softblack tracking-tighter mb-2">FleetEdge</h1>
                     <p className="text-gray-400 font-medium tracking-wide">Assign your post to continue</p>
                 </div>
 
@@ -76,11 +109,19 @@ const Login = () => {
                         <ChevronDown size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                     </div>
 
+                    {error && (
+                        <div className="flex items-center gap-2 text-red-500 bg-red-50 border border-red-200 rounded-2xl px-4 py-3 mb-4 text-sm font-medium">
+                            <AlertCircle size={16} />
+                            {error}
+                        </div>
+                    )}
+
                     <InputField
-                        icon={User}
-                        placeholder="Username"
-                        value={loginData.username}
-                        onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
+                        icon={Mail}
+                        placeholder="Email Address"
+                        type="email"
+                        value={loginData.email}
+                        onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
                     />
                     <InputField
                         icon={Lock}
@@ -90,9 +131,13 @@ const Login = () => {
                         onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
                     />
 
-                    <button type="submit" className="w-full btn-primary py-4 text-xl mt-4 flex items-center justify-center gap-2 group">
-                        Sign In
-                        <ArrowRight size={22} className="group-hover:translate-x-1 transition-transform" />
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full btn-primary py-4 text-xl mt-4 flex items-center justify-center gap-2 group disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                        {loading ? 'Signing In...' : 'Sign In'}
+                        {!loading && <ArrowRight size={22} className="group-hover:translate-x-1 transition-transform" />}
                     </button>
 
                     <div className="text-center mt-10 space-y-4">
