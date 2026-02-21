@@ -6,18 +6,27 @@ const driverSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        licenseExpiry: {
+        licenseNumber: {
+            type: String,
+            required: true,
+            unique: true,
+        },
+        expiryDate: {
             type: Date,
             required: true,
         },
-        status: {
-            type: String,
-            enum: ["OnDuty", "OffDuty", "Suspended"],
-            default: "OnDuty",
+        rating: {
+            type: Number,
+            default: 0,
         },
         safetyScore: {
             type: Number,
             default: 100,
+        },
+        status: {
+            type: String,
+            enum: ["On Duty", "Taking a Break", "Suspended"],
+            default: "On Duty",
         },
     },
     { timestamps: true }
