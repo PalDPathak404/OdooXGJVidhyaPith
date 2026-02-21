@@ -12,6 +12,8 @@ import {
 import useFleetStore from '../store/fleetStore';
 import DataTable from '../components/DataTable';
 import AccessRestricted from '../components/AccessRestricted';
+import CustomSelect from '../components/CustomSelect';
+import StatusBadge from '../components/StatusBadge';
 
 const Drivers = () => {
     const { drivers, trips, updateDriverStatus, currentUser } = useFleetStore();
@@ -45,8 +47,8 @@ const Drivers = () => {
             {/* Minimal Header Section */}
             <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-4">
                 <div>
-                    <h1 className="text-4xl font-black text-softblack tracking-tight mb-2">Driver Personnel</h1>
-                    <p className="text-gray-400 font-medium">Monitoring operational integrity and safety compliance profile.</p>
+                    <h1 className="text-4xl font-black text-text-primary tracking-tight mb-2">Driver Personnel</h1>
+                    <p className="text-text-muted font-medium">Monitoring operational integrity and safety compliance profile.</p>
                 </div>
                 <div className="flex items-center gap-4 bg-white p-2 rounded-2xl shadow-soft border border-border/20">
                     <div className="flex -space-x-3 px-2">
@@ -77,82 +79,79 @@ const Drivers = () => {
             </div>
 
             {/* Minimal Personnel Table */}
-            <div className="bg-white rounded-[2.5rem] shadow-soft border border-border/20 overflow-hidden">
-                <DataTable
-                    columns={columns}
-                    data={filteredDrivers}
-                    renderRow={(driver) => {
-                        const completionRate = calculatePerformance(driver.name);
-                        const expiryDate = new Date(driver.licenseExpiry);
-                        const isExpired = expiryDate < today;
-                        const safetyStatus = driver.safetyScore >= 90 ? 'High' : (driver.safetyScore >= 80 ? 'Standard' : 'Warning');
+            <DataTable
+                columns={columns}
+                data={filteredDrivers}
+                renderRow={(driver) => {
+                    const completionRate = calculatePerformance(driver.name);
+                    const expiryDate = new Date(driver.licenseExpiry);
+                    const isExpired = expiryDate < today;
+                    const safetyStatus = driver.safetyScore >= 90 ? 'High' : (driver.safetyScore >= 80 ? 'Standard' : 'Warning');
 
-                        return (
-                            <tr key={driver.id} className="hover:bg-background/20 transition-colors border-b border-border/10 last:border-none">
-                                <td className="px-8 py-6">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 bg-background rounded-2xl flex items-center justify-center text-gray-400 group-hover:text-olive transition-colors relative">
-                                            {driver.status === 'On Duty' && (
-                                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
-                                            )}
-                                            <Users size={24} strokeWidth={1.5} />
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-black text-softblack uppercase tracking-tight">{driver.name}</p>
-                                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{driver.license}</p>
-                                        </div>
+                    return (
+                        <>
+                            <td className="px-6 py-4">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 bg-surface-elevated rounded-xl flex items-center justify-center text-text-muted group-hover:text-primary transition-colors relative">
+                                        {driver.status === 'On Duty' && (
+                                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-surface" />
+                                        )}
+                                        <Users size={24} strokeWidth={1.5} />
                                     </div>
-                                </td>
-                                <td className="px-8 py-6">
-                                    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg border ${isExpired ? 'bg-rust/5 border-rust/20 text-rust' : 'bg-background border-border/30 text-gray-500'}`}>
-                                        <Calendar size={12} />
-                                        <span className="text-xs font-black">{driver.licenseExpiry}</span>
-                                        {isExpired && <AlertCircle size={12} />}
+                                    <div>
+                                        <p className="text-sm font-black text-text-primary uppercase tracking-tight">{driver.name}</p>
+                                        <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">{driver.license}</p>
                                     </div>
-                                </td>
-                                <td className="px-8 py-6">
-                                    <div className="space-y-1.5 min-w-[120px]">
-                                        <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-gray-400">
-                                            <span>Task Success</span>
-                                            <span className="text-softblack">{completionRate}%</span>
-                                        </div>
-                                        <div className="h-1.5 w-full bg-background rounded-full overflow-hidden">
-                                            <div
-                                                className={`h-full transition-all duration-1000 ${completionRate >= 80 ? 'bg-olive' : (completionRate >= 50 ? 'bg-charcoal' : 'bg-rust')}`}
-                                                style={{ width: `${completionRate}%` }}
-                                            />
-                                        </div>
+                                </div>
+                            </td>
+                            <td className="px-6 py-4">
+                                <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg border ${isExpired ? 'bg-danger/5 border-danger/20 text-danger' : 'bg-surface-elevated border-border text-text-secondary'}`}>
+                                    <Calendar size={12} />
+                                    <span className="text-xs font-black">{driver.licenseExpiry}</span>
+                                    {isExpired && <AlertCircle size={12} />}
+                                </div>
+                            </td>
+                            <td className="px-6 py-4">
+                                <div className="space-y-1.5 min-w-[120px]">
+                                    <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-text-muted">
+                                        <span>Task Success</span>
+                                        <span className="text-text-primary">{completionRate}%</span>
                                     </div>
-                                </td>
-                                <td className="px-8 py-6">
-                                    <div className="flex items-center gap-2">
-                                        <div className={`p-1.5 rounded-lg ${safetyStatus === 'High' ? 'bg-olive/10 text-olive' : (safetyStatus === 'Standard' ? 'bg-charcoal/10 text-charcoal' : 'bg-rust/10 text-rust')}`}>
-                                            <ShieldCheck size={16} />
-                                        </div>
-                                        <span className={`text-lg font-black tracking-tighter ${safetyStatus === 'High' ? 'text-olive' : (safetyStatus === 'Standard' ? 'text-charcoal' : 'text-rust')}`}>
-                                            {driver.safetyScore}%
-                                        </span>
+                                    <div className="h-1.5 w-full bg-surface-elevated rounded-full overflow-hidden">
+                                        <div
+                                            className={`h-full transition-all duration-1000 ${completionRate >= 80 ? 'bg-primary' : (completionRate >= 50 ? 'bg-accent' : 'bg-danger')}`}
+                                            style={{ width: `${completionRate}%` }}
+                                        />
                                     </div>
-                                </td>
-                                <td className="px-8 py-6">
-                                    <div className="relative group/select">
-                                        <select
-                                            className="appearance-none bg-background border border-border/30 pl-4 pr-10 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-softblack focus:outline-none focus:ring-2 focus:ring-olive/10 cursor-pointer"
-                                            value={driver.status}
-                                            onChange={(e) => updateDriverStatus(driver.id, e.target.value)}
-                                        >
-                                            <option value="On Duty">On Duty</option>
-                                            <option value="Taking a Break">Taking a Break</option>
-                                            <option value="Suspended">Suspended</option>
-                                        </select>
-                                        <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-hover/select:text-olive transition-colors" />
+                                </div>
+                            </td>
+                            <td className="px-6 py-4">
+                                <div className="flex items-center gap-2">
+                                    <div className={`p-1.5 rounded-lg ${safetyStatus === 'High' ? 'bg-primary/10 text-primary' : (safetyStatus === 'Standard' ? 'bg-accent/10 text-accent' : 'bg-danger/10 text-danger')}`}>
+                                        <ShieldCheck size={16} />
                                     </div>
-                                </td>
-                            </tr>
-                        );
-                    }}
-                />
-            </div>
+                                    <span className={`text-lg font-black tracking-tighter ${safetyStatus === 'High' ? 'text-primary' : (safetyStatus === 'Standard' ? 'text-accent' : 'text-danger')}`}>
+                                        {driver.safetyScore}%
+                                    </span>
+                                </div>
+                            </td>
+                            <td className="px-6 py-4">
+                                <div className="w-32">
+                                    <CustomSelect
+                                        options={[
+                                            { value: 'On Duty', label: 'On Duty' },
+                                            { value: 'Taking a Break', label: 'Taking a Break' },
+                                            { value: 'Suspended', label: 'Suspended' }
+                                        ]}
+                                        value={driver.status}
+                                        onChange={(val) => updateDriverStatus(driver.id, val)}
+                                    />
+                                </div>
+                            </td>
+                        </>
+                    );
+                }}
+            />
 
             {/* Performance Insights Unique Card */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

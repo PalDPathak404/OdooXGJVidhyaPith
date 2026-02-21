@@ -18,16 +18,18 @@ import DataTable from '../components/DataTable';
 import StatusBadge from '../components/StatusBadge';
 import SideDrawer from '../components/SideDrawer';
 import AccessRestricted from '../components/AccessRestricted';
+import FleetMap from '../components/FleetMap';
+import CustomSelect from '../components/CustomSelect';
 
 const FormInputField = ({ label, icon: Icon, value, onChange, placeholder, type = "text", error, warning }) => (
     <div className="space-y-2">
         <div className="flex justify-between items-center ml-1">
-            <label className="text-sm font-black text-softblack/60">{label}</label>
-            {error && <span className="text-[10px] font-bold text-rust uppercase tracking-tighter">{error}</span>}
-            {warning && <span className="text-[10px] font-bold text-rust uppercase tracking-tighter">{warning}</span>}
+            <label className="text-sm font-black text-text-muted">{label}</label>
+            {error && <span className="text-[10px] font-bold text-danger uppercase tracking-tighter">{error}</span>}
+            {warning && <span className="text-[10px] font-bold text-warning uppercase tracking-tighter">{warning}</span>}
         </div>
         <div className="relative group">
-            <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${error || warning ? 'text-rust' : 'text-gray-400 group-focus-within:text-olive'}`}>
+            <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${error || warning ? 'text-danger' : 'text-text-secondary group-focus-within:text-primary'}`}>
                 <Icon size={18} />
             </div>
             <input
@@ -35,7 +37,7 @@ const FormInputField = ({ label, icon: Icon, value, onChange, placeholder, type 
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
-                className={`w-full pl-12 pr-6 py-4 bg-background border rounded-2xl focus:outline-none focus:ring-2 focus:bg-white transition-all text-softblack font-semibold placeholder:text-gray-400 ${error || warning ? 'border-rust/50 focus:ring-rust/10' : 'border-border/40 focus:ring-olive/10'}`}
+                className={`w-full pl-12 pr-6 py-4 bg-surface border rounded-2xl focus:outline-none focus:ring-2 focus:bg-surface-elevated transition-all text-text-primary font-semibold placeholder:text-text-muted ${error || warning ? 'border-danger/50 focus:ring-danger/10' : 'border-border focus:ring-primary/10'}`}
             />
         </div>
     </div>
@@ -43,22 +45,22 @@ const FormInputField = ({ label, icon: Icon, value, onChange, placeholder, type 
 
 const FormSelectField = ({ label, icon: Icon, value, onChange, options, error }) => (
     <div className="space-y-2">
-        <label className="text-sm font-black text-softblack/60 ml-1">{label}</label>
+        <label className="text-sm font-black text-text-muted ml-1">{label}</label>
         <div className="relative group">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-olive transition-colors z-10 pointer-events-none">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary group-focus-within:text-primary transition-colors z-10 pointer-events-none">
                 <Icon size={18} />
             </div>
             <select
                 value={value}
                 onChange={onChange}
-                className={`w-full pl-12 pr-10 py-4 bg-background border rounded-2xl focus:outline-none focus:ring-2 focus:bg-white transition-all text-softblack font-semibold appearance-none cursor-pointer ${error ? 'border-rust/50 focus:ring-rust/10' : 'border-border/40 focus:ring-olive/10'}`}
+                className={`w-full pl-12 pr-10 py-4 bg-surface border rounded-2xl focus:outline-none focus:ring-2 focus:bg-surface-elevated transition-all text-text-primary font-semibold appearance-none cursor-pointer ${error ? 'border-danger/50 focus:ring-danger/10' : 'border-border focus:ring-primary/10'}`}
             >
                 <option value="">Select Option</option>
                 {options.map(opt => (
                     <option key={opt.id || opt} value={opt.value || opt}>{opt.label || opt}</option>
                 ))}
             </select>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none">
                 <ChevronDown size={18} />
             </div>
         </div>
@@ -151,19 +153,27 @@ const Trips = () => {
 
     const renderRow = (trip) => (
         <>
-            <td className="px-8 py-5">
-                <span className="font-black text-softblack">{trip.id}</span>
+            <td className="px-6 py-4">
+                <span className="font-black text-text-primary">#{trip.id}</span>
             </td>
-            <td className="px-8 py-5">
-                <span className="text-sm font-bold text-softblack">{trip.type || 'Fright'}</span>
+            <td className="px-6 py-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-surface-elevated border border-border rounded-lg text-[10px] font-black text-text-muted uppercase tracking-wider">
+                    {trip.type || 'Fright'}
+                </div>
             </td>
-            <td className="px-8 py-5">
-                <span className="text-sm font-semibold text-softblack">{trip.origin}</span>
+            <td className="px-6 py-4">
+                <div className="flex items-center gap-2">
+                    <MapPin size={14} className="text-primary" />
+                    <span className="text-sm font-bold text-text-primary">{trip.origin}</span>
+                </div>
             </td>
-            <td className="px-8 py-5">
-                <span className="text-sm font-semibold text-softblack">{trip.destination}</span>
+            <td className="px-6 py-4">
+                <div className="flex items-center gap-2">
+                    <Navigation size={14} className="text-accent" />
+                    <span className="text-sm font-bold text-text-primary">{trip.destination}</span>
+                </div>
             </td>
-            <td className="px-8 py-5">
+            <td className="px-6 py-4">
                 <StatusBadge status={trip.status} />
             </td>
         </>
@@ -172,18 +182,17 @@ const Trips = () => {
     return (
         <div className="space-y-10 animate-in fade-in slide-in-from-bottom-6 duration-700">
             {/* Map Section */}
-            <div className="bg-white rounded-4xl shadow-thick border border-border/30 overflow-hidden relative group">
-                <div className="absolute top-6 left-8 z-10 flex flex-col gap-2">
-                    <div className="px-4 py-2 bg-softblack/80 backdrop-blur-md rounded-2xl border border-white/10 flex items-center gap-3">
-                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                        <span className="text-[10px] font-black text-white uppercase tracking-[0.2em]">6 Active Dispatches</span>
+            <div className="card-elevated rounded-4xl border border-border/30 overflow-hidden">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-8 pt-6 pb-4">
+                    <div className="px-4 py-2 bg-surface-elevated rounded-2xl border border-border flex items-center gap-3 shadow-md">
+                        <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                        <span className="text-[10px] font-black text-text-primary uppercase tracking-[0.2em]">
+                            {trips.filter(t => t.status === 'On Trip').length} Active Dispatches
+                        </span>
                     </div>
-                </div>
-
-                <div className="absolute top-6 right-8 z-10">
                     <button
                         onClick={() => setIsDrawerOpen(true)}
-                        className="btn-primary py-3 px-8 text-sm font-black shadow-thick flex items-center gap-2 group-hover:scale-105 transition-transform"
+                        className="btn-primary py-3 px-8 text-sm font-black shadow-lg flex items-center gap-2"
                     >
                         <Plus size={18} />
                         New Dispatch
@@ -191,18 +200,9 @@ const Trips = () => {
                 </div>
 
                 {/* Styled Map Container */}
-                <div className="h-96 md:h-[500px] w-full bg-background relative overflow-hidden">
-                    {/* Placeholder for Google Maps View - Styled for Hackathon */}
-                    <iframe
-                        title="fleet-map"
-                        width="100%"
-                        height="100%"
-                        frameBorder="0"
-                        style={{ border: 0, filter: 'grayscale(1) invert(0.9) contrast(1.2)' }}
-                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15233.12563725586!2d72.8777!3d19.0760!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1708500000000!5m2!1sen!2sin"
-                        allowFullScreen
-                    />
-                    <div className="absolute inset-0 pointer-events-none border-[12px] border-white/5 shadow-[inset_0_0_100px_rgba(0,0,0,0.1)]" />
+                <div className="w-full bg-surface relative overflow-hidden">
+                    <FleetMap />
+                    <div className="absolute inset-0 pointer-events-none border-[1px] border-border/10 shadow-[inset_0_0_100px_rgba(0,0,0,0.1)]" />
                 </div>
             </div>
 
@@ -210,22 +210,22 @@ const Trips = () => {
             <div className="space-y-6">
                 <div className="flex items-center justify-between px-2">
                     <div>
-                        <h3 className="text-2xl font-black text-softblack tracking-tight">Industrial Log</h3>
-                        <p className="text-gray-400 font-medium text-sm">Full transit history and audit data</p>
+                        <h3 className="text-2xl font-black text-text-primary tracking-tight">Industrial Log</h3>
+                        <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mt-1">Full transit history and audit data</p>
                     </div>
                     <div className="relative group w-80">
-                        <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-olive transition-colors" size={18} />
+                        <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-primary transition-colors" size={18} />
                         <input
                             type="text"
                             placeholder="Find specific trip..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-12 pr-6 py-3 bg-white border border-border/40 rounded-2xl shadow-soft focus:outline-none focus:ring-2 focus:ring-olive/10 transition-all font-medium"
+                            className="w-full pl-12 pr-6 py-3 bg-surface border border-border/40 rounded-2xl shadow-soft focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all font-medium text-text-primary placeholder:text-text-muted/50"
                         />
                     </div>
                 </div>
 
-                <div className="bg-white rounded-4xl shadow-thick border border-border/30 overflow-hidden">
+                <div className="card-elevated overflow-hidden border border-border/20 shadow-glow/10">
                     <DataTable
                         columns={columns}
                         data={filteredTrips}
@@ -333,7 +333,7 @@ const Trips = () => {
                     </div>
                 </form>
             </SideDrawer>
-        </div>
+        </div >
     );
 };
 

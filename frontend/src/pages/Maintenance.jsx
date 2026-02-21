@@ -16,12 +16,13 @@ import DataTable from '../components/DataTable';
 import StatusBadge from '../components/StatusBadge';
 import SideDrawer from '../components/SideDrawer';
 import AccessRestricted from '../components/AccessRestricted';
+import CustomSelect from '../components/CustomSelect';
 
 const FormInputField = ({ label, icon: Icon, value, onChange, placeholder, type = "text", error }) => (
     <div className="space-y-2">
-        <label className="text-sm font-black text-softblack/60 ml-1">{label}</label>
+        <label className="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">{label}</label>
         <div className="relative group">
-            <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${error ? 'text-rust' : 'text-gray-400 group-focus-within:text-olive'}`}>
+            <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${error ? 'text-danger' : 'text-text-muted group-focus-within:text-primary'}`}>
                 <Icon size={18} />
             </div>
             <input
@@ -29,10 +30,10 @@ const FormInputField = ({ label, icon: Icon, value, onChange, placeholder, type 
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
-                className={`w-full pl-12 pr-6 py-4 bg-background border rounded-2xl focus:outline-none focus:ring-2 focus:bg-white transition-all text-softblack font-semibold placeholder:text-gray-400 ${error ? 'border-rust/50 focus:ring-rust/10' : 'border-border/40 focus:ring-olive/10'}`}
+                className={`w-full pl-12 pr-6 py-4 bg-surface-elevated border rounded-2xl focus:outline-none focus:ring-2 focus:bg-surface transition-all text-text-primary font-semibold placeholder:text-text-muted/50 ${error ? 'border-danger/50 focus:ring-danger/10' : 'border-border/40 focus:ring-primary/10'}`}
             />
         </div>
-        {error && <span className="text-[10px] font-bold text-rust uppercase tracking-tighter ml-1">{error}</span>}
+        {error && <span className="text-[10px] font-bold text-danger uppercase tracking-tighter ml-1">{error}</span>}
     </div>
 );
 
@@ -124,36 +125,48 @@ const Maintenance = () => {
     const columns = ['Log ID', 'Vehicle', 'Issue/Service', 'Date', 'Cost', 'Status'];
 
     const renderRow = (log) => {
-        const isVehicleInShop = vehicles.find(v => v.name === log.vehicle)?.status === 'In Shop';
+        const vehicle = vehicles.find(v => v.name === log.vehicle);
+        const isVehicleInShop = vehicle?.status === 'In Shop';
 
         return (
             <>
-                <td className="px-8 py-5">
-                    <span className="font-black text-softblack">{log.id}</span>
+                <td className="px-6 py-4">
+                    <span className="font-black text-text-primary">#{log.id}</span>
                 </td>
-                <td className="px-8 py-5">
+                <td className="px-6 py-4">
                     <div className="flex flex-col">
-                        <span className={`font-bold ${isVehicleInShop ? 'text-rust' : 'text-softblack'}`}>
+                        <span className={`font-bold transition-colors ${isVehicleInShop ? 'text-accent' : 'text-text-primary'}`}>
                             {log.vehicle}
                         </span>
-                        {isVehicleInShop && (
-                            <span className="text-[10px] font-black text-rust/60 uppercase tracking-widest">In Shop Now</span>
+                        {isVehicleInShop ? (
+                            <span className="text-[10px] font-black text-accent uppercase tracking-widest flex items-center gap-1">
+                                <Activity size={10} className="animate-pulse" /> In Shop Now
+                            </span>
+                        ) : (
+                            <span className="text-[10px] font-black text-text-muted uppercase tracking-widest">
+                                {vehicle?.plate || 'UNLISTED'}
+                            </span>
                         )}
                     </div>
                 </td>
-                <td className="px-8 py-5">
-                    <span className="text-sm font-semibold text-softblack">{log.service}</span>
-                </td>
-                <td className="px-8 py-5">
-                    <div className="flex items-center gap-2 text-gray-500">
-                        <Clock size={14} />
-                        <span className="text-xs font-bold">{log.date}</span>
+                <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                        <div className="p-1.5 bg-surface-elevated rounded-lg border border-border text-primary">
+                            <Wrench size={14} />
+                        </div>
+                        <span className="text-sm font-bold text-text-primary">{log.service}</span>
                     </div>
                 </td>
-                <td className="px-8 py-5">
-                    <span className="text-sm font-black text-softblack">₹{parseFloat(log.cost).toLocaleString()}</span>
+                <td className="px-6 py-4">
+                    <div className="flex items-center gap-2 text-text-muted">
+                        <Clock size={14} />
+                        <span className="text-xs font-black uppercase tracking-tight">{log.date}</span>
+                    </div>
                 </td>
-                <td className="px-8 py-5">
+                <td className="px-6 py-4">
+                    <span className="text-sm font-black text-text-primary tabular-nums">₹{parseFloat(log.cost).toLocaleString()}</span>
+                </td>
+                <td className="px-6 py-4">
                     <StatusBadge status={log.status} />
                 </td>
             </>
@@ -164,8 +177,8 @@ const Maintenance = () => {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700">
             <div className="flex items-center justify-between px-2">
                 <div>
-                    <h3 className="text-2xl font-black text-softblack tracking-tight">Service Logs</h3>
-                    <p className="text-gray-400 font-medium text-sm">Monitor fleet health and maintenance cycles</p>
+                    <h3 className="text-2xl font-black text-text-primary tracking-tight">Service Logs</h3>
+                    <p className="text-text-muted font-bold text-[10px] uppercase tracking-widest mt-1">Monitor fleet health and maintenance cycles</p>
                 </div>
                 <div className="flex items-center gap-4">
                     <div className="relative group w-64">
@@ -188,7 +201,7 @@ const Maintenance = () => {
                 </div>
             </div>
 
-            <div className="bg-white rounded-4xl shadow-thick border border-border/30 overflow-hidden">
+            <div className="card-elevated overflow-hidden border border-border/20 shadow-glow/10">
                 <DataTable
                     columns={columns}
                     data={filteredMaintenance}

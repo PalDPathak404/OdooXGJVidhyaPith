@@ -16,6 +16,7 @@ import useFleetStore from '../store/fleetStore';
 import DataTable from '../components/DataTable';
 import SideDrawer from '../components/SideDrawer';
 import AccessRestricted from '../components/AccessRestricted';
+import StatusBadge from '../components/StatusBadge';
 
 const Expenses = () => {
     const { expenses, trips, addExpense, currentUser } = useFleetStore();
@@ -66,30 +67,30 @@ const Expenses = () => {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Header / Stats Section */}
             <div className="flex flex-col md:flex-row gap-6">
-                <div className="flex-1 bg-white p-8 rounded-[2.5rem] shadow-soft border border-border/20 flex items-center justify-between group hover:shadow-thick transition-all overflow-hidden relative">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-olive/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700" />
+                <div className="flex-1 bg-surface p-8 rounded-[2.5rem] shadow-soft border border-border/20 flex items-center justify-between group hover:shadow-thick transition-all overflow-hidden relative">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700" />
                     <div>
-                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Total Fleet Expenditure</p>
-                        <h2 className="text-4xl font-black text-softblack tracking-tighter">₹{grandTotal.toLocaleString()}</h2>
+                        <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-1">Total Fleet Expenditure</p>
+                        <h2 className="text-4xl font-black text-text-primary tracking-tighter">₹{grandTotal.toLocaleString()}</h2>
                         <div className="flex items-center gap-2 mt-2">
-                            <TrendingUp size={14} className="text-olive" />
-                            <span className="text-xs font-bold text-olive">+12.5% from last month</span>
+                            <TrendingUp size={14} className="text-primary" />
+                            <span className="text-xs font-bold text-primary">+12.5% from last month</span>
                         </div>
                     </div>
-                    <div className="w-16 h-16 bg-background rounded-2xl flex items-center justify-center text-olive relative z-10">
+                    <div className="w-16 h-16 bg-surface-elevated rounded-2xl flex items-center justify-center text-primary relative z-10">
                         <Wallet size={32} />
                     </div>
                 </div>
 
-                <div className="w-full md:w-72 bg-softblack p-8 rounded-[2.5rem] shadow-thick text-white flex flex-col justify-between">
-                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Active Budgets</p>
-                    <div className="mt-4">
-                        <div className="flex justify-between text-xs font-bold mb-2">
-                            <span>Fuel Capacity</span>
-                            <span>82%</span>
+                <div className="w-full md:w-72 card-elevated rounded-[2.5rem] shadow-lg text-text-primary flex flex-col justify-between">
+                    <p className="text-[10px] font-black text-text-muted uppercase tracking-widest">Active Budgets</p>
+                    <div className="mt-4 space-y-2">
+                        <div className="flex justify-between text-xs font-bold">
+                            <span className="text-text-secondary">Fuel Capacity</span>
+                            <span className="text-primary">82%</span>
                         </div>
-                        <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                            <div className="h-full bg-olive w-[82%]" />
+                        <div className="h-1.5 w-full bg-border-subtle rounded-full overflow-hidden">
+                            <div className="h-full bg-primary w-[82%]" />
                         </div>
                     </div>
                 </div>
@@ -117,7 +118,7 @@ const Expenses = () => {
             </div>
 
             {/* Main Table Card */}
-            <div className="bg-white rounded-[3rem] shadow-soft border border-border/20 overflow-hidden">
+            <div className="card-elevated overflow-hidden border border-border/20">
                 <DataTable
                     columns={columns}
                     data={filteredExpenses}
@@ -126,28 +127,28 @@ const Expenses = () => {
                         const isHighCost = (expense.totalCost || 0) > 10000;
 
                         return (
-                            <tr key={expense.id} className={`${isHighCost ? 'bg-rust/5' : ''} group transition-colors`}>
-                                <td className="px-8 py-6 text-sm font-black text-softblack">#{expense.tripId?.toUpperCase() || 'N/A'}</td>
-                                <td className="px-8 py-6">
+                            <>
+                                <td className="px-6 py-4 text-sm font-black text-text-primary">#{expense.tripId?.toUpperCase() || 'N/A'}</td>
+                                <td className="px-6 py-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-background flex items-center justify-center text-gray-400 font-bold text-[10px]">
+                                        <div className="w-8 h-8 rounded-full bg-surface-elevated flex items-center justify-center text-text-muted font-bold text-[10px]">
                                             {trip.driver.charAt(0)}
                                         </div>
-                                        <span className="text-sm font-bold text-softblack">{trip.driver}</span>
+                                        <span className="text-sm font-bold text-text-primary">{trip.driver}</span>
                                     </div>
                                 </td>
-                                <td className="px-8 py-6 text-sm font-bold text-gray-500">{trip.distance}</td>
-                                <td className="px-8 py-6 text-sm font-bold text-softblack">₹{expense.fuelCost?.toLocaleString()}</td>
-                                <td className="px-8 py-6 text-sm font-bold text-softblack">₹{expense.maintenanceCost?.toLocaleString()}</td>
-                                <td className="px-8 py-6">
+                                <td className="px-6 py-4 text-sm font-bold text-text-secondary">{trip.distance}</td>
+                                <td className="px-6 py-4 text-sm font-bold text-text-primary">₹{expense.fuelCost?.toLocaleString()}</td>
+                                <td className="px-6 py-4 text-sm font-bold text-text-primary">₹{expense.maintenanceCost?.toLocaleString()}</td>
+                                <td className="px-6 py-4">
                                     <div className="flex items-center gap-2">
-                                        <span className={`text-sm font-black ${isHighCost ? 'text-rust' : 'text-olive'}`}>
+                                        <span className={`text-sm font-black ${isHighCost ? 'text-accent' : 'text-primary'}`}>
                                             ₹{expense.totalCost?.toLocaleString()}
                                         </span>
-                                        {isHighCost && <ArrowUpRight size={14} className="text-rust" />}
+                                        {isHighCost && <ArrowUpRight size={14} className="text-accent" />}
                                     </div>
                                 </td>
-                            </tr>
+                            </>
                         );
                     }}
                 />
@@ -161,8 +162,8 @@ const Expenses = () => {
             >
                 <form onSubmit={handleAddExpense} className="space-y-8 py-4">
                     <div className="space-y-6">
-                        <div className="p-8 bg-background/50 rounded-4xl border border-border/20 space-y-6">
-                            <h4 className="text-xs font-black text-softblack uppercase tracking-[0.2em] flex items-center gap-2">
+                        <div className="p-8 bg-surface-elevated rounded-4xl border border-border/30 space-y-6">
+                            <h4 className="text-xs font-black text-text-primary uppercase tracking-[0.2em] flex items-center gap-2">
                                 <Activity size={14} /> Trip Association
                             </h4>
 
@@ -182,48 +183,58 @@ const Expenses = () => {
                             </div>
                         </div>
 
-                        <div className="p-8 bg-white rounded-4xl border border-border/30 space-y-6 shadow-soft">
-                            <h4 className="text-xs font-black text-softblack uppercase tracking-[0.2em] flex items-center gap-2">
+                        <div className="p-8 bg-surface rounded-4xl border border-border/30 space-y-6 shadow-md">
+                            <h4 className="text-xs font-black text-text-primary uppercase tracking-[0.2em] flex items-center gap-2">
                                 <Calculator size={14} /> Fiscal Details
                             </h4>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Fuel Liters</label>
+                                    <label className="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Fuel Liters</label>
                                     <div className="relative">
-                                        <Fuel className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={16} />
+                                        <Fuel className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" size={16} />
                                         <input
                                             type="number"
                                             required
                                             placeholder="0"
-                                            className="w-full bg-background/50 border border-border/10 pl-11 pr-4 py-4 rounded-xl font-bold text-softblack focus:outline-none"
+                                            className="w-full bg-surface-elevated border border-border/40 pl-11 pr-4 py-4 rounded-xl font-bold text-text-primary focus:outline-none focus:border-primary"
                                             value={formData.fuelLiters}
                                             onChange={(e) => setFormData({ ...formData, fuelLiters: e.target.value })}
                                         />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
+<<<<<<< HEAD
                                     <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Fuel Price (₹/L)</label>
+=======
+                                    <label className="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Fuel Cost (₹)</label>
+>>>>>>> 1cb6b6d5272449e73e609b4e0299896ee08e8c28
                                     <input
                                         type="number"
                                         required
                                         placeholder="0"
+<<<<<<< HEAD
                                         className="w-full bg-background/50 border border-border/10 px-4 py-4 rounded-xl font-bold text-softblack focus:outline-none"
                                         value={formData.fuelPricePerLiter}
                                         onChange={(e) => setFormData({ ...formData, fuelPricePerLiter: e.target.value })}
+=======
+                                        className="w-full bg-surface-elevated border border-border/40 px-4 py-4 rounded-xl font-bold text-text-primary focus:outline-none focus:border-primary"
+                                        value={formData.fuelCost}
+                                        onChange={(e) => setFormData({ ...formData, fuelCost: e.target.value })}
+>>>>>>> 1cb6b6d5272449e73e609b4e0299896ee08e8c28
                                     />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Maintenance / Misc Cost (₹)</label>
+                                <label className="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Maintenance / Misc Cost (₹)</label>
                                 <div className="relative">
-                                    <Wrench className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={16} />
+                                    <Wrench className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" size={16} />
                                     <input
                                         type="number"
                                         required
                                         placeholder="0"
-                                        className="w-full bg-background/50 border border-border/10 pl-11 pr-4 py-4 rounded-xl font-bold text-softblack focus:outline-none"
+                                            className="w-full bg-surface-elevated border border-border/40 pl-11 pr-4 py-4 rounded-xl font-bold text-text-primary focus:outline-none focus:border-primary"
                                         value={formData.maintenanceCost}
                                         onChange={(e) => setFormData({ ...formData, maintenanceCost: e.target.value })}
                                     />

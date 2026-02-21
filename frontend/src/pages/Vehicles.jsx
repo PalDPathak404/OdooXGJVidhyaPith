@@ -17,15 +17,16 @@ import DataTable from '../components/DataTable';
 import StatusBadge from '../components/StatusBadge';
 import SideDrawer from '../components/SideDrawer';
 import AccessRestricted from '../components/AccessRestricted';
+import CustomSelect from '../components/CustomSelect';
 
 const InputField = ({ label, icon: Icon, value, onChange, placeholder, type = "text", error }) => (
     <div className="space-y-2">
         <div className="flex justify-between items-center ml-1">
-            <label className="text-sm font-black text-softblack/60">{label}</label>
-            {error && <span className="text-[10px] font-bold text-rust uppercase tracking-tighter">{error}</span>}
+            <label className="text-[10px] font-black text-text-muted uppercase tracking-widest">{label}</label>
+            {error && <span className="text-[10px] font-bold text-danger uppercase tracking-tighter">{error}</span>}
         </div>
         <div className="relative group">
-            <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${error ? 'text-rust' : 'text-gray-400 group-focus-within:text-olive'}`}>
+            <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${error ? 'text-danger' : 'text-text-muted group-focus-within:text-primary'}`}>
                 <Icon size={18} />
             </div>
             <input
@@ -33,7 +34,7 @@ const InputField = ({ label, icon: Icon, value, onChange, placeholder, type = "t
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
-                className={`w-full pl-12 pr-6 py-3.5 bg-background border rounded-2xl focus:outline-none focus:ring-2 focus:bg-white transition-all text-softblack font-semibold placeholder:text-gray-400 ${error ? 'border-rust/50 focus:ring-rust/10' : 'border-border/40 focus:ring-olive/10'}`}
+                className={`w-full pl-12 pr-6 py-3.5 bg-surface-elevated border rounded-2xl focus:outline-none focus:ring-2 focus:bg-surface transition-all text-text-primary font-semibold placeholder:text-text-muted/50 ${error ? 'border-danger/50 focus:ring-danger/10' : 'border-border/40 focus:ring-primary/10'}`}
             />
         </div>
     </div>
@@ -41,21 +42,21 @@ const InputField = ({ label, icon: Icon, value, onChange, placeholder, type = "t
 
 const SelectField = ({ label, icon: Icon, value, onChange, options }) => (
     <div className="space-y-2">
-        <label className="text-sm font-black text-softblack/60 ml-1">{label}</label>
+        <label className="text-sm font-black text-text-muted ml-1">{label}</label>
         <div className="relative group">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-olive transition-colors z-10 pointer-events-none">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary group-focus-within:text-primary transition-colors z-10 pointer-events-none">
                 <Icon size={18} />
             </div>
             <select
                 value={value}
                 onChange={onChange}
-                className="w-full pl-12 pr-10 py-3.5 bg-background border border-border/40 rounded-2xl focus:outline-none focus:ring-2 focus:ring-olive/10 focus:bg-white transition-all text-softblack font-semibold appearance-none cursor-pointer"
+                className="w-full pl-12 pr-10 py-3.5 bg-surface border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/10 focus:bg-surface-elevated transition-all text-text-primary font-semibold appearance-none cursor-pointer"
             >
                 {options.map(opt => (
                     <option key={opt} value={opt}>{opt}</option>
                 ))}
             </select>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none">
                 <ChevronDown size={18} />
             </div>
         </div>
@@ -156,46 +157,47 @@ const Vehicles = () => {
     const renderRow = (vehicle) => (
         <>
             <td className="px-6 py-5">
-                <span className="font-black text-softblack">{vehicle.id}</span>
+                <span className="font-black text-text-primary">#{vehicle.id}</span>
             </td>
             <td className="px-6 py-5">
                 <div className="flex flex-col">
-                    <span className="font-bold text-softblack">{vehicle.name}</span>
-                    <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">{vehicle.plate}</span>
+                    <span className="font-bold text-text-primary">{vehicle.name}</span>
+                    <span className="text-[10px] font-black text-text-muted uppercase tracking-widest">{vehicle.plate}</span>
                 </div>
             </td>
             <td className="px-6 py-5">
-                <span className="text-sm font-semibold text-gray-500 bg-border/20 px-3 py-1 rounded-lg">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-surface-elevated border border-border rounded-lg text-[10px] font-black text-text-muted uppercase tracking-wider">
+                    <Truck size={12} className="text-primary" />
                     {vehicle.type}
-                </span>
+                </div>
             </td>
             <td className="px-6 py-5">
-                <span className="text-sm font-semibold text-softblack">{vehicle.capacity}</span>
+                <span className="text-sm font-black text-text-primary">{vehicle.capacity}</span>
             </td>
-            <td className="px-6 py-5 text-sm font-semibold text-softblack">
-                {vehicle.odometer} km
+            <td className="px-6 py-5 text-sm font-black text-text-secondary tabular-nums">
+                {vehicle.odometer.toLocaleString()} km
             </td>
             <td className="px-6 py-5">
                 <StatusBadge status={vehicle.status} />
             </td>
             <td className="px-6 py-5">
                 {['Administrator', 'Fleet Manager'].includes(currentUser?.role) ? (
-                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex items-center gap-2">
                         <button
                             onClick={() => setEditingVehicle(vehicle)}
-                            className="p-2 hover:bg-olive/10 text-olive rounded-xl transition-colors"
+                            className="p-2 hover:bg-primary/10 text-text-muted hover:text-primary rounded-xl transition-all"
                         >
                             <Edit3 size={18} />
                         </button>
                         <button
                             onClick={() => removeVehicle(vehicle.id)}
-                            className="p-2 hover:bg-rust/10 text-rust rounded-xl transition-colors"
+                            className="p-2 hover:bg-danger/10 text-text-muted hover:text-danger rounded-xl transition-all"
                         >
                             <Trash2 size={18} />
                         </button>
                     </div>
                 ) : (
-                    <span className="text-xs font-bold text-gray-300 uppercase italic">View Only</span>
+                    <span className="text-[10px] font-black text-text-muted uppercase tracking-widest italic opactiy-50">Log Encrypted</span>
                 )}
             </td>
         </>
@@ -206,13 +208,13 @@ const Vehicles = () => {
             {/* Header Actions */}
             <div className="flex items-center justify-between gap-4">
                 <div className="flex-1 max-w-2xl relative group">
-                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-olive transition-colors" size={20} />
+                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-text-secondary group-focus-within:text-primary transition-colors" size={20} />
                     <input
                         type="text"
                         placeholder="Search by license plate, name, or model..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-14 pr-6 py-4 bg-white border border-border/40 rounded-3xl shadow-soft focus:outline-none focus:ring-2 focus:ring-olive/10 transition-all font-medium placeholder:text-gray-400"
+                        className="w-full pl-14 pr-6 py-4 bg-surface border border-border rounded-3xl shadow-lg focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all font-medium placeholder:text-text-muted"
                     />
                 </div>
 
@@ -221,15 +223,15 @@ const Vehicles = () => {
                         <select
                             value={statusFilter}
                             onChange={(e) => setStatusFilter(e.target.value)}
-                            className="appearance-none pl-12 pr-10 py-4 bg-white border border-border/40 rounded-2xl shadow-soft font-bold text-softblack hover:bg-gray-50 transition-all focus:outline-none focus:ring-2 focus:ring-olive/10 cursor-pointer"
+                            className="appearance-none pl-12 pr-10 py-4 bg-surface border border-border rounded-2xl shadow-lg font-bold text-text-primary hover:bg-surface-elevated transition-all focus:outline-none focus:ring-2 focus:ring-primary/10 cursor-pointer"
                         >
                             <option value="All">All Status</option>
                             <option value="Available">Available</option>
                             <option value="On Trip">On Trip</option>
                             <option value="In Shop">In Shop</option>
                         </select>
-                        <Filter size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                        <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                        <Filter size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none" />
+                        <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none" />
                     </div>
                     {['Administrator', 'Fleet Manager', 'Dispatcher', 'Safety Officer'].includes(currentUser?.role) && (
                         <button
@@ -244,7 +246,7 @@ const Vehicles = () => {
             </div>
 
             {/* Table Section */}
-            <div className="bg-white rounded-4xl shadow-soft border border-border/30 overflow-hidden">
+            <div className="card-elevated overflow-hidden border border-border/20">
                 <DataTable
                     columns={columns}
                     data={filteredVehicles}

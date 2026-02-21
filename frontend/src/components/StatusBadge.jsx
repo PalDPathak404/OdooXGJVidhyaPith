@@ -1,35 +1,77 @@
 import React from 'react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-const StatusBadge = ({ status, className }) => {
-    if (!status) return null;
-    const getStatusStyles = (status) => {
-        switch (status?.toLowerCase()) {
-            case 'active':
-            case 'on trip':
-            case 'available':
-                return 'bg-olive/10 text-olive border-olive/20';
-            case 'warning':
-            case 'in shop':
-                return 'bg-rust/10 text-rust border-rust/20';
-            case 'danger':
-            case 'retired':
-                return 'bg-maroon/10 text-maroon border-maroon/20';
-            case 'pending':
-            case 'draft':
-                return 'bg-yellow-500/10 text-yellow-700 border-yellow-200';
-            default:
-                return 'bg-gray-100 text-gray-500 border-gray-200';
-        }
+import { CheckCircle, AlertTriangle, Clock, XCircle, Activity } from 'lucide-react';
+
+const StatusBadge = ({ status, showIcon = false }) => {
+    const getStatusConfig = (status) => {
+        const statusMap = {
+            'On Trip': {
+                color: 'status-operational',
+                icon: Activity,
+                text: 'ACTIVE'
+            },
+            'Available': {
+                color: 'status-operational',
+                icon: CheckCircle,
+                text: 'READY'
+            },
+            'In Shop': {
+                color: 'status-warning',
+                icon: AlertTriangle,
+                text: 'MAINTENANCE'
+            },
+            'Draft': {
+                color: 'status-pending',
+                icon: Clock,
+                text: 'DRAFT'
+            },
+            'Pending': {
+                color: 'status-pending',
+                icon: Clock,
+                text: 'PENDING'
+            },
+            'Completed': {
+                color: 'status-operational',
+                icon: CheckCircle,
+                text: 'COMPLETED'
+            },
+            'Cancelled': {
+                color: 'status-critical',
+                icon: XCircle,
+                text: 'CANCELLED'
+            },
+            'Active': {
+                color: 'status-operational',
+                icon: Activity,
+                text: 'ACTIVE'
+            },
+            'Maintenance': {
+                color: 'status-warning',
+                icon: AlertTriangle,
+                text: 'MAINTENANCE'
+            },
+            'Idle': {
+                color: 'status-pending',
+                icon: Clock,
+                text: 'IDLE'
+            },
+            'Alert': {
+                color: 'status-critical',
+                icon: AlertTriangle,
+                text: 'ALERT'
+            }
+        };
+        return statusMap[status] || statusMap['Pending'];
     };
 
+    const config = getStatusConfig(status);
+    const Icon = config?.icon;
+
     return (
-        <span className={twMerge(
-            "px-3 py-1 rounded-full text-xs font-bold border",
-            getStatusStyles(status),
-            className
-        )}>
-            {status}
+        <span className={`status-badge ${config?.color} font-mono`}>
+            {showIcon && Icon && <Icon size={10} className="mr-1" />}
+            {config?.text}
         </span>
     );
 };
