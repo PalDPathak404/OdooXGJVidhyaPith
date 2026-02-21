@@ -29,7 +29,7 @@ const Expenses = () => {
     const [formData, setFormData] = useState({
         tripId: '',
         fuelLiters: '',
-        fuelCost: '',
+        fuelPricePerLiter: '',
         maintenanceCost: ''
     });
 
@@ -47,13 +47,16 @@ const Expenses = () => {
 
     const handleAddExpense = (e) => {
         e.preventDefault();
+        const fuelCost = Number(formData.fuelLiters) * Number(formData.fuelPricePerLiter);
+
         addExpense({
             ...formData,
             fuelLiters: Number(formData.fuelLiters),
-            fuelCost: Number(formData.fuelCost),
+            fuelPricePerLiter: Number(formData.fuelPricePerLiter),
+            fuelCost: fuelCost,
             maintenanceCost: Number(formData.maintenanceCost)
         });
-        setFormData({ tripId: '', fuelLiters: '', fuelCost: '', maintenanceCost: '' });
+        setFormData({ tripId: '', fuelLiters: '', fuelPricePerLiter: '', maintenanceCost: '' });
         setIsDrawerOpen(false);
     };
 
@@ -200,14 +203,14 @@ const Expenses = () => {
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Fuel Cost (₹)</label>
+                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Fuel Price (₹/L)</label>
                                     <input
                                         type="number"
                                         required
                                         placeholder="0"
                                         className="w-full bg-background/50 border border-border/10 px-4 py-4 rounded-xl font-bold text-softblack focus:outline-none"
-                                        value={formData.fuelCost}
-                                        onChange={(e) => setFormData({ ...formData, fuelCost: e.target.value })}
+                                        value={formData.fuelPricePerLiter}
+                                        onChange={(e) => setFormData({ ...formData, fuelPricePerLiter: e.target.value })}
                                     />
                                 </div>
                             </div>
@@ -232,7 +235,7 @@ const Expenses = () => {
                         <div className="p-6 bg-olive/10 rounded-3xl border border-olive/20 flex items-center justify-between px-8">
                             <div>
                                 <p className="text-[10px] font-black text-olive uppercase tracking-widest">Estimated Total</p>
-                                <p className="text-2xl font-black text-olive">₹{(Number(formData.fuelCost || 0) + Number(formData.maintenanceCost || 0)).toLocaleString()}</p>
+                                <p className="text-2xl font-black text-olive">₹{((Number(formData.fuelLiters || 0) * Number(formData.fuelPricePerLiter || 0)) + Number(formData.maintenanceCost || 0)).toLocaleString()}</p>
                             </div>
                             <div className="w-10 h-10 rounded-full bg-olive text-white flex items-center justify-center">
                                 <Calculator size={20} />

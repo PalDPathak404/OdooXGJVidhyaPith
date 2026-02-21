@@ -1,10 +1,10 @@
 import { create } from 'zustand';
-import { 
-  mockVehicles, 
-  mockTrips, 
-  mockMaintenance, 
-  mockExpenses, 
-  mockDrivers 
+import {
+  mockVehicles,
+  mockTrips,
+  mockMaintenance,
+  mockExpenses,
+  mockDrivers
 } from '../mock/seedData';
 
 const useFleetStore = create((set) => ({
@@ -13,7 +13,7 @@ const useFleetStore = create((set) => ({
   maintenance: mockMaintenance,
   expenses: mockExpenses,
   drivers: mockDrivers,
-  
+
   // Analytics Data (Mocked for trends)
   monthlyData: [
     { month: 'Oct', revenue: 1200000, fuel: 450000, maintenance: 150000, efficiency: 12.4 },
@@ -22,7 +22,7 @@ const useFleetStore = create((set) => ({
     { month: 'Jan', revenue: 1600000, fuel: 580000, maintenance: 140000, efficiency: 12.9 },
     { month: 'Feb', revenue: 1750000, fuel: 610000, maintenance: 190000, efficiency: 14.1 },
   ],
-  
+
   // Auth
   currentUser: (() => {
     try {
@@ -45,17 +45,17 @@ const useFleetStore = create((set) => ({
     localStorage.removeItem('fleet_user');
     set({ currentUser: null });
   },
-  
+
   // Actions
-  addVehicle: (vehicle) => set((state) => ({ 
+  addVehicle: (vehicle) => set((state) => ({
     vehicles: [
-      { 
-        id: `v${state.vehicles.length + 1}`, 
-        ...vehicle, 
-        lastService: new Date().toISOString().split('T')[0] 
-      }, 
+      {
+        id: `v${state.vehicles.length + 1}`,
+        ...vehicle,
+        lastService: new Date().toISOString().split('T')[0]
+      },
       ...state.vehicles
-    ] 
+    ]
   })),
   updateVehicle: (id, updatedVehicle) => set((state) => ({
     vehicles: state.vehicles.map((v) => (v.id === id ? { ...v, ...updatedVehicle } : v))
@@ -67,21 +67,21 @@ const useFleetStore = create((set) => ({
   addTrip: (trip) => set((state) => {
     // Determine vehicle and driver IDs from the trip object
     // Assuming trip has vehiclePlate or vehicleId and driverName or driverId
-    const updatedVehicles = state.vehicles.map(v => 
+    const updatedVehicles = state.vehicles.map(v =>
       v.plate === trip.vehiclePlate ? { ...v, status: 'On Trip' } : v
     );
-    const updatedDrivers = state.drivers.map(d => 
+    const updatedDrivers = state.drivers.map(d =>
       d.name === trip.driverName ? { ...d, status: 'On Trip' } : d
     );
 
     return {
       trips: [
-        { 
-          id: `t${state.trips.length + 1}`, 
-          ...trip, 
+        {
+          id: `t${state.trips.length + 1}`,
+          ...trip,
           status: 'On Trip',
-          startTime: new Date().toLocaleString() 
-        }, 
+          startTime: new Date().toLocaleString()
+        },
         ...state.trips
       ],
       vehicles: updatedVehicles,
@@ -90,7 +90,7 @@ const useFleetStore = create((set) => ({
   }),
 
   addMaintenance: (log) => set((state) => {
-    const updatedVehicles = state.vehicles.map(v => 
+    const updatedVehicles = state.vehicles.map(v =>
       v.id === log.vehicleId ? { ...v, status: 'In Shop' } : v
     );
 
@@ -108,10 +108,13 @@ const useFleetStore = create((set) => ({
   }),
 
   addExpense: (expense) => set((state) => {
-    const totalCost = Number(expense.fuelCost || 0) + Number(expense.maintenanceCost || 0);
+    const fuelCost = Number(expense.fuelLiters || 0) * Number(expense.fuelPricePerLiter || 0);
+    const totalCost = fuelCost + Number(expense.maintenanceCost || 0);
+
     const newExpense = {
       id: `e${state.expenses.length + 1}`,
       ...expense,
+      fuelCost,
       totalCost,
       date: new Date().toISOString().split('T')[0]
     };
@@ -124,7 +127,7 @@ const useFleetStore = create((set) => ({
   updateDriverStatus: (id, status) => set((state) => ({
     drivers: state.drivers.map((d) => (d.id === id ? { ...d, status } : d))
   })),
-  
+
   // Generic filters can be added here
   activePage: 'Dashboard',
   setActivePage: (page) => set({ activePage: page }),
@@ -141,7 +144,7 @@ const useFleetStore = create((set) => ({
   // Analytics Selectors
   getAnalytics: () => {
     const state = useFleetStore.getState();
-    
+
     const totalFuel = state.expenses.reduce((sum, e) => sum + Number(e.fuelCost || 0), 0);
     const totalMaintenance = state.expenses.reduce((sum, e) => sum + Number(e.maintenanceCost || 0), 0);
     const totalExpenses = totalFuel + totalMaintenance;

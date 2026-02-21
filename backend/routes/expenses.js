@@ -7,20 +7,23 @@ const Expense = require('../models/Expense');
 // @desc    Add new expense mapping with totalCost auto calculation
 // @access  Private
 router.post('/', protect, async (req, res) => {
-    const { tripId, driverId, distance, fuelCost, maintenanceCost, notes } = req.body;
+    const { tripId, driverId, distance, fuelLiters, fuelPricePerLiter, maintenanceCost, notes } = req.body;
 
-    if (!tripId || !driverId || distance === undefined || fuelCost === undefined || maintenanceCost === undefined) {
+    if (!tripId || !driverId || distance === undefined || fuelLiters === undefined || fuelPricePerLiter === undefined || maintenanceCost === undefined) {
         return res.status(400).json({ message: 'Please include all required fields' });
     }
 
     try {
-        // Automatically calculate totalCost
-        const totalCost = Number(fuelCost) + Number(maintenanceCost);
+        // Automatically calculate fuelCost and totalCost
+        const fuelCost = Number(fuelLiters) * Number(fuelPricePerLiter);
+        const totalCost = fuelCost + Number(maintenanceCost);
 
         const expense = await Expense.create({
             tripId,
             driverId,
             distance,
+            fuelLiters,
+            fuelPricePerLiter,
             fuelCost,
             maintenanceCost,
             notes,

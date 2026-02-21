@@ -16,6 +16,14 @@ const expenseSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
+        fuelLiters: {
+            type: Number,
+            required: true,
+        },
+        fuelPricePerLiter: {
+            type: Number,
+            required: true,
+        },
         fuelCost: {
             type: Number,
             required: true,
