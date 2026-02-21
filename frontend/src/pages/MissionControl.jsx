@@ -29,30 +29,73 @@ const MissionControl = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('All');
     const [selectedMission, setSelectedMission] = useState(null);
-    const [isControlPanelOpen, setIsControlPanelOpen] = useState(false);
 
     // RBAC check
     const hasAccess = ['Administrator', 'Fleet Manager', 'Dispatcher'].includes(currentUser?.role);
     if (!hasAccess) return <AccessRestricted />;
 
+    // Sample mission data if trips is empty
+    const sampleMissions = [
+        {
+            id: 'M001',
+            status: 'In Progress',
+            vehicle: 'VH-001 - Alpha Transport',
+            driver: 'John Smith',
+            origin: 'Warehouse A',
+            destination: 'Port Terminal',
+            priority: 'High',
+            timestamp: '2 mins ago',
+            distance: '45 km'
+        },
+        {
+            id: 'M002',
+            status: 'Completed',
+            vehicle: 'VH-002 - Beta Hauler',
+            driver: 'Sarah Johnson',
+            origin: 'Distribution Center B',
+            destination: 'Airport',
+            priority: 'Normal',
+            timestamp: '1 hour ago',
+            distance: '32 km'
+        },
+        {
+            id: 'M003',
+            status: 'Pending',
+            vehicle: 'VH-003 - Gamma Express',
+            driver: 'Mike Wilson',
+            origin: 'Factory Complex',
+            destination: 'Rail Yard',
+            priority: 'Medium',
+            timestamp: '30 mins ago',
+            distance: '28 km'
+        }
+    ];
+
+    // Use trips from store if available, otherwise use sample data
+    const missionsData = trips && trips.length > 0 ? trips : sampleMissions;
+
     // Mission statistics
-    const missionStats = useMemo(() => ({
-        total: trips.length,
-        active: trips.filter(t => t.status === 'In Progress').length,
-        completed: trips.filter(t => t.status === 'Completed').length,
-        pending: trips.filter(t => t.status === 'Pending').length,
-        successRate: trips.length > 0 ? Math.round((trips.filter(t => t.status === 'Completed').length / trips.length) * 100) : 0
-    }), [trips]);
+    const missionStats = useMemo(() => {
+        const data = missionsData || [];
+        return {
+            total: data.length,
+            active: data.filter(t => t.status === 'In Progress').length,
+            completed: data.filter(t => t.status === 'Completed').length,
+            pending: data.filter(t => t.status === 'Pending').length,
+            successRate: data.length > 0 ? Math.round((data.filter(t => t.status === 'Completed').length / data.length) * 100) : 0
+        };
+    }, [missionsData]);
 
     const filteredMissions = useMemo(() => {
-        return trips.filter(mission =>
+        if (!missionsData) return [];
+        return missionsData.filter(mission =>
             mission.id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             mission.vehicle?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             mission.origin?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             mission.destination?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             (statusFilter === 'All' || mission.status === statusFilter)
         );
-    }, [trips, searchTerm, statusFilter]);
+    }, [missionsData, searchTerm, statusFilter]);
 
     const MissionCard = ({ mission }) => (
         <div className="card-elevated p-6 hover:shadow-xl transition-all duration-300 border-l-4 border-l-transparent hover:border-primary group cursor-pointer"
@@ -93,7 +136,7 @@ const MissionControl = () => {
                     <Users size={16} className="text-accent" />
                     <div>
                         <p className="text-xs text-text-muted">Operator</p>
-                        <p className="font-semibold text-text-primary">{mission.driver || 'Auto-assigned'}</p>
+                        <p className="font-semibold text-text-primary">{mission.driver}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -121,8 +164,21 @@ const MissionControl = () => {
         </div>
     );
 
+    if (!hasAccess) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                    <ShieldAlert size={48} className="text-danger mx-auto mb-4" />
+                    <h2 className="text-2xl font-bold text-text-primary mb-2">Access Restricted</h2>
+                    <p className="text-text-muted">You don't have permission to access Mission Control.</p>
+                    <p className="text-sm text-text-secondary">Required roles: Administrator, Fleet Manager, or Dispatcher</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-6 duration-700">
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-6 duration-700 p-6">
             {/* Mission Control Header */}
             <div className="flex items-center justify-between mb-8">
                 <div>
@@ -199,7 +255,7 @@ const MissionControl = () => {
                     </div>
 
                     <div className="space-y-3">
-                        {filteredMissions.map(mission => (
+                        {filteredMissions && filteredMissions.map(mission => (
                             <MissionCard key={mission.id} mission={mission} />
                         ))}
                     </div>
