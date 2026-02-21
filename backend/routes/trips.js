@@ -7,7 +7,7 @@ const { dispatchTripWithValidation, completeTripWithMetrics } = require('../serv
 // @route   GET /api/trips
 // @desc    Get all trips
 // @access  Private
-router.get('/', protect, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const trips = await Trip.find()
             .populate('vehicleId')

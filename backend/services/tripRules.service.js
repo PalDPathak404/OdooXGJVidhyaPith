@@ -10,7 +10,7 @@ const validateVehicleAvailability = async (vehicleId) => {
     if (!vehicle) {
         throw new Error(`Vehicle not found: ${vehicleId}`);
     }
-    if (vehicle.status !== "Available") {
+    if (vehicle.status !== 'Available') {
         throw new Error(
             `Vehicle is not available. Current status: "${vehicle.status}"`
         );
@@ -26,9 +26,9 @@ const validateDriverAvailability = async (driverId) => {
     if (!driver) {
         throw new Error(`Driver not found: ${driverId}`);
     }
-    if (driver.status !== "OnDuty") {
+    if (driver.status !== 'On Duty') {
         throw new Error(
-            `Driver is not available. Current status: "${driver.status}"`
+            `Driver is not available. Current status: "${driver.status}". Expected: "On Duty"`
         );
     }
 };
@@ -78,7 +78,7 @@ const validateCargoCapacity = async (vehicleId, cargoWeight) => {
 const applyDispatchStateTransition = async (vehicleId, driverId) => {
     const vehicle = await Vehicle.findByIdAndUpdate(
         vehicleId,
-        { status: "OnTrip" },
+        { status: 'OnTrip' },
         { new: true }
     );
     if (!vehicle) {
@@ -168,7 +168,7 @@ const completeTripWithMetrics = async ({ vehicleId, driverId, startOdometer, end
     }
 
     // Lifecycle guard: vehicle must be actively on a trip to be completed.
-    if (vehicle.status !== "OnTrip") {
+    if (vehicle.status !== 'OnTrip') {
         throw new Error("Trip cannot be completed because the vehicle is not currently on an active trip.");
     }
 

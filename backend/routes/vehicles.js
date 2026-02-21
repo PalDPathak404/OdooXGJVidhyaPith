@@ -6,7 +6,7 @@ const Vehicle = require('../models/Vehicle');
 // @route   GET /api/vehicles
 // @desc    Get all vehicles
 // @access  Private
-router.get('/', protect, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const vehicles = await Vehicle.find().sort({ createdAt: -1 });
         res.status(200).json(vehicles);

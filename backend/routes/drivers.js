@@ -47,7 +47,7 @@ router.post('/', async (req, res) => {
 // @route   GET /api/drivers
 // @desc    Get all drivers
 // @access  Private
-router.get('/', protect, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         let drivers = await Driver.find().sort({ createdAt: -1 });
 
