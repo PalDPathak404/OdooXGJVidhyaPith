@@ -21,12 +21,20 @@ const apiRequest = async (endpoint, options = {}) => {
 
     const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
 
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Verification failed.');
+    const contentType = response.headers.get('content-type');
+    let data;
+
+    if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
+    } else {
+        data = { message: await response.text() };
     }
 
-    return response.json();
+    if (!response.ok) {
+        throw new Error(data.message || `Verification failed (Status: ${response.status})`);
+    }
+
+    return data;
 };
 
 export default apiRequest;
