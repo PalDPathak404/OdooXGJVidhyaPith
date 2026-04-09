@@ -20,88 +20,67 @@ Traditional fleet management often suffers from fragmented data, delayed telemet
 - **Framework**: React.js with Vite for high-speed module reloading and optimized builds.
 - **State Engine**: Zustand for lightweight, high-performance global state management.
 - **Telemetry Layer**: Leaflet.js with OpenStreetMap (OSM) tile support for accurate, real-world geospatial tracking.
-- **UI System**: Custom-engineered Tailwind CSS "Command System" design language, featuring glassmorphism elements and high-contrast dark-mode typography.
+- **UI System**: Custom-engineered Tailwind CSS "Command System" design language.
 - **Animations**: Framer Motion for non-linear, physics-based UI transitions.
 
 ### Backend & Infrastructure
 - **Runtime**: Node.js with Express.js for a scalable, event-driven API layer.
-- **Authentication**: Clerk Enterprise Identity for secure, multi-tenant session management.
+- **Authentication**: Custom JWT-based Identity system with Bcrypt password hashing.
 - **Persistence**: MongoDB for flexible, document-based storage of mission and asset registries.
 
 ---
 
-## 3. Core Operational Modules
+## 3. Video Showcase Script (Official)
+This project is designed for professional demonstration. Below is the official 3-minute showcase script.
 
-### 3.1 Mission Control Center
-The heart of FleetEdge, providing a unified view of all active deployments.
-- **Live Assets Overlay**: Real-world geospatial monitoring with dynamic status-based markers.
-- **Intelligence Tooltips**: Instant access to vehicle telemetry including speed, fuel levels, driver identity, and ETAs.
-- **Mission Dispatch**: Professional workflow for assigning assets and operators to mission-critical routes.
-- **Emergency Broadcast**: Integrated system-wide notification protocols for high-priority incidents.
+> [!TIP]
+> **Video Length**: ~3 Minutes | **Vibe**: Professional / Industrial / Tech-Focused
 
-### 3.2 Command Center (Operations Dashboard)
-A data-driven entry point designed for high-level decision makers.
-- **KPI Monitoring**: Real-time tracking of active fleet count, mission success rates, and organizational ROI.
-- **Connectivity Analysis**: Live signal pulse monitoring to ensure all telemetry feeds are operational.
-- **Integrated Access Control**: Context-aware UI items that adapt based on the authenticated user's permissions.
+### **I. Introduction (0:00 - 0:45)**
+"Welcome to FleetEdge—an enterprise-grade fleet intelligence and mission command terminal. We’ve built a 'Command Center' aesthetic from the ground up—prioritizing high-density information display and a premium, immersive user experience."
 
-### 3.3 Financial Intelligence & Audit
-Granular tracking of operational costs to ensure maximum efficiency.
-- **Variable Expenditure Tracking**: Automated calculation of fuel consumption and maintenance costs.
-- **Active Budget Guardrails**: Visual progress indicators for Fuel, Maintenance, and Operational expenditures.
-- **Audit Trails**: Every expense is tied to a specific Mission ID, ensuring complete financial transparency.
+### **II. Technical Stack (0:45 - 1:30)**
+"Powered by a high-performance MERN stack. We use Node.js and Express for the backend, and MongoDB for flexible data storage. On the frontend, React and Vite handle near-instant rendering, while Zustand provides lightweight global state synchronization."
 
-### 3.4 Resource Management
-Efficient oversight of the fleet's most valuable assets.
-- **Asset Registry**: Comprehensive vehicle inventory with real-time status management.
-- **Personnel Hub**: Driver assignment logs and availability tracking.
-- **Maintenance Bay**: Structured logging of service records to optimize asset longevity.
+### **III. Custom Security (1:30 - 2:15)**
+"FleetEdge features a custom JWT-based Authentication System. Our onboarding flow is seamless—new operators select their roles (Admin, Manager, Dispatcher) during registration, instantly triggering Role-Based Access Control (RBAC) across the entire platform."
+
+### **IV. Analytics & Operations (2:15 - 3:00)**
+"Mission Control provides real-world geospatial tracking. The Analytics Hub offers granular insights into ROI, fuel costs, and asset utilization, correlating financial data directly with Mission IDs for 100% financial veracity."
 
 ---
 
-## 4. Security & Onboarding
-FleetEdge implements a zero-trust inspired security model.
-- **Multi-Factor Authentication**: Secured via Clerk's industry-standard protocols.
-- **Intelligent Onboarding**: Post-authentication role selection flow ensures users land in the correct operational context.
-- **RBAC Matrix**: 
-    - **Administrator**: Full system oversight and financial authority.
-    - **Fleet Manager**: Resource allocation and performance auditing.
-    - **Dispatcher**: Mission deployment and telemetry monitoring.
-    - **Operator**: Task execution and status reporting.
+## 4. Core Operational Modules
+
+### 4.1 Mission Control Center
+- **Live Assets Overlay**: Real-world geospatial monitoring with dynamic status-based markers.
+- **Intelligence Tooltips**: Instant telemetry (speed, fuel, driver).
+- **Mission Dispatch**: Professional workflow for assigning assets and operators.
+
+### 4.2 Financial Intelligence
+- **Variable Expenditure Tracking**: Automated calculation of fuel and maintenance costs.
+- **Audit Trails**: Every expense is tied to a specific Mission ID.
 
 ---
 
 ## 5. Deployment & Configuration
 
-### Prerequisites
-- Node.js Environment (LTS)
-- MongoDB Cluster
-- Clerk Developer Account
-
 ### Global Installation
-1. Clone the repository and initialize submodules if applicable.
-2. **Frontend Deployment**:
+1. Clone the repository.
+2. **Setup Environment**: Create a `.env` in the `backend` folder.
+3. **Execution**:
    ```bash
-   cd frontend
-   npm install
-   npm run build
-   ```
-3. **Backend Deployment**:
-   ```bash
-   cd backend
-   npm install
-   npm start
+   npm run dev
    ```
 
 ### Environment Configuration
-Required variables for full functionality:
-- `VITE_CLERK_PUBLISHABLE_KEY`: Frontend identity key.
-- `CLERK_SECRET_KEY`: Backend API key for JWT verification.
-- `MONGO_URI`: Database connection string for mission data persistence.
+- `PORT`: Backend port (Default: 5000).
+- `MONGO_URI`: MongoDB connection string.
+- `JWT_SECRET`: Secret key for token signing.
 
 ---
 
 ## 6. Future Roadmap
-- **Predictive Maintenance**: Integration of ML models to predict asset failure based on telemetry history.
-- **Automated Route Optimization**: AI-driven pathfinding to minimize fuel consumption and mission duration.
-- **Mobile Companion App**: Native iOS/Android clients for on-field operator status updates.
+- **Predictive Maintenance**: ML models to predict asset failure.
+- **Route Optimization**: AI-driven pathfinding to minimize fuel consumption.
+- **Mobile Companion**: Native iOS/Android clients for on-field updates.

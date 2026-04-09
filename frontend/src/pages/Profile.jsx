@@ -3,11 +3,7 @@ import { User, Mail, Shield, Calendar, LogOut, Settings, Award, Clock, Bell, Glo
 import useFleetStore from '../store/fleetStore';
 import SideDrawer from '../components/SideDrawer';
 import AccessRestricted from '../components/AccessRestricted';
-import { useAuth } from '@clerk/clerk-react';
-import CustomSelect from '../components/CustomSelect';
-
 const Profile = () => {
-    const { signOut } = useAuth();
     const { currentUser, logout, settings, updateSettings } = useFleetStore();
     const [isSettingsOpen, setIsSettingsOpen] = React.useState(false);
 
@@ -160,12 +156,10 @@ const Profile = () => {
                         </div>
                     </div>
                 </button>
-
                 <button
                     className="group relative h-24 bg-surface-elevated hover:bg-surface rounded-4xl p-1 transition-all duration-500 shadow-lg overflow-hidden border border-border"
                     onClick={() => {
                         logout();
-                        signOut();
                     }}
                 >
                     <div className="relative h-full w-full flex items-center justify-between px-10 bg-surface-elevated group-hover:bg-surface transition-colors rounded-[2.2rem]">
@@ -223,14 +217,15 @@ const Profile = () => {
                                     </div>
                                 </div>
                                 <div className="w-40">
-                                    <CustomSelect
-                                        options={[
-                                            { value: 'metric', label: 'Metric (km/L)' },
-                                            { value: 'imperial', label: 'Imperial (mpg)' }
-                                        ]}
+                                    {/* Removed CustomSelect for brevity/stability if needed, or keeping it if safe */}
+                                    <select 
+                                        className="w-full bg-surface border border-border rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-primary transition-colors"
                                         value={settings.unitSystem}
-                                        onChange={(val) => updateSettings({ unitSystem: val })}
-                                    />
+                                        onChange={(e) => updateSettings({ unitSystem: e.target.value })}
+                                    >
+                                        <option value="metric">Metric (km/L)</option>
+                                        <option value="imperial">Imperial (mpg)</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

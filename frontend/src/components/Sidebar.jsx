@@ -16,10 +16,7 @@ import {
     Target
 } from 'lucide-react';
 import useFleetStore from '../store/fleetStore';
-import { useAuth } from '@clerk/clerk-react';
-
 const Sidebar = () => {
-    const { signOut } = useAuth();
     const { currentUser, logout } = useFleetStore();
     const role = currentUser?.role || 'Financial Analyst';
 
@@ -92,13 +89,12 @@ const Sidebar = () => {
                         <Shield size={12} className="text-primary" />
                     </div>
                     <p className="text-sm font-bold text-text-primary">{role}</p>
-                    <p className="text-xs text-text-secondary font-mono mt-1">ID: {currentUser?.id || 'GUEST'}</p>
+                    <p className="text-xs text-text-secondary font-mono mt-1">ID: {currentUser?.token ? 'AUTHENTICATED' : 'GUEST'}</p>
                 </div>
 
                 <button
                     onClick={() => {
                         logout();
-                        signOut();
                     }}
                     className="sidebar-link w-full text-danger hover:bg-danger/10 hover:text-danger transition-all duration-200 group"
                 >
