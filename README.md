@@ -1,107 +1,184 @@
-# FleetEdge: Enterprise-Grade Fleet Intelligence & Mission Command
+<div align="center">
+  
+# 🚛 FleetFlow
 
-## Executive Summary
-FleetEdge is a sophisticated, full-stack fleet management solution engineered for enterprise-scale logistics operations. It bridges the gap between raw telemetry and actionable operational intelligence, offering real-time mission tracking, granular financial oversight, and automated resource management in a high-performance "Command Center" environment.
+**Industrial Fleet Management & Logistics Platform**
 
----
+A premium, full-stack enterprise solution designed to streamline the management of vehicles, track dispatch trips dynamically, monitor active maintenance, and analyze fleet expenditure with granular precision.
 
-## 1. Problem Statement & Solution
-Traditional fleet management often suffers from fragmented data, delayed telemetry, and lack of cohesive role-based access. FleetEdge solves these challenges by providing:
-- **Centralized Telemetry**: Real-time asset positioning and status updates.
-- **Operational Clarity**: High-density dashboards that prioritize critical alerts and maintenance needs.
-- **Financial Veracity**: Direct correlation between mission data and operational expenditures.
-- **Secure Scalability**: Integrated enterprise authentication with strict Role-Based Access Control (RBAC).
+[![MERN Stack](https://img.shields.io/badge/Stack-MERN-blue?style=flat-square&logo=react)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Bundler-Vite-646CFF?style=flat-square&logo=vite)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Styling-Tailwind_CSS-38B2AC?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
----
-
-## 2. Technical Architecture & Innovation
-
-### Frontend Architecture
-- **Framework**: React.js with Vite for high-speed module reloading and optimized builds.
-- **State Engine**: Zustand for lightweight, high-performance global state management.
-- **Telemetry Layer**: Leaflet.js with OpenStreetMap (OSM) tile support for accurate, real-world geospatial tracking.
-- **UI System**: Custom-engineered Tailwind CSS "Command System" design language, featuring glassmorphism elements and high-contrast dark-mode typography.
-- **Animations**: Framer Motion for non-linear, physics-based UI transitions.
-
-### Backend & Infrastructure
-- **Runtime**: Node.js with Express.js for a scalable, event-driven API layer.
-- **Authentication**: Clerk Enterprise Identity for secure, multi-tenant session management.
-- **Persistence**: MongoDB for flexible, document-based storage of mission and asset registries.
+</div>
 
 ---
 
-## 3. Core Operational Modules
+## 📸 Application Interface
 
-### 3.1 Mission Control Center
-The heart of FleetEdge, providing a unified view of all active deployments.
-- **Live Assets Overlay**: Real-world geospatial monitoring with dynamic status-based markers.
-- **Intelligence Tooltips**: Instant access to vehicle telemetry including speed, fuel levels, driver identity, and ETAs.
-- **Mission Dispatch**: Professional workflow for assigning assets and operators to mission-critical routes.
-- **Emergency Broadcast**: Integrated system-wide notification protocols for high-priority incidents.
+Our interface is built with premium aesthetics, offering glassmorphism design, native dark mode integrations, and responsive micro-animations for an elevated user experience.
 
-### 3.2 Command Center (Operations Dashboard)
-A data-driven entry point designed for high-level decision makers.
-- **KPI Monitoring**: Real-time tracking of active fleet count, mission success rates, and organizational ROI.
-- **Connectivity Analysis**: Live signal pulse monitoring to ensure all telemetry feeds are operational.
-- **Integrated Access Control**: Context-aware UI items that adapt based on the authenticated user's permissions.
-
-### 3.3 Financial Intelligence & Audit
-Granular tracking of operational costs to ensure maximum efficiency.
-- **Variable Expenditure Tracking**: Automated calculation of fuel consumption and maintenance costs.
-- **Active Budget Guardrails**: Visual progress indicators for Fuel, Maintenance, and Operational expenditures.
-- **Audit Trails**: Every expense is tied to a specific Mission ID, ensuring complete financial transparency.
-
-### 3.4 Resource Management
-Efficient oversight of the fleet's most valuable assets.
-- **Asset Registry**: Comprehensive vehicle inventory with real-time status management.
-- **Personnel Hub**: Driver assignment logs and availability tracking.
-- **Maintenance Bay**: Structured logging of service records to optimize asset longevity.
+<div align="center">
+  <img src="./screenshots/02_register.png" alt="Registration Page" width="49%" />
+  <img src="./screenshots/03_dashboard.png" alt="Dashboard Overview" width="49%" />
+</div>
+<br>
+<div align="center">
+  <img src="./screenshots/04_vehicles.png" alt="Vehicle Registry" width="49%" />
+  <img src="./screenshots/05_trips.png" alt="Trip Logistics" width="49%" />
+</div>
+<br>
+<div align="center">
+  <img src="./screenshots/06_maintenance.png" alt="Maintenance Tracking" width="49%" />
+  <img src="./screenshots/07_expenses.png" alt="Expense Analytics" width="49%" />
+</div>
+<br>
+<div align="center">
+  <img src="./screenshots/08_profile.png" alt="User Profile" width="49%" />
+  <img src="./screenshots/09_settings.png" alt="System Settings" width="49%" />
+</div>
 
 ---
 
-## 4. Security & Onboarding
-FleetEdge implements a zero-trust inspired security model.
-- **Multi-Factor Authentication**: Secured via Clerk's industry-standard protocols.
-- **Intelligent Onboarding**: Post-authentication role selection flow ensures users land in the correct operational context.
-- **RBAC Matrix**: 
-    - **Administrator**: Full system oversight and financial authority.
-    - **Fleet Manager**: Resource allocation and performance auditing.
-    - **Dispatcher**: Mission deployment and telemetry monitoring.
-    - **Operator**: Task execution and status reporting.
+## 🌟 Core Features
+
+| Feature | Capabilities |
+| :--- | :--- |
+| **🛡️ Advanced Security** | JWT-protected authentication with state-of-the-art bcrypt hashing and robust Role-Based Access Control (RBAC). |
+| **📊 Intelligent Dashboard** | Live Key Performance Indicators (KPIs), fleet utilization scores, and real-time active dispatch monitoring. |
+| **🚗 Vehicle Registry** | Comprehensive inventory management. Track vehicle license plates, capacities, availability status, and odometer logic. |
+| **🗺️ Dispatch & Trip Logs** | Industrial-level trip creation flow. Assign drivers, calculate operational distance, and enforce lifecycle rules. |
+| **🔧 Maintenance Shop** | Log servicing records with estimated costs. Automatically shift vehicle statuses to "In Shop" to prevent false dispatches. |
+| **💰 Expense Engines** | Deep financial insights calculating total fuel consumption metrics against maintenance costs to report fleet ROI. |
+| **⚙️ Corporate Profiles** | Deep activity logging, security oversight, and user detail tracking dynamically rendered based on the employee's role tier. |
 
 ---
 
-## 5. Deployment & Configuration
+## 🏗️ Technical Architecture
+
+FleetFlow follows a monolithic separation of concerns, strictly isolating the client application logic from the database and API governance.
+
+### Frontend Client
+- **Core:** React 19, Vite, JavaScript (ESM)
+- **State Management:** Zustand (for lightweight, scalable flux patterns)
+- **Styling:** Vanilla CSS layered on Next-Gen Tailwind CSS utility systems
+- **Routing:** React Router v7 with Client-Side Route Guards matching user tiers
+- **Icons & Assets:** Lucide React, Framer Motion (for fluid rendering)
+
+### Backend API Server
+- **Runtime:** Node.js powered by Express.js framework
+- **Database Architecture:** MongoDB Atlas mapped via Mongoose schemas
+- **Auth Engine:** JSON Web Tokens (JWT) for stateless transmission
+- **Validation & Business Logic:** Centralized service controllers
+
+---
+
+## 👥 Role-Based Access Control (RBAC)
+
+Access and feature visibility are strictly governed by the user's corporate designation:
+
+| Corporate Role | 📊 Dashboard | 🚗 Vehicles | 🗺️ Trips | 🔧 Maintenance | 💰 Expenses |
+|---|:---:|:---:|:---:|:---:|:---:|
+| **Administrator** | ✅ Full Access | ✅ Full Access | ✅ Full Access | ✅ Full Access | ✅ Full Access |
+| **Fleet Manager** | ✅ Overview | ✅ Edit/Manage | ✅ Dispatch | ✅ Schedule | ✅ View/Audit |
+| **Dispatcher** | ✅ Overview | ✅ View Logs | ✅ Direct Routing | ❌ Restricted | ❌ Restricted |
+| **Safety Officer** | ✅ Alerts Only | ✅ Compliance | ❌ Restricted | ✅ Edit/Inspect | ❌ Restricted |
+| **Financial Analyst**| ✅ Fiscal Data | ❌ Restricted | ❌ Restricted | ❌ Restricted | ✅ Full Access |
+
+---
+
+## 🚀 Getting Started
+
+Follow these instructions to deploy the standard development environment on your local system.
 
 ### Prerequisites
-- Node.js Environment (LTS)
-- MongoDB Cluster
-- Clerk Developer Account
+- [Node.js (v18.0.0 or higher)](https://nodejs.org/)
+- [MongoDB Atlas Cluster](https://www.mongodb.com/) or local MongoDB instance.
 
-### Global Installation
-1. Clone the repository and initialize submodules if applicable.
-2. **Frontend Deployment**:
-   ```bash
-   cd frontend
-   npm install
-   npm run build
-   ```
-3. **Backend Deployment**:
-   ```bash
-   cd backend
-   npm install
-   npm start
-   ```
+### 1. Repository Setup
+```bash
+# Clone the repository
+git clone https://github.com/your-username/FleetFlow.git
 
-### Environment Configuration
-Required variables for full functionality:
-- `VITE_CLERK_PUBLISHABLE_KEY`: Frontend identity key.
-- `CLERK_SECRET_KEY`: Backend API key for JWT verification.
-- `MONGO_URI`: Database connection string for mission data persistence.
+# Navigate into the project payload
+cd FleetFlow/OdooXGJVidhyaPith
+```
+
+### 2. Backend Initialization
+The Express.js REST API runs isolated on Port 5000.
+
+```bash
+cd backend
+
+# Install dependencies
+npm install
+```
+
+Create a `.env` configuration file in the `backend/` directory:
+```env
+PORT=5000
+MONGO_URI=mongodb+srv://<your_username>:<your_password>@cluster.mongodb.net/fleetflow
+JWT_SECRET=super_secret_enterprise_key_2026
+```
+
+Start the server:
+```bash
+# Runs persistent nodemon monitoring
+npm run dev 
+```
+
+### 3. Frontend Initialization
+The React/Vite development server runs on Port 5173.
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start the Vite Hot-Module-Replacement interface
+npm run dev
+```
+
+The application client will be available at **`http://localhost:5173`**.
 
 ---
 
-## 6. Future Roadmap
-- **Predictive Maintenance**: Integration of ML models to predict asset failure based on telemetry history.
-- **Automated Route Optimization**: AI-driven pathfinding to minimize fuel consumption and mission duration.
-- **Mobile Companion App**: Native iOS/Android clients for on-field operator status updates.
+## 📂 Project Directory Map
+
+```text
+OdooXGJVidhyaPith/
+├── backend/
+│   ├── config/           # Database initialization layers
+│   ├── controllers/      # Functional request/response handlers
+│   ├── middleware/       # System intercepts (JWT Auth Verification)
+│   ├── models/           # NoSQL Mongoose Schemas (Vehicle, Driver, Trip, Expense)
+│   ├── routes/           # Defined architectural API endpoints
+│   ├── services/         # Decoupled business rules and calculations
+│   └── server.js         # Backend Entry Node
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/   # Modular, declarative React UI Blocks
+│   │   ├── layout/       # Frame structural scaffolding (Topbars, Sidebars)
+│   │   ├── mock/         # Redundancy seeding data 
+│   │   ├── pages/        # High-order page compositions
+│   │   ├── store/        # Zustand global states (fleetStore.js)
+│   │   ├── App.jsx       # Client router and guard configurations
+│   │   └── main.jsx      # DOM Mounting 
+│   └── index.html        # Shell File
+│
+├── screenshots/          # Cached UI rendering snapshots for preview
+└── README.md             # This document
+```
+
+---
+
+## 🤝 Contribution Policies
+
+Enterprise contributions are welcome. For major overhauls or feature additions, please explicitly open an issue to discuss design strategies before pushing structural changes to active branches. 
+
+## 📄 Licensing
+
+This software is distributed under the proprietary **MIT License**. Copyright © 2026 FleetFlow Enterprise Logistical Systems.
