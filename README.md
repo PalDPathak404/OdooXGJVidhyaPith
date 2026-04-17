@@ -15,29 +15,29 @@ A premium, full-stack enterprise solution designed to streamline the management 
 
 ---
 
-## 📸 Application Interface
+## 📸 Interface Showcase
 
 Our interface is built with premium aesthetics, offering glassmorphism design, native dark mode integrations, and responsive micro-animations for an elevated user experience.
 
-<div align="center">
-  <img src="./screenshots/02_register.png" alt="Registration Page" width="49%" />
-  <img src="./screenshots/03_dashboard.png" alt="Dashboard Overview" width="49%" />
-</div>
-<br>
-<div align="center">
-  <img src="./screenshots/04_vehicles.png" alt="Vehicle Registry" width="49%" />
-  <img src="./screenshots/05_trips.png" alt="Trip Logistics" width="49%" />
-</div>
-<br>
-<div align="center">
-  <img src="./screenshots/06_maintenance.png" alt="Maintenance Tracking" width="49%" />
-  <img src="./screenshots/07_expenses.png" alt="Expense Analytics" width="49%" />
-</div>
-<br>
-<div align="center">
-  <img src="./screenshots/08_profile.png" alt="User Profile" width="49%" />
-  <img src="./screenshots/09_settings.png" alt="System Settings" width="49%" />
-</div>
+| 🔐 Authentication Entry | 📊 Mission Command Dashboard |
+| :---: | :---: |
+| <img src="./screenshots/02_register.png" alt="Registration Page" width="100%"> | <img src="./screenshots/03_dashboard.png" alt="Dashboard Overview" width="100%"> |
+| Secure, enterprise-grade entry point using Clerk authentication, supporting multi-factor access and clear onboarding workflows for diverse corporate roles. | A high-density operational view that surfaces real-time KPIs, fleet readiness metrics, and critical system alerts at a single glance. |
+
+| 🚗 Vehicle Asset Registry | 🗺️ Dispatch & Trip Logistics |
+| :---: | :---: |
+| <img src="./screenshots/04_vehicles.png" alt="Vehicle Registry" width="100%"> | <img src="./screenshots/05_trips.png" alt="Trip Logistics" width="100%"> |
+| Comprehensive inventory tracking system displaying live asset availability statuses, strict operational capacities, and exact odometer readings. | Dynamic dispatch routing that seamlessly assigns operators to active missions, ensuring precise tracking of transit schedules and operational lifecycle. |
+
+| 🔧 Maintenance Command | 💰 Financial Expense Analytics |
+| :---: | :---: |
+| <img src="./screenshots/06_maintenance.png" alt="Maintenance Tracking" width="100%"> | <img src="./screenshots/07_expenses.png" alt="Expense Analytics" width="100%"> |
+| Dedicated service logging for active and scheduled machine maintenance. Automatically locks out compromised assets to prevent unauthorized dispatch. | Deep financial aggregation engines calculating exact fuel expenditures against maintenance costs to report total, long-term fleet operational ROI. |
+
+| 👤 Operational Profile Management | |
+| :---: | :---: |
+| <img src="./screenshots/08_profile.png" alt="User Profile" width="100%"> | |
+| Granular corporate identity interface displaying continuous security activity logs, operational integrity ratings, and strict RBAC privileges. | |
 
 ---
 
