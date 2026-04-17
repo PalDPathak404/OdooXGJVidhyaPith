@@ -3,9 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useAuth, useUser, AuthenticateWithRedirectCallback } from '@clerk/clerk-react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import AppLayout from './layout/AppLayout';
-import {
-  // Analytics,
-} from './pages/Placeholders';
+
 import Login from './pages/Login';
 import Register from './pages/Register';
 import RoleSelect from './pages/RoleSelect';
