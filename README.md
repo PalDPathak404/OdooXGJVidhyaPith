@@ -15,29 +15,46 @@ A premium, full-stack enterprise solution designed to streamline the management 
 
 ---
 
-## 📸 Interface Showcase
+## 📸 Application Interface & Core Modules
 
 Our interface is built with premium aesthetics, offering glassmorphism design, native dark mode integrations, and responsive micro-animations for an elevated user experience.
 
-| 🔐 Authentication Entry | 📊 Mission Command Dashboard |
-| :---: | :---: |
-| <img src="./screenshots/02_register.png" alt="Registration Page" width="100%"> | <img src="./screenshots/03_dashboard.png" alt="Dashboard Overview" width="100%"> |
-| Secure, enterprise-grade entry point using Clerk authentication, supporting multi-factor access and clear onboarding workflows for diverse corporate roles. | A high-density operational view that surfaces real-time KPIs, fleet readiness metrics, and critical system alerts at a single glance. |
+### Secure Authentication & Dashboard Command
+> **Registration (Left):** A clean entry point requiring corporate identity and operator codes designed around intuitive Auth layouts.  
+> **Dashboard Overview (Right):** The central nervous system of the app, heavily featuring vital fleet metrics, live active dispatches, maintenance alerts, and recent log KPIs.
 
-| 🚗 Vehicle Asset Registry | 🗺️ Dispatch & Trip Logistics |
-| :---: | :---: |
-| <img src="./screenshots/04_vehicles.png" alt="Vehicle Registry" width="100%"> | <img src="./screenshots/05_trips.png" alt="Trip Logistics" width="100%"> |
-| Comprehensive inventory tracking system displaying live asset availability statuses, strict operational capacities, and exact odometer readings. | Dynamic dispatch routing that seamlessly assigns operators to active missions, ensuring precise tracking of transit schedules and operational lifecycle. |
+<div align="center">
+  <img src="./screenshots/02_register.png" alt="Registration Page" width="49%" />
+  <img src="./screenshots/03_dashboard.png" alt="Dashboard Overview" width="49%" />
+</div>
+<br>
 
-| 🔧 Maintenance Command | 💰 Financial Expense Analytics |
-| :---: | :---: |
-| <img src="./screenshots/06_maintenance.png" alt="Maintenance Tracking" width="100%"> | <img src="./screenshots/07_expenses.png" alt="Expense Analytics" width="100%"> |
-| Dedicated service logging for active and scheduled machine maintenance. Automatically locks out compromised assets to prevent unauthorized dispatch. | Deep financial aggregation engines calculating exact fuel expenditures against maintenance costs to report total, long-term fleet operational ROI. |
+### Fleet & Logistics Management
+> **Vehicle Registry (Left):** Real-time monitoring of all industrial fleet assets showing active availability, odometer progressions, and physical capacity.  
+> **Trip Dispatch (Right):** A dynamic map-enabled logistics hub allowing operators to assign routes, configure cargo weight, and manage drivers in real-time.
 
-| 👤 Operational Profile Management | |
-| :---: | :---: |
-| <img src="./screenshots/08_profile.png" alt="User Profile" width="100%"> | |
-| Granular corporate identity interface displaying continuous security activity logs, operational integrity ratings, and strict RBAC privileges. | |
+<div align="center">
+  <img src="./screenshots/04_vehicles.png" alt="Vehicle Registry" width="49%" />
+  <img src="./screenshots/05_trips.png" alt="Trip Logistics" width="49%" />
+</div>
+<br>
+
+### Operational Maintenance & Financials
+> **Maintenance Bay (Left):** Active logging for mechanical repairs to proactively isolate faulty vehicles and prevent severe deployment downtime.  
+> **Expense Analytics (Right):** Visual data reporting charts and tabular statistics calculating ROI against critical fuel expenditures and maintenance costs.
+
+<div align="center">
+  <img src="./screenshots/06_maintenance.png" alt="Maintenance Tracking" width="49%" />
+  <img src="./screenshots/07_expenses.png" alt="Expense Analytics" width="49%" />
+</div>
+<br>
+
+### Operator Intelligence
+> **Corporate Identity Profile:** Dedicated operational command space letting authorized users review clearance levels, overview platform security settings, and configure unit system preferences.
+
+<div align="center">
+  <img src="./screenshots/08_profile.png" alt="User Profile" width="80%" />
+</div>
 
 ---
 
