@@ -6,6 +6,7 @@ import {
   mockExpenses,
   mockDrivers
 } from '../mock/seedData';
+import apiRequest from '../utils/api';
 
 const useFleetStore = create((set) => ({
   vehicles: mockVehicles,
@@ -175,10 +176,26 @@ const useFleetStore = create((set) => ({
     };
   },
 
-  // API Sync Placeholders
+  // API Sync
   syncData: async () => {
-    // This will be implemented with axios/fetch in the next phase
-    console.log("Syncing with backend...");
+    try {
+      const vehicles = await apiRequest('/vehicles');
+      const trips = await apiRequest('/trips');
+      const drivers = await apiRequest('/drivers');
+      const maintenance = await apiRequest('/maintenance');
+      const expenses = await apiRequest('/expenses');
+
+      set({ 
+        vehicles: vehicles.length > 0 ? vehicles : mockVehicles,
+        trips: trips.length > 0 ? trips : mockTrips,
+        drivers: drivers.length > 0 ? drivers : mockDrivers,
+        maintenance: maintenance.length > 0 ? maintenance : mockMaintenance,
+        expenses: expenses.length > 0 ? expenses : mockExpenses
+      });
+      console.log("Synced with backend successfully");
+    } catch (err) {
+      console.error("Sync failed, using mock data", err);
+    }
   },
 }));
 

@@ -1,79 +1,51 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '@clerk/clerk-react';
 import { ShieldCheck, ArrowRight, Briefcase, CheckCircle } from 'lucide-react';
 import useFleetStore from '../store/fleetStore';
 import { motion } from 'framer-motion';
+import apiRequest from '../utils/api';
 
 const roles = [
-    {
-        id: 'Administrator',
-        label: 'Administrator',
-        description: 'Full system access and control',
-        icon: '🛡️',
-    },
-    {
-        id: 'Fleet Manager',
-        label: 'Fleet Manager',
-        description: 'Manage vehicles and dispatches',
-        icon: '🚛',
-    },
-    {
-        id: 'Dispatcher',
-        label: 'Dispatcher',
-        description: 'Assign trips and coordinate drivers',
-        icon: '📡',
-    },
-    {
-        id: 'Safety Officer',
-        label: 'Safety Officer',
-        description: 'Monitor compliance and maintenance',
-        icon: '⚠️',
-    },
-    {
-        id: 'Financial Analyst',
-        label: 'Financial Analyst',
-        description: 'Track expenses and analytics',
-        icon: '📊',
-    },
+    { id: 'Administrator', label: 'Administrator', description: 'Full system access and control', icon: '🛡️' },
+    { id: 'Fleet Manager', label: 'Fleet Manager', description: 'Manage vehicles and dispatches', icon: '🚛' },
+    { id: 'Dispatcher', label: 'Dispatcher', description: 'Assign trips and coordinate drivers', icon: '📡' },
+    { id: 'Safety Officer', label: 'Safety Officer', description: 'Monitor compliance and maintenance', icon: '⚠️' },
+    { id: 'Financial Analyst', label: 'Financial Analyst', description: 'Track expenses and analytics', icon: '📊' },
 ];
 
 const RoleSelect = () => {
     const navigate = useNavigate();
-    const { user: clerkUser } = useUser();
-    const setAuth = useFleetStore((state) => state.setAuth);
+    const { currentUser, setAuth } = useFleetStore();
 
     const [selectedRole, setSelectedRole] = useState('');
     const [loading, setLoading] = useState(false);
 
     const handleConfirm = async () => {
-        if (!selectedRole) return;
+        if (!selectedRole || !currentUser) return;
         setLoading(true);
 
-        setAuth({
-            name: clerkUser?.fullName || clerkUser?.firstName || 'Operator',
-            email: clerkUser?.primaryEmailAddress?.emailAddress || '',
-            role: selectedRole,
-            token: 'clerk_session',
-        });
-
-        // Optionally sync role to backend
         try {
-            await fetch('http://localhost:5000/api/auth/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: clerkUser?.fullName || 'Operator',
-                    email: clerkUser?.primaryEmailAddress?.emailAddress || '',
-                    role: selectedRole,
-                    password: 'clerk_managed',
-                }),
+            // Finalize registration/sync with backend
+            // In a real app, this might update the user's role in the DB
+            setAuth({
+                ...currentUser,
+                role: selectedRole,
             });
-        } catch {
-            // silently ignore backend sync errors
-        }
 
-        navigate('/');
+            // If synchronization is needed:
+            /*
+            await apiRequest('/auth/update-role', {
+                method: 'PUT',
+                body: JSON.stringify({ role: selectedRole }),
+            });
+            */
+            
+            navigate('/');
+        } catch (err) {
+            console.error("Role synchronization failed", err);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -102,7 +74,7 @@ const RoleSelect = () => {
 
                     <div className="relative z-10 space-y-3">
                         <p className="text-[#8892b0] text-sm text-center mb-6">
-                            Welcome, <span className="text-white font-semibold">{clerkUser?.firstName || 'Operator'}</span>!
+                            Welcome, <span className="text-white font-semibold">{currentUser?.name || 'Operator'}</span>!
                             Choose your role to access the system.
                         </p>
 

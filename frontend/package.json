@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@clerk/clerk-react": "^5.61.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.34.3",
     "leaflet": "^1.9.4",

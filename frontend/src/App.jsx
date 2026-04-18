@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth, useUser, AuthenticateWithRedirectCallback } from '@clerk/clerk-react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import AppLayout from './layout/AppLayout';
 
@@ -20,22 +19,14 @@ import AccessRestricted from './components/AccessRestricted';
 import Profile from './pages/Profile';
 
 function App() {
-  const { isLoaded, isSignedIn } = useAuth();
   const currentUser = useFleetStore((state) => state.currentUser);
-
-  // Consider authenticated if Clerk says so OR local state exists
-  const isAuthenticated = isSignedIn || !!currentUser;
-
-  if (!isLoaded) {
-    return <div className="h-screen w-full flex items-center justify-center bg-[#0f111a] text-emerald-500">Loading Configuration...</div>;
-  }
+  const isAuthenticated = !!currentUser;
 
   return (
     <ThemeProvider>
       <Router>
         <Routes>
           {/* Public Routes */}
-          <Route path="/sso-callback" element={<AuthenticateWithRedirectCallback signInForceRedirectUrl="/select-role" />} />
           <Route path="/select-role" element={<RoleSelect />} />
           <Route path="/login" element={isAuthenticated ? <Navigate to="/" replace /> : <Login />} />
           <Route path="/register" element={isAuthenticated ? <Navigate to="/" replace /> : <Register />} />

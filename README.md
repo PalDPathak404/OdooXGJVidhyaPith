@@ -82,6 +82,7 @@ FleetFlow follows a monolithic separation of concerns, strictly isolating the cl
 - **Styling:** Vanilla CSS layered on Next-Gen Tailwind CSS utility systems
 - **Routing:** React Router v7 with Client-Side Route Guards matching user tiers
 - **Icons & Assets:** Lucide React, Framer Motion (for fluid rendering)
+- **Telemetry Layer:** Leaflet.js with OpenStreetMap (OSM) tile support for accurate, real-world geospatial tracking.
 
 ### Backend API Server
 - **Runtime:** Node.js powered by Express.js framework
@@ -102,6 +103,26 @@ Access and feature visibility are strictly governed by the user's corporate desi
 | **Dispatcher** | ✅ Overview | ✅ View Logs | ✅ Direct Routing | ❌ Restricted | ❌ Restricted |
 | **Safety Officer** | ✅ Alerts Only | ✅ Compliance | ❌ Restricted | ✅ Edit/Inspect | ❌ Restricted |
 | **Financial Analyst**| ✅ Fiscal Data | ❌ Restricted | ❌ Restricted | ❌ Restricted | ✅ Full Access |
+
+---
+
+## 🎬 Video Showcase Script (Official)
+This project is designed for professional demonstration. Below is the official 3-minute showcase script.
+
+> [!TIP]
+> **Video Length**: ~3 Minutes | **Vibe**: Professional / Industrial / Tech-Focused
+
+### **I. Introduction (0:00 - 0:45)**
+"Welcome to FleetEdge—an enterprise-grade fleet intelligence and mission command terminal. We’ve built a 'Command Center' aesthetic from the ground up—prioritizing high-density information display and a premium, immersive user experience."
+
+### **II. Technical Stack (0:45 - 1:30)**
+"Powered by a high-performance MERN stack. We use Node.js and Express for the backend, and MongoDB for flexible data storage. On the frontend, React and Vite handle near-instant rendering, while Zustand provides lightweight global state synchronization."
+
+### **III. Custom Security (1:30 - 2:15)**
+"FleetEdge features a custom JWT-based Authentication System. Our onboarding flow is seamless—new operators select their roles (Admin, Manager, Dispatcher) during registration, instantly triggering Role-Based Access Control (RBAC) across the entire platform."
+
+### **IV. Analytics & Operations (2:15 - 3:00)**
+"Mission Control provides real-world geospatial tracking. The Analytics Hub offers granular insights into ROI, fuel costs, and asset utilization, correlating financial data directly with Mission IDs for 100% financial veracity."
 
 ---
 
@@ -189,6 +210,13 @@ OdooXGJVidhyaPith/
 ├── screenshots/          # Cached UI rendering snapshots for preview
 └── README.md             # This document
 ```
+
+---
+
+## 🚀 Future Roadmap
+- **Predictive Maintenance**: ML models to predict asset failure.
+- **Route Optimization**: AI-driven pathfinding to minimize fuel consumption.
+- **Mobile Companion**: Native iOS/Android clients for on-field updates.
 
 ---
 
