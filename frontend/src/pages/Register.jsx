@@ -53,6 +53,19 @@ const Register = () => {
         }
     };
 
+    const handleDirectAccess = () => {
+        // Developer-only quick access for testing/demo — uses mock store data
+        const demoUser = {
+            name: 'Demo Operator',
+            email: 'demo@fleetedge.local',
+            role: 'Administrator',
+            token: 'demo-token'
+        };
+
+        setAuth(demoUser);
+        navigate('/app');
+    };
+
 
     return (
         <div className="min-h-screen bg-[#0f111a] flex flex-col items-center justify-center p-6 relative overflow-hidden">
@@ -159,6 +172,17 @@ const Register = () => {
                                         </span>
                                         {!loading && <ArrowRight size={18} className="text-emerald-500 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />}
                                     </div>
+                                </button>
+                            </div>
+
+                            {/* Direct demo access for testing */}
+                            <div className="pt-3">
+                                <button
+                                    type="button"
+                                    onClick={handleDirectAccess}
+                                    className="w-full group relative py-3 px-6 rounded-xl bg-primary/5 border border-primary text-primary font-semibold hover:bg-primary/10 transition-all"
+                                >
+                                    Direct Access (Demo)
                                 </button>
                             </div>
 
