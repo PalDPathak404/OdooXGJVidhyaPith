@@ -6,6 +6,7 @@ import AppLayout from './layout/AppLayout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import RoleSelect from './pages/RoleSelect';
+import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import Vehicles from './pages/Vehicles';
 import Trips from './pages/Trips';
@@ -27,45 +28,46 @@ function App() {
       <Router>
         <Routes>
           {/* Public Routes */}
+          <Route path="/" element={isAuthenticated ? <Navigate to="/app" replace /> : <Landing />} />
           <Route path="/select-role" element={<RoleSelect />} />
-          <Route path="/login" element={isAuthenticated ? <Navigate to="/" replace /> : <Login />} />
-          <Route path="/register" element={isAuthenticated ? <Navigate to="/" replace /> : <Register />} />
+          <Route path="/login" element={isAuthenticated ? <Navigate to="/app" replace /> : <Login />} />
+          <Route path="/register" element={isAuthenticated ? <Navigate to="/app" replace /> : <Register />} />
 
           {/* Protected Routes */}
           <Route
-            path="/*"
+            path="/app/*"
             element={
               isAuthenticated ? (
                 <AppLayout>
                   <Routes>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/mission-control" element={<MissionControl />} />
+                    <Route path="" element={<Dashboard />} />
+                    <Route path="profile" element={<Profile />} />
+                    <Route path="mission-control" element={<MissionControl />} />
                     <Route
-                      path="/vehicles"
+                      path="vehicles"
                       element={['Administrator', 'Fleet Manager', 'Dispatcher', 'Safety Officer'].includes(currentUser?.role) ? <Vehicles /> : <AccessRestricted />}
                     />
                     <Route
-                      path="/trips"
+                      path="trips"
                       element={['Administrator', 'Fleet Manager', 'Dispatcher'].includes(currentUser?.role) ? <Trips /> : <AccessRestricted />}
                     />
                     <Route
-                      path="/maintenance"
+                      path="maintenance"
                       element={['Administrator', 'Fleet Manager', 'Safety Officer'].includes(currentUser?.role) ? <Maintenance /> : <AccessRestricted />}
                     />
                     <Route
-                      path="/expenses"
+                      path="expenses"
                       element={['Administrator', 'Fleet Manager', 'Financial Analyst'].includes(currentUser?.role) ? <Expenses /> : <AccessRestricted />}
                     />
                     <Route
-                      path="/drivers"
+                      path="drivers"
                       element={['Administrator', 'Safety Officer'].includes(currentUser?.role) ? <Drivers /> : <AccessRestricted />}
                     />
                     <Route
-                      path="/analytics"
+                      path="analytics"
                       element={['Administrator', 'Financial Analyst'].includes(currentUser?.role) ? <Analytics /> : <AccessRestricted />}
                     />
-                    <Route path="*" element={<Navigate to="/" replace />} />
+                    <Route path="*" element={<Navigate to="/app" replace />} />
                   </Routes>
                 </AppLayout>
               ) : (

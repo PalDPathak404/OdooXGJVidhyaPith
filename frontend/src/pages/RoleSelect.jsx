@@ -40,7 +40,7 @@ const RoleSelect = () => {
             });
             */
             
-            navigate('/');
+            navigate('/app');
         } catch (err) {
             console.error("Role synchronization failed", err);
         } finally {

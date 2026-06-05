@@ -31,7 +31,7 @@ const Login = () => {
                 token: data.token
             });
 
-            navigate('/');
+            navigate('/app');
         } catch (err) {
             setError(err.message || 'Login failed. Check your credentials.');
         } finally {

@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const AppLayout = ({ children }) => {
     const location = useLocation();
+    const pathKey = location.pathname.replace(/^\/app/, '') || '/';
 
     // Map paths to titles
     const getTitle = (path) => {
@@ -27,7 +28,7 @@ const AppLayout = ({ children }) => {
         <div className="flex min-h-screen bg-background font-sans">
             <Sidebar />
             <main className="flex-1 ml-80 p-0 overflow-x-hidden">
-                <Topbar title={getTitle(location.pathname)} />
+                <Topbar title={getTitle(pathKey)} />
 
                 <AnimatePresence mode="wait">
                     <motion.div
